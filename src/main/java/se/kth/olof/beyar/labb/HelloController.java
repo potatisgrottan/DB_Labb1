@@ -1,4 +1,4 @@
-package se.kth.olof.beyar.dbl1.db_labb1;
+package se.kth.olof.beyar.labb;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

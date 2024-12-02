@@ -1,4 +1,4 @@
-package se.kth.olof.beyar.dbl1.db_labb1;
+package se.kth.olof.beyar.labb;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

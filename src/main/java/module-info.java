@@ -1,8 +1,7 @@
-module se.kth.olof.beyar.dbl1.db_labb1 {
+module se.kth.olof.beyar.labb {
     requires javafx.controls;
     requires javafx.fxml;
 
-
-    opens se.kth.olof.beyar.dbl1.db_labb1 to javafx.fxml;
-    exports se.kth.olof.beyar.dbl1.db_labb1;
+    opens se.kth.olof.beyar.labb to javafx.fxml;
+    exports se.kth.olof.beyar.labb;
 }

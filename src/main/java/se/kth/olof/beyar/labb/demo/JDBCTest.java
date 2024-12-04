@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 public class JDBCTest
 {
     public static void main(String[] args) throws Exception
@@ -20,7 +19,7 @@ public class JDBCTest
         String user = args[0]; // username
         String pwd = args[1]; // password
         System.out.println(user + ", *********");
-        String database = "Company"; // the name of the specific database 
+        String database = "Library"; // the name of the specific database
         String server
                 = "jdbc:mysql://localhost:3306/" + database
                 + "?UseClientEnc=UTF8";
@@ -32,7 +31,21 @@ public class JDBCTest
             con = DriverManager.getConnection(server, user, pwd);
             System.out.println("Connected!");
 
-            executeQuery(con, "SELECT * FROM T_Employee");
+            String getAllValues = "SELECT Book.*, Author.* " +
+                    "FROM WrittenBy " +
+                    "JOIN Book, Author " +
+                    "WHERE WrittenBy.Author_SSN = Author.SSN " +
+                    "AND WrittenBy.Book_ISBN = Book.ISBN";
+
+            String searchString = "Harry Potter";
+            String searchQuery = "SELECT Book.*, Author.* " +
+                "FROM WrittenBy " +
+                "JOIN Book, Author " +
+                "WHERE WrittenBy.Author_SSN = Author.SSN " +
+                "AND WrittenBy.Book_ISBN = Book.ISBN " +
+                "AND Book.Title LIKE '%" + searchString + "%'";
+
+            executeQuery(con, searchQuery);
         } finally
         {
             try

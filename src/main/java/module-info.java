@@ -3,7 +3,7 @@ module se.kth.olof.beyar.labb {
     requires javafx.fxml;
     requires transitive javafx.graphics;
     requires transitive java.sql;
-    requires mysql.connector.j;
+    // requires mysql.connector.j;
 
     opens se.kth.olof.beyar.labb to javafx.fxml;
     exports se.kth.olof.beyar.labb;

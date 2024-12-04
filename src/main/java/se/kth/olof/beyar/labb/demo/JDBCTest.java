@@ -21,7 +21,7 @@ public class JDBCTest
         System.out.println(user + ", *********");
         String database = "Library"; // the name of the specific database
         String server
-                = "jdbc:mysql://localhost:3306/" + database
+                = "jdbc:mysql://nahro.ddns.net:3306/" + database
                 + "?UseClientEnc=UTF8";
 
         Connection con = null;

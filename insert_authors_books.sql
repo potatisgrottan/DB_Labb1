@@ -1,4 +1,3 @@
--- Active: 1733316650851@@127.0.0.1@3306@Library
 INSERT INTO Author (SSN, FirstName, LastName) VALUES
 (196507310001, 'JK', 'Rowling'),
 (196605110002, 'Kentaro', 'Miura'),

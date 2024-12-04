@@ -1,4 +1,3 @@
--- Active: 1733316650851@@127.0.0.1@3306@Library
 CREATE DATABASE Library;
 
 USE Library;

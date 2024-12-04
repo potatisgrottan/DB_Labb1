@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 public class JDBCTest
 {
     public static void main(String[] args) throws Exception
@@ -39,11 +40,11 @@ public class JDBCTest
 
             String searchString = "Harry Potter";
             String searchQuery = "SELECT Book.*, Author.* " +
-                "FROM WrittenBy " +
-                "JOIN Book, Author " +
-                "WHERE WrittenBy.Author_SSN = Author.SSN " +
-                "AND WrittenBy.Book_ISBN = Book.ISBN " +
-                "AND Book.Title LIKE '%" + searchString + "%'";
+                    "FROM WrittenBy " +
+                    "JOIN Book, Author " +
+                    "WHERE WrittenBy.Author_SSN = Author.SSN " +
+                    "AND WrittenBy.Book_ISBN = Book.ISBN " +
+                    "AND Book.Title LIKE '%" + searchString + "%'";
 
             executeQuery(con, searchQuery);
         } finally

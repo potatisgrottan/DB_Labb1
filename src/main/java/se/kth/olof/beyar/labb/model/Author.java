@@ -59,33 +59,12 @@ public class Author
         return "Author{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", SSN=" + SSN +
+                ", SSN=" + ssn +
                 '}';
     }
 
     public String findByText(String searchValue)
     {
-        // MySQLServiceProtocol < SQLServiceProtocol
-        // NoSQLServiceProtocol < SQLServiceProtocol
-
-        // Detaljer uppgifter = "hostname, username, password, databasename";
-
-        // Service Provider A
-        // MySQLServiceProtocol mySQLServiceProtocol = new MySQLInstance(uppgifter);
-
-        // Service Provider B
-        // NoSQLServiceProtocol noSQLServiceProtocol = new NoSQLInstance(uppgifter);
-
-        // Service Provider C
-        // PåhittadDatabas påhittadDatabas = new PåhittadDatabas(uppgifter)
-
-        // Service Protocol
-        // DatabaseProvider databaseProvider = new DatabaseProvider(mySQLInstance)
-        // DatabaseProvider databaseProvider = new DatabaseProvider(noSQLInstance)
-        // DatabaseProvider databaseProvider = new DatabaseProvider(PåhittadDatabas)
-
-        // return databaseProvider.findByText(searchValue);
-
         return "";
     }
 }

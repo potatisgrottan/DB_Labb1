@@ -2,8 +2,8 @@ CREATE DATABASE Library;
 
 USE Library;
 
-DROP TABLE `WrittenBy`;
-DROP TABLE `Author`;
+-- DROP TABLE `WrittenBy`;
+-- DROP TABLE `Author`;
 
 CREATE TABLE Author (
     SSN VARCHAR(64) PRIMARY KEY UNIQUE,

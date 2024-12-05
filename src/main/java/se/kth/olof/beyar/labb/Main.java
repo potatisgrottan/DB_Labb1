@@ -10,7 +10,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import se.kth.olof.beyar.labb.view.SearchView;
+import se.kth.olof.beyar.labb.View.AddView;
+import se.kth.olof.beyar.labb.View.SearchView;
 
 import java.io.IOException;
 
@@ -30,8 +31,6 @@ public class Main extends Application {
         navbar.setTop(topPane);
 
         optionButton.setOnAction(_ -> System.out.println("Options button clicked!"));
-        searchButton.setOnAction(_ -> System.out.println("Home button clicked!"));
-        addButton.setOnAction(_ -> System.out.println("Add button clicked!"));
 
         HBox app = new HBox();
         app.getChildren().addAll(navbar);
@@ -41,6 +40,9 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
         SearchView sv = new SearchView();
-        sv.createSerchView(stage, app);
+        AddView av = new AddView();
+
+        searchButton.setOnAction(_ -> sv.createSerchView(stage, app));
+        addButton.setOnAction(_ -> av.createAddView(stage,app));
     }
 }

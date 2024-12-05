@@ -1,4 +1,4 @@
-package se.kth.olof.beyar.labb.view;
+package se.kth.olof.beyar.labb.View;
 
 
 import javafx.application.Application;
@@ -15,27 +15,40 @@ import javafx.stage.Stage;
 
 public class SearchView
 {
-    TextField searchBar;
-    Button searchButton;
+
     public SearchView(){}
 
     public void createSerchView(Stage stage, HBox app){
-        searchBar = new TextField();
+
+
+        TextField searchBar = new TextField();
         searchBar.setPromptText("Search for books or authors here!");
-        searchButton = new Button("Search");
+        Button searchButton = new Button("Search");
         Label searchLable = new Label("Search");
+        ScrollPane searchResults = new ScrollPane();
+        searchResults.fitToWidthProperty();
+        searchResults.setPrefHeight(150);
 
-        HBox searchapp = new HBox();
-        searchapp.getChildren().addAll(searchBar,searchButton);
+        TextArea searchResultsArea = new TextArea();
+        searchResultsArea.setEditable(false);
+        searchResultsArea.setWrapText(true);
+        HBox searchApp = new HBox();
+        searchApp.getChildren().addAll(searchBar,searchButton);
+        searchResults.setContent( searchResultsArea );
 
-
-        VBox app2 = new VBox();
-        app2.getChildren().addAll(app, searchLable, searchapp);
-        Scene searchScene = new Scene(app2,320, 240 );
+        VBox verticalSearchBox = new VBox();
+        verticalSearchBox.getChildren().addAll(app, searchLable, searchApp, searchResults);
+        Scene searchScene = new Scene(verticalSearchBox,320, 240 );
 
 
         stage.setTitle("search example");
         stage.setScene(searchScene);
         stage.show();
+
+        searchButton.setOnAction(_ ->
+        {
+            String query = searchBar.getText();
+            searchResultsArea.setText("Search results for "+query+":\n");
+        });
     }
 }

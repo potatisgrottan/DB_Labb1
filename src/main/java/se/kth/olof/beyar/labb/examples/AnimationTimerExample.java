@@ -1,3 +1,4 @@
+package se.kth.olof.beyar.labb.examples;
 
 import java.util.Date;
 import javafx.animation.AnimationTimer;

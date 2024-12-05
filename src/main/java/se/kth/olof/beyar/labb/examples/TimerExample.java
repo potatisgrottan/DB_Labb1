@@ -1,3 +1,5 @@
+package se.kth.olof.beyar.labb.examples;
+
 import java.util.Timer;
 import java.util.TimerTask;
 

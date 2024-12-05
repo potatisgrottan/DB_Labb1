@@ -1,3 +1,4 @@
+package se.kth.olof.beyar.labb.examples;
 /*
  Netbeans and resources, for example images, to be used by the application:
  ---------------------------------------------------------------------------
@@ -7,8 +8,6 @@
  Load the resource in the application code, e.g. an image: 
  Image im = new Image(”resources/devil.png”);
 */
-
-
 
 import javafx.application.Application;
 import javafx.event.EventHandler;

@@ -5,7 +5,7 @@ Put images, text files, and similar static resources, in the "resources" folder
 in your JavaFX project (there might be a package structure similar to the one
 int the source code in the "resources folder, if so, use that folder).
  */
-package se.kth.olof.beyar.labb4.examples;
+package se.kth.olof.beyar.labb.examples;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

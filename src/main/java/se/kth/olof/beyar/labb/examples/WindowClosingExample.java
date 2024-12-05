@@ -1,4 +1,4 @@
-package se.kth.olof.beyar.labb4.examples;
+package se.kth.olof.beyar.labb.examples;
 
 import java.util.Optional;
 

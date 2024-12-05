@@ -1,4 +1,4 @@
-package se.kth.olof.beyar.labb.demo;
+package se.kth.olof.beyar.labb.examples;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -64,7 +64,6 @@ public class JDBCTest
 
     public static void executeQuery(Connection con, String query) throws SQLException
     {
-
         try (Statement stmt = con.createStatement())
         {
             // Execute the SQL statement

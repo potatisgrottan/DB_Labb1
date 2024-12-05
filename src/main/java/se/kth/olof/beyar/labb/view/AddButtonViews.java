@@ -1,15 +1,20 @@
-package se.kth.olof.beyar.labb.View;
+package se.kth.olof.beyar.labb.view;
 
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-public class AddButtonViews {
 
-    public AddButtonViews(){}
+public class AddButtonViews
+{
 
-    public void createBookView(Stage stage, HBox app){
+    public AddButtonViews()
+    {
+    }
+
+    public void createBookView()
+    {
 
         Label addBookLabel = new Label("Add Book");
 
@@ -32,15 +37,11 @@ public class AddButtonViews {
         hBookViewBox.getChildren().addAll(saveButton, cancelButton);
 
         VBox vBVBox = new VBox();
-        vBVBox.getChildren().addAll(app,addBookLabel,isbnBar,titleBar,genreBar,gradeBar,hBookViewBox);
-
-        Scene addBookScene = new Scene(vBVBox);
-
-        stage.setScene(addBookScene);
-        stage.show();
+        vBVBox.getChildren().addAll(addBookLabel, isbnBar, titleBar, genreBar, gradeBar, hBookViewBox);
     }
 
-    public void createAuthorView(Stage stage, HBox app){
+    public void createAuthorView()
+    {
 
         Label addBookLabel = new Label("Add author");
 
@@ -60,11 +61,6 @@ public class AddButtonViews {
         hBookViewBox.getChildren().addAll(saveButton, cancelButton);
 
         VBox vBVBox = new VBox();
-        vBVBox.getChildren().addAll(app, addBookLabel, lastNameBar, firstNameBar, ssnBar,hBookViewBox);
-
-        Scene addBookScene = new Scene(vBVBox);
-
-        stage.setScene(addBookScene);
-        stage.show();
+        vBVBox.getChildren().addAll(addBookLabel, lastNameBar, firstNameBar, ssnBar, hBookViewBox);
     }
 }

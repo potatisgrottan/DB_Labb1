@@ -6,14 +6,14 @@ public class Author
 {
     private String firstName;
     private String lastName;
-    private String SSN;
+    private String ssn;
     private final ArrayList<Book> written;
 
-    public Author(String firstName, String lastName, String SSN)
+    public Author(String firstName, String lastName, String ssn)
     {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.SSN = SSN;
+        this.ssn = ssn;
         // Author that has written the most amount of books has written over 1000
         written = new ArrayList<>();
     }
@@ -45,12 +45,12 @@ public class Author
 
     public String getSSN()
     {
-        return SSN;
+        return ssn;
     }
 
-    public void setSSN(String SSN)
+    public void setSSN(String ssn)
     {
-        this.SSN = SSN;
+        this.ssn = ssn;
     }
 
     @Override

@@ -4,16 +4,18 @@ import java.util.ArrayList;
 
 public class Book
 {
+    private String isbn;
     private String title;
     private String genre;
     private int grade;
     private final ArrayList<Author> authors;
 
-    public Book(String title, String genre, int grade)
+    public Book(String title, String genre, String isbn ,int grade)
     {
         this.title = title;
         this.grade = grade;
         this.genre = genre;
+        this.isbn = isbn;
         // the bok with most amout of authors of all time has 26
         authors = new ArrayList<>();
     }
@@ -52,6 +54,8 @@ public class Book
     {
         this.grade = grade;
     }
+
+
 
     @Override
     public String toString()

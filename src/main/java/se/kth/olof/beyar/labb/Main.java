@@ -40,5 +40,7 @@ public class Main extends Application {
         stage.setTitle("Library application");
         stage.setScene(scene);
         stage.show();
+        SearchView sv = new SearchView();
+        sv.createSerchView(stage, app);
     }
 }

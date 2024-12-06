@@ -1,4 +1,4 @@
-package se.kth.olof.beyar.labb.view;
+package se.kth.olof.beyar.labb.View;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;

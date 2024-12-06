@@ -3,7 +3,7 @@ package se.kth.olof.beyar.labb.controller;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import se.kth.olof.beyar.labb.view.AppView;
+import se.kth.olof.beyar.labb.View.AppView;
 
 public class AppController
 {

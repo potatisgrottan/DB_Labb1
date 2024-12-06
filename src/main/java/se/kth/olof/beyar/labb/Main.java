@@ -11,10 +11,7 @@ import javafx.stage.Stage;
 import se.kth.olof.beyar.labb.controller.AppController;
 import se.kth.olof.beyar.labb.controller.NavbarController;
 import se.kth.olof.beyar.labb.model.NavbarModel;
-import se.kth.olof.beyar.labb.view.AddView;
-import se.kth.olof.beyar.labb.view.AppView;
-import se.kth.olof.beyar.labb.view.NavbarView;
-import se.kth.olof.beyar.labb.view.SearchView;
+import se.kth.olof.beyar.labb.View.*;
 
 import java.io.IOException;
 
@@ -40,7 +37,7 @@ public class Main extends Application {
         AppView appView = new AppView();
         AppController appController = new AppController(appView);
         VBox searchView = new SearchView().createSerchView();
-        VBox addView = new AddView().createAddView();
+        VBox addView = new AddView().createAddView(stage);
         appController.buildLayout(navbar, searchView);
 
         optionButton.setOnAction(_ -> {

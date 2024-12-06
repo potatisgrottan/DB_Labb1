@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import se.kth.olof.beyar.labb.model.NavbarModel;
-import se.kth.olof.beyar.labb.view.NavbarView;
+import se.kth.olof.beyar.labb.View.NavbarView;
 
 public class NavbarController
 {

@@ -1,4 +1,4 @@
-package se.kth.olof.beyar.labb.view;
+package se.kth.olof.beyar.labb.View;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.Border;

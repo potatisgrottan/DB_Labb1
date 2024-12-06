@@ -8,10 +8,8 @@ import se.kth.olof.beyar.labb.controller.NavbarController;
 import se.kth.olof.beyar.labb.controller.SearchController;
 import se.kth.olof.beyar.labb.model.*;
 import se.kth.olof.beyar.labb.view.*;
-
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
 
 public class Main extends Application {
     public static void main(String[] args) {

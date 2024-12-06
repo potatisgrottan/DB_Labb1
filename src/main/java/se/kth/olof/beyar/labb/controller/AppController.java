@@ -7,7 +7,6 @@ import javafx.stage.Stage;
 import se.kth.olof.beyar.labb.common.Views;
 import se.kth.olof.beyar.labb.view.AddView;
 import se.kth.olof.beyar.labb.view.AppView;
-import se.kth.olof.beyar.labb.view.SearchView;
 import java.util.function.Consumer;
 
 public class AppController

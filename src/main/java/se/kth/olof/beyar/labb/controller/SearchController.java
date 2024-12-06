@@ -1,7 +1,6 @@
 package se.kth.olof.beyar.labb.controller;
 
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import se.kth.olof.beyar.labb.model.Book;
 import se.kth.olof.beyar.labb.model.Database;
 import se.kth.olof.beyar.labb.model.MySQLServiceProtocol;
@@ -48,9 +47,7 @@ public class SearchController
         ArrayList<Book> books = mysql.findByText(find);
         StringBuilder response = new StringBuilder();
 
-        books.forEach((book -> {
-            response.append(book.getTitle()).append("\n");
-        }));
+        books.forEach((book -> response.append(book.getTitle()).append("\n")));
 
         view.setResponseText(response.toString());
     }

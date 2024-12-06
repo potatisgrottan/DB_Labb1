@@ -18,7 +18,6 @@ public class SearchController
     {
         this.model = model;
         this.view = view;
-        view.createSearchView();
     }
 
     public void addEventListener()
@@ -48,13 +47,13 @@ public class SearchController
         StringBuilder response = new StringBuilder();
 
         books.forEach((book -> response.append(book.getTitle()).append("\n")));
-
         view.setResponseText(response.toString());
     }
 
     public VBox createSearchView()
     {
+        VBox createdSearchView = view.createSearchView();
         addEventListener();
-        return view.createSearchView();
+        return createdSearchView;
     }
 }

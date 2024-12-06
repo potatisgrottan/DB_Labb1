@@ -36,7 +36,6 @@ public class AppController
         switch (currentView) {
             case SEARCH:
                 view.rerenderActionLayout(searchController.createSearchView());
-                searchController.addEventListener();
                 break;
             case ADD:
                 view.rerenderActionLayout(new AddView().createAddView(stage));

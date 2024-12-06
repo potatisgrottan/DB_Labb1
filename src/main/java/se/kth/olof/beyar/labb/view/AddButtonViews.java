@@ -14,8 +14,8 @@ public class AddButtonViews
     {
     }
 
-    public void createAndShowDialog(Stage stage,VBox addBox){
-
+    public void createAndShowDialog(Stage stage, VBox addBox)
+    {
         Stage dialogBook = new Stage();
         dialogBook.initModality(Modality.WINDOW_MODAL);
         dialogBook.initOwner(stage);

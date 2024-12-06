@@ -14,14 +14,14 @@ public class AddView
 
     public VBox createAddView(Stage stage)
     {
-        Label addLable = new Label("Add");
+        Label addLabel = new Label("Add");
         Button addBook = new Button("Book");
         Button addAuthor = new Button("Author");
         Button addBoth = new Button("Both");
 
         HBox addApp = new HBox();
         addApp.getChildren().addAll(addBoth, addBook, addAuthor);
-        VBox vertAddBox = new VBox(addLable, addApp);
+        VBox vertAddBox = new VBox(addLabel, addApp);
 
         AddButtonViews bv = new AddButtonViews();
         addBoth.setOnAction(_ -> bv.createAndShowDialog(stage, bv.createAddBothBox()));

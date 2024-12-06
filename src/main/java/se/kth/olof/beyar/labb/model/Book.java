@@ -10,7 +10,7 @@ public class Book
     private int grade;
     private final ArrayList<Author> authors;
 
-    public Book(String title, String genre, String isbn ,int grade)
+    public Book(String title, String genre, String isbn, int grade)
     {
         this.title = title;
         this.grade = grade;
@@ -54,8 +54,6 @@ public class Book
     {
         this.grade = grade;
     }
-
-
 
     @Override
     public String toString()

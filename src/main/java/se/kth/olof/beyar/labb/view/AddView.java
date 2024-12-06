@@ -3,6 +3,7 @@ package se.kth.olof.beyar.labb.view;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class AddView
 {
@@ -11,7 +12,7 @@ public class AddView
     {
     }
 
-    public VBox createAddView()
+    public VBox createAddView(Stage stage)
     {
         Label addLable = new Label("Add");
         Button addBook = new Button("Book");
@@ -23,8 +24,9 @@ public class AddView
         VBox vertAddBox = new VBox(addLable, addApp);
 
         AddButtonViews bv = new AddButtonViews();
-        addBook.setOnAction(_ -> bv.createBookView());
-        addAuthor.setOnAction(_ -> bv.createAuthorView());
+        addBoth.setOnAction(_ -> bv.createAndShowDialog(stage, bv.createAddBothBox()));
+        addBook.setOnAction(_ -> bv.createAndShowDialog(stage, bv.createAddBookBox()));
+        addAuthor.setOnAction(_ -> bv.createAndShowDialog(stage, bv.createAuthorBox()));
 
         return vertAddBox;
     }

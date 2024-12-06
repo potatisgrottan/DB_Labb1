@@ -22,7 +22,7 @@ public class Main extends Application {
         NavbarController navbarController = new NavbarController(navbarModel, navbarView);
 
         AppView appView = new AppView();
-        AppController appController = new AppController(appView, navbarController);
+        AppController appController = new AppController(appView, navbarController, stage);
         appController.buildLayout(
                 navbarController.getNavbar(),
                 new SearchView().createSearchView()

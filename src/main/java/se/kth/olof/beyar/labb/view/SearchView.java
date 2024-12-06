@@ -10,7 +10,7 @@ public class SearchView
     {
     }
 
-    public VBox createSerchView()
+    public VBox createSearchView()
     {
         TextField searchBar = new TextField();
         searchBar.setPromptText("Search for books or authors here!");

@@ -6,9 +6,7 @@ import javafx.stage.Stage;
 import se.kth.olof.beyar.labb.controller.AppController;
 import se.kth.olof.beyar.labb.controller.NavbarController;
 import se.kth.olof.beyar.labb.model.NavbarModel;
-import se.kth.olof.beyar.labb.view.AppView;
-import se.kth.olof.beyar.labb.view.NavbarView;
-import se.kth.olof.beyar.labb.view.SearchView;
+import se.kth.olof.beyar.labb.view.*;
 
 import java.io.IOException;
 
@@ -27,7 +25,7 @@ public class Main extends Application {
         AppController appController = new AppController(appView, navbarController);
         appController.buildLayout(
                 navbarController.getNavbar(),
-                new SearchView().createSerchView()
+                new SearchView().createSearchView()
         );
 
         Scene scene = new Scene(appController.getView(), 320, 240);

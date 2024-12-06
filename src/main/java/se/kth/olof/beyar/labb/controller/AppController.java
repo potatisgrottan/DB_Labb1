@@ -31,7 +31,7 @@ public class AppController
     private void updateView(Views currentView) {
         switch (currentView) {
             case SEARCH:
-                view.rerenderActionLayout(new SearchView().createSerchView());
+                view.rerenderActionLayout(new SearchView().createSearchView());
                 System.out.println("Change view to search");
                 break;
             case ADD:

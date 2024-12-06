@@ -18,7 +18,7 @@ public class AppController
         this.navbarController = navbarController;
 
         Consumer<Views> updateViewCallback = this::updateView;
-        navbarController.setViewChangeHandler(updateViewCallback);
+        navbarController.setViewHandler(updateViewCallback);
     }
 
     public BorderPane getView()
@@ -30,11 +30,14 @@ public class AppController
         switch (currentView) {
             case SEARCH:
                 view.rerenderActionLayout(new SearchView().createSerchView());
+                System.out.println("Change view to search");
                 break;
             case ADD:
+                System.out.println("Change view to add");
                 view.rerenderActionLayout(new AddView().createAddView());
                 break;
             case OPTIONS:
+                System.out.println("Change view to options");
                 break;
         }
     }

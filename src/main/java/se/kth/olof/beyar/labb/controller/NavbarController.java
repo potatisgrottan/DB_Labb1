@@ -11,7 +11,7 @@ public class NavbarController
 {
     NavbarModel model;
     NavbarView view;
-    private Consumer<Views> viewChangeHandler;
+    private Consumer<Views> viewHandler;
 
     public NavbarController(NavbarModel model, NavbarView view)
     {
@@ -20,34 +20,32 @@ public class NavbarController
         initializeListeners();
     }
 
-    public void setViewChangeHandler(Consumer<Views> handler) {
-        this.viewChangeHandler = handler;
+    public void setViewHandler(Consumer<Views> updateViewCallback) {
+        this.viewHandler = updateViewCallback;
+    }
+
+    private void sendCallbackValue()
+    {
+        if (viewHandler != null) {
+            viewHandler.accept(model.getChosenView());
+        }
     }
 
     private void initializeListeners()
     {
         view.getOptionsButton().setOnAction(_ -> {
             model.setChosenView(Views.OPTIONS);
-
-            if (viewChangeHandler != null) {
-                viewChangeHandler.accept(Views.OPTIONS);
-            }
+            sendCallbackValue();
         });
 
         view.getSearchButton().setOnAction(_ -> {
             model.setChosenView(Views.SEARCH);
-
-            if (viewChangeHandler != null) {
-                viewChangeHandler.accept(Views.SEARCH);
-            }
+            sendCallbackValue();
         });
 
         view.getAddButton().setOnAction(_ -> {
             model.setChosenView(Views.ADD);
-
-            if (viewChangeHandler != null) {
-                viewChangeHandler.accept(Views.ADD);
-            }
+            sendCallbackValue();
         });
     }
 

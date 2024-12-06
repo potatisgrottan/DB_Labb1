@@ -1,6 +1,8 @@
 package se.kth.olof.beyar.labb.controller;
 
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import se.kth.olof.beyar.labb.common.Views;
 import se.kth.olof.beyar.labb.view.AddView;
 import se.kth.olof.beyar.labb.view.AppView;
@@ -40,5 +42,9 @@ public class AppController
                 System.out.println("Change view to options");
                 break;
         }
+    }
+
+    public void buildLayout(FlowPane navbar, VBox action) {
+        view.buildLayout(navbar, action);
     }
 }

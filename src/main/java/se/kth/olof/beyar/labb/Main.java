@@ -25,13 +25,14 @@ public class Main extends Application {
 
         AppView appView = new AppView();
         AppController appController = new AppController(appView, navbarController);
-
-        appView.buildLayout(
+        appController.buildLayout(
                 navbarController.getNavbar(),
                 new SearchView().createSerchView()
         );
 
         Scene scene = new Scene(appController.getView(), 320, 240);
+        // Options button gets highlighted even though the default view is Search
+        navbarView.getSearchButton().requestFocus();
         stage.setTitle("Library application");
         stage.setScene(scene);
         stage.show();

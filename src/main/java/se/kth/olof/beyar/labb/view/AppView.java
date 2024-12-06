@@ -6,24 +6,24 @@ import javafx.scene.layout.VBox;
 
 public class AppView
 {
-    BorderPane layout;
+    BorderPane view;
 
     public AppView() {
-        this.layout = new BorderPane();
+        this.view = new BorderPane();
     }
 
     public void buildLayout(FlowPane navbar, VBox action) {
-        layout.setTop(navbar);
-        layout.setCenter(action);
+        view.setTop(navbar);
+        view.setCenter(action);
     }
 
     public void rerenderActionLayout(VBox action)
     {
-        layout.setCenter(action);
+        view.setCenter(action);
     }
 
-    public BorderPane getLayout()
+    public BorderPane getView()
     {
-        return layout;
+        return view;
     }
 }

@@ -1,24 +1,25 @@
 package se.kth.olof.beyar.labb.model;
 
+import se.kth.olof.beyar.labb.common.Views;
+
 public class NavbarModel
 {
-    enum NavbarViews {OPTIONS, SEARCH, ADD}
-    NavbarViews chosenView;
+    Views chosenView;
 
-    public NavbarModel(NavbarViews chosenView) {
+    public NavbarModel(Views chosenView) {
         this.chosenView = chosenView;
     }
 
     public NavbarModel() {
-        this(NavbarViews.SEARCH);
+        this(Views.SEARCH);
     }
 
-    public NavbarViews getChosenView()
+    public Views getChosenView()
     {
         return chosenView;
     }
 
-    public void setChosenView(NavbarViews chosenView)
+    public void setChosenView(Views chosenView)
     {
         this.chosenView = chosenView;
     }

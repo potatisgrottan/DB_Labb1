@@ -6,6 +6,9 @@ import javafx.scene.layout.VBox;
 
 public class SearchView
 {
+    HBox searchApp;
+    TextArea searchResultsArea;
+
     public SearchView()
     {
     }
@@ -22,24 +25,32 @@ public class SearchView
         searchResults.fitToWidthProperty();
         searchResults.setPrefHeight(150);
 
-        TextArea searchResultsArea = new TextArea();
+        searchResultsArea = new TextArea();
         searchResultsArea.setEditable(false);
         searchResultsArea.setWrapText(true);
 
-        HBox searchApp = new HBox();
+        searchApp = new HBox();
         searchApp.getChildren().addAll(searchBar, searchButton);
         searchResults.setContent(searchResultsArea);
 
         VBox verticalSearchBox = new VBox();
         verticalSearchBox.getChildren().addAll(searchLabel, searchApp, searchResults);
 
-        // Den här borde vara hos search controllern
-        searchButton.setOnAction(_ ->
-        {
-            String query = searchBar.getText();
-            searchResultsArea.setText("Search results for " + query + ":\n");
-        });
-
         return verticalSearchBox;
+    }
+
+    public Button getSearchButton()
+    {
+        return (Button) searchApp.getChildren().get(1);
+    }
+
+    public TextField getSearchBar()
+    {
+        return (TextField) searchApp.getChildren().getFirst();
+    }
+
+    public void setResponseText(String text)
+    {
+        searchResultsArea.setText(text);
     }
 }

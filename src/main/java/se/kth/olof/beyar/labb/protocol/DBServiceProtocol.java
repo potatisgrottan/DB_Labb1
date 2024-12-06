@@ -22,12 +22,16 @@ package se.kth.olof.beyar.labb.protocol;
 //
 // return databaseProvider.findByText(searchValue);
 
+import se.kth.olof.beyar.labb.model.Book;
+
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public interface DBServiceProtocol
 {
-    String findByText();
+    ArrayList<Book> findByText(String query) throws SQLException;
 
     public void insertBook(String isbn, String title,String genre, int grade, Connection connection) throws SQLException;
 

@@ -14,12 +14,14 @@ public class AppController
 {
     AppView view;
     NavbarController navbarController;
+    SearchController searchController;
     Stage stage;
 
-    public AppController(AppView view, NavbarController navbarController, Stage stage)
+    public AppController(AppView view, NavbarController navbarController, SearchController searchController, Stage stage)
     {
         this.view = view;
         this.navbarController = navbarController;
+        this.searchController = searchController;
         this.stage = stage;
 
         Consumer<Views> updateViewCallback = this::updateView;
@@ -34,15 +36,13 @@ public class AppController
     private void updateView(Views currentView) {
         switch (currentView) {
             case SEARCH:
-                view.rerenderActionLayout(new SearchView().createSearchView());
-                System.out.println("Change view to search");
+                view.rerenderActionLayout(searchController.createSearchView());
+                searchController.addEventListener();
                 break;
             case ADD:
-                System.out.println("Change view to add");
                 view.rerenderActionLayout(new AddView().createAddView(stage));
                 break;
             case OPTIONS:
-                System.out.println("Change view to options");
                 break;
         }
     }

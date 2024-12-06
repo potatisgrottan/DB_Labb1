@@ -5,10 +5,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import se.kth.olof.beyar.labb.controller.AppController;
 import se.kth.olof.beyar.labb.controller.NavbarController;
-import se.kth.olof.beyar.labb.model.NavbarModel;
+import se.kth.olof.beyar.labb.controller.SearchController;
+import se.kth.olof.beyar.labb.model.*;
 import se.kth.olof.beyar.labb.view.*;
 
 import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class Main extends Application {
     public static void main(String[] args) {
@@ -16,16 +19,21 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, SQLException, ClassNotFoundException
+    {
         NavbarModel navbarModel = new NavbarModel();
         NavbarView navbarView = new NavbarView();
         NavbarController navbarController = new NavbarController(navbarModel, navbarView);
 
+        SearchModel searchModel = new SearchModel();
+        SearchView searchView = new SearchView();
+        SearchController searchController = new SearchController(searchView, searchModel);
+
         AppView appView = new AppView();
-        AppController appController = new AppController(appView, navbarController, stage);
+        AppController appController = new AppController(appView, navbarController, searchController, stage);
         appController.buildLayout(
                 navbarController.getNavbar(),
-                new SearchView().createSearchView()
+                searchController.createSearchView()
         );
 
         Scene scene = new Scene(appController.getView(), 320, 240);

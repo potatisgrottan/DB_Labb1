@@ -1,5 +1,6 @@
 package se.kth.olof.beyar.labb.controller;
 
+import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import se.kth.olof.beyar.labb.common.Views;
 import se.kth.olof.beyar.labb.model.NavbarModel;
@@ -52,5 +53,10 @@ public class NavbarController
     public FlowPane getNavbar()
     {
         return view.getNavbar();
+    }
+
+    public void focusButtonOnStart(Button button)
+    {
+        button.requestFocus();
     }
 }

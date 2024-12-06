@@ -1,10 +1,8 @@
 package se.kth.olof.beyar.labb.view;
 
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class AddButtonViews
 {
@@ -15,7 +13,6 @@ public class AddButtonViews
 
     public void createBookView()
     {
-
         Label addBookLabel = new Label("Add Book");
 
         TextField titleBar = new TextField();

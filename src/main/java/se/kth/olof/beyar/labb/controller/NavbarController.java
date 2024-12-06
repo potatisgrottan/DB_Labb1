@@ -1,30 +1,58 @@
 package se.kth.olof.beyar.labb.controller;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
+import javafx.scene.layout.FlowPane;
+import se.kth.olof.beyar.labb.common.Views;
 import se.kth.olof.beyar.labb.model.NavbarModel;
 import se.kth.olof.beyar.labb.view.NavbarView;
+
+import java.util.function.Consumer;
 
 public class NavbarController
 {
     NavbarModel model;
     NavbarView view;
+    private Consumer<Views> viewChangeHandler;
 
-    public NavbarController(NavbarModel model, NavbarView view) {
+    public NavbarController(NavbarModel model, NavbarView view)
+    {
         this.model = model;
         this.view = view;
-
-        //attachActionsToButtons();
+        initializeListeners();
     }
 
-    /*
-    navbarController.attachAction(optionButton, _ -> {
-        System.out.println("Options button clicked!");
-    });
-    */
-    public void attachActionsToButtons(Button buttonToTrigger, EventHandler<ActionEvent> actionToPerform)
+    public void setViewChangeHandler(Consumer<Views> handler) {
+        this.viewChangeHandler = handler;
+    }
+
+    private void initializeListeners()
     {
-        buttonToTrigger.setOnAction(actionToPerform);
+        view.getOptionsButton().setOnAction(_ -> {
+            model.setChosenView(Views.OPTIONS);
+
+            if (viewChangeHandler != null) {
+                viewChangeHandler.accept(Views.OPTIONS);
+            }
+        });
+
+        view.getSearchButton().setOnAction(_ -> {
+            model.setChosenView(Views.SEARCH);
+
+            if (viewChangeHandler != null) {
+                viewChangeHandler.accept(Views.SEARCH);
+            }
+        });
+
+        view.getAddButton().setOnAction(_ -> {
+            model.setChosenView(Views.ADD);
+
+            if (viewChangeHandler != null) {
+                viewChangeHandler.accept(Views.ADD);
+            }
+        });
+    }
+
+    public FlowPane getNavbar()
+    {
+        return view.getNavbar();
     }
 }

@@ -7,6 +7,7 @@ import se.kth.olof.beyar.labb.controller.AppController;
 import se.kth.olof.beyar.labb.controller.NavbarController;
 import se.kth.olof.beyar.labb.controller.SearchController;
 import se.kth.olof.beyar.labb.model.*;
+import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
 import se.kth.olof.beyar.labb.view.*;
 import java.io.IOException;
 import java.sql.*;
@@ -19,13 +20,36 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException, SQLException, ClassNotFoundException
     {
+        String user = System.getenv("username");
+        String pass = System.getenv("password");
+        Database db = new Database("Library", "nahro.ddns.net", user, pass);
+        DBServiceProtocol databaseService;
+        try
+        {
+            Connection connection = db.connect();
+            databaseService = new MySQLServiceProtocol(connection);
+        } catch (ClassNotFoundException | SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        stage.setOnCloseRequest(_ -> {
+            try
+            {
+                db.disconnect();
+            } catch (SQLException e)
+            {
+                throw new RuntimeException(e);
+            }
+        });
+
         NavbarModel navbarModel = new NavbarModel();
         NavbarView navbarView = new NavbarView();
         NavbarController navbarController = new NavbarController(navbarModel, navbarView);
 
         SearchModel searchModel = new SearchModel();
         SearchView searchView = new SearchView();
-        SearchController searchController = new SearchController(searchView, searchModel);
+        SearchController searchController = new SearchController(searchView, searchModel, databaseService);
 
         AppView appView = new AppView();
         AppController appController = new AppController(appView, navbarController, searchController, stage);

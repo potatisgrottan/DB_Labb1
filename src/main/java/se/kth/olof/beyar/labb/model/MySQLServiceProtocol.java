@@ -7,21 +7,19 @@ import java.util.ArrayList;
 
 public class MySQLServiceProtocol implements DBServiceProtocol
 {
-    Database db;
+    Connection connection;
 
-    public MySQLServiceProtocol(Database db)
+    public MySQLServiceProtocol(Connection connection)
     {
-        this.db = db;
+        this.connection = connection;
     }
 
     @Override
     public ArrayList<Book> findByText(String query) throws SQLException
     {
         ArrayList<Book> books = new ArrayList<>();
-        Connection connection = null;
         try
         {
-            connection = db.connect();
             Statement request = connection.createStatement();
             ResultSet response = request.executeQuery("SELECT * FROM Book WHERE Title LIKE '%" + query + "%'");
             while (response.next())
@@ -33,15 +31,9 @@ public class MySQLServiceProtocol implements DBServiceProtocol
                 books.add(new Book(title, genre, isbn, grade));
             }
             request.close();
-        } catch (SQLException | ClassNotFoundException e)
+        } catch (SQLException e)
         {
             throw new RuntimeException(e);
-        } finally
-        {
-            if (connection != null)
-            {
-                db.disconnect();
-            }
         }
 
         return books;

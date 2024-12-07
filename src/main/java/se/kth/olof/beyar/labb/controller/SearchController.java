@@ -2,8 +2,6 @@ package se.kth.olof.beyar.labb.controller;
 
 import javafx.scene.layout.VBox;
 import se.kth.olof.beyar.labb.model.Book;
-import se.kth.olof.beyar.labb.model.Database;
-import se.kth.olof.beyar.labb.model.MySQLServiceProtocol;
 import se.kth.olof.beyar.labb.model.SearchModel;
 import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
 import se.kth.olof.beyar.labb.view.SearchView;

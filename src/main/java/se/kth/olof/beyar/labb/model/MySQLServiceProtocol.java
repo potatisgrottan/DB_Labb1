@@ -15,7 +15,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     }
 
     @Override
-    public ArrayList<Book> findByText(String query) throws SQLException
+    public ArrayList<Book> findByText(String query)
     {
         ArrayList<Book> books = new ArrayList<>();
         try
@@ -40,7 +40,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     }
 
     @Override
-    public void insertBook(String isbn, String title, String genre, int grade, Connection connection) throws SQLException
+    public void insertBook(String isbn, String title, String genre, int grade, Connection connection)
     {
         String insertStatement = "INSERT INTO Book VALUES (?, ?, ?, ?)";
         //Book book = new Book(title,genre,isbn,grade); behöver ej skapa ny?
@@ -61,9 +61,8 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     }
 
     @Override
-    public void insertAuthor(String firstName, String lastName, String ssn, Connection connection) throws SQLException
+    public void insertAuthor(String firstName, String lastName, String ssn, Connection connection)
     {
-
         String insertStatement = "INSERT INTO Author VALUES ( ?, ?, ?)";
 
         try (PreparedStatement pstm = connection.prepareStatement(insertStatement))

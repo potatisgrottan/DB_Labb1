@@ -48,6 +48,8 @@ public class SearchController
 
     public VBox createSearchView()
     {
+        // The listener has to be attached before returning the view (and therefore creating it)
+        // this is because otherwise, the event listener won't react when pressing the button
         VBox createdSearchView = view.createSearchView();
         addEventListener();
         return createdSearchView;

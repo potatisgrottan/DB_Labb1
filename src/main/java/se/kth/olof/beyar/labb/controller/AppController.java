@@ -11,17 +11,19 @@ import java.util.function.Consumer;
 
 public class AppController
 {
+    Stage stage;
     AppView view;
     NavbarController navbarController;
     SearchController searchController;
-    Stage stage;
+    AddController addController;
 
-    public AppController(AppView view, NavbarController navbarController, SearchController searchController, Stage stage)
+    public AppController(Stage stage, AppView view, NavbarController navbarController, SearchController searchController, AddController addController)
     {
+        this.stage = stage;
         this.view = view;
         this.navbarController = navbarController;
         this.searchController = searchController;
-        this.stage = stage;
+        this.addController = addController;
 
         Consumer<Views> updateViewCallback = this::updateView;
         navbarController.setViewHandler(updateViewCallback);
@@ -38,7 +40,8 @@ public class AppController
                 view.rerenderActionLayout(searchController.createSearchView());
                 break;
             case ADD:
-                view.rerenderActionLayout(new AddView().createAddView(stage));
+                view.rerenderActionLayout(addController.createAddView());
+                addController.initializeListeners(stage);
                 break;
             case OPTIONS:
                 break;

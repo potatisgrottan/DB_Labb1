@@ -7,27 +7,36 @@ import javafx.stage.Stage;
 
 public class AddView
 {
+    HBox addApp;
 
     public AddView()
     {
     }
 
-    public VBox createAddView(Stage stage)
+    public VBox createAddView()
     {
         Label addLabel = new Label("Add");
         Button addBook = new Button("Book");
         Button addAuthor = new Button("Author");
         Button addBoth = new Button("Both");
 
-        HBox addApp = new HBox();
+        addApp = new HBox();
         addApp.getChildren().addAll(addBoth, addBook, addAuthor);
-        VBox vertAddBox = new VBox(addLabel, addApp);
+        return new VBox(addLabel, addApp);
+    }
 
-        AddButtonViews bv = new AddButtonViews();
-        addBoth.setOnAction(_ -> bv.createAndShowDialog(stage, bv.createAddBothBox()));
-        addBook.setOnAction(_ -> bv.createAndShowDialog(stage, bv.createAddBookBox()));
-        addAuthor.setOnAction(_ -> bv.createAndShowDialog(stage, bv.createAuthorBox()));
+    public Button getAddBothButton()
+    {
+        return (Button) addApp.getChildren().getFirst();
+    }
 
-        return vertAddBox;
+    public Button getAddBookButton()
+    {
+        return (Button) addApp.getChildren().get(1);
+    }
+
+    public Button getAddAuthorButton()
+    {
+        return (Button) addApp.getChildren().get(2);
     }
 }

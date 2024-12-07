@@ -5,7 +5,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import se.kth.olof.beyar.labb.common.Views;
-import se.kth.olof.beyar.labb.view.AddView;
 import se.kth.olof.beyar.labb.view.AppView;
 import java.util.function.Consumer;
 

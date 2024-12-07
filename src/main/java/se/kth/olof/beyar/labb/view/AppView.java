@@ -8,7 +8,8 @@ public class AppView
 {
     BorderPane view;
 
-    public AppView() {
+    public AppView()
+    {
         this.view = new BorderPane();
     }
 

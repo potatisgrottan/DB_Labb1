@@ -9,7 +9,9 @@ import javafx.stage.Stage;
 
 public class AddView
 {
-    HBox addApp;
+    HBox dialogOption;
+    VBox bookDialog;
+    Stage bookDialogPopup;
 
     public AddView()
     {
@@ -22,19 +24,34 @@ public class AddView
         Button addAuthor = new Button("Author");
         Button addBoth = new Button("Both");
 
-        addApp = new HBox();
-        addApp.getChildren().addAll(addBoth, addBook, addAuthor);
-        return new VBox(addLabel, addApp);
+        dialogOption = new HBox();
+        dialogOption.getChildren().addAll(addBoth, addBook, addAuthor);
+        return new VBox(addLabel, dialogOption);
+    }
+
+    public Button getAddBothDialog()
+    {
+        return (Button) dialogOption.getChildren().getFirst();
+    }
+
+    public Button getAddBookDialog()
+    {
+        return (Button) dialogOption.getChildren().get(1);
+    }
+
+    public Button getAddAuthorDialog()
+    {
+        return (Button) dialogOption.getChildren().get(2);
     }
 
     public void createAndShowDialog(Stage stage, VBox addBox)
     {
-        Stage dialogBook = new Stage();
-        dialogBook.initModality(Modality.WINDOW_MODAL);
-        dialogBook.initOwner(stage);
+        bookDialogPopup = new Stage();
+        bookDialogPopup.initModality(Modality.WINDOW_MODAL);
+        bookDialogPopup.initOwner(stage);
         Scene dialogScene = new Scene(addBox, 300, 250);
-        dialogBook.setScene(dialogScene);
-        dialogBook.showAndWait();
+        bookDialogPopup.setScene(dialogScene);
+        bookDialogPopup.show();
     }
 
     public VBox createAddBothBox()
@@ -76,14 +93,49 @@ public class AddView
         Button saveButton = new Button("Save");
         Button cancelButton = new Button("Cancel");
 
-        HBox hBookViewBox = new HBox();
-        hBookViewBox.getChildren().addAll(saveButton, cancelButton);
+        HBox bookDialogAction = new HBox();
+        bookDialogAction.getChildren().addAll(saveButton, cancelButton);
 
-        VBox bookVBox = new VBox();
-        bookVBox.getChildren().addAll(addBookLabel, isbnLabel, isbnBar, titleLabel, titleBar,
-                genreLabel, genreBar, gradeLabel, gradeBar, hBookViewBox);
+        bookDialog = new VBox();
+        bookDialog.getChildren().addAll(addBookLabel, isbnLabel, isbnBar, titleLabel, titleBar,
+                genreLabel, genreBar, gradeLabel, gradeBar, bookDialogAction);
 
-        return bookVBox;
+        return bookDialog;
+    }
+
+    public Stage getBookDialogPopup()
+    {
+        return bookDialogPopup;
+    }
+
+    public TextField getISBNInput()
+    {
+        return (TextField) bookDialog.getChildren().get(2);
+    }
+
+    public TextField getTitleInput()
+    {
+        return (TextField) bookDialog.getChildren().get(4);
+    }
+
+    public TextField getGenreInput()
+    {
+        return (TextField) bookDialog.getChildren().get(6);
+    }
+
+    public TextField getGradeInput()
+    {
+        return (TextField) bookDialog.getChildren().get(8);
+    }
+
+    public Button getBookDialogSaveButton()
+    {
+        return (Button) ((HBox) bookDialog.getChildren().get(9)).getChildren().getFirst();
+    }
+
+    public Button getBookDialogCancelButton()
+    {
+        return (Button) ((HBox) bookDialog.getChildren().get(9)).getChildren().get(1);
     }
 
     public VBox createAuthorBox()
@@ -113,20 +165,5 @@ public class AddView
                 ssnLabel, ssnBar, hBookViewBox);
 
         return vBVBox;
-    }
-
-    public Button getAddBothButton()
-    {
-        return (Button) addApp.getChildren().getFirst();
-    }
-
-    public Button getAddBookButton()
-    {
-        return (Button) addApp.getChildren().get(1);
-    }
-
-    public Button getAddAuthorButton()
-    {
-        return (Button) addApp.getChildren().get(2);
     }
 }

@@ -3,6 +3,7 @@ package se.kth.olof.beyar.labb;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import se.kth.olof.beyar.labb.controller.AddController;
 import se.kth.olof.beyar.labb.controller.AppController;
 import se.kth.olof.beyar.labb.controller.NavbarController;
 import se.kth.olof.beyar.labb.controller.SearchController;
@@ -46,13 +47,17 @@ public class Main extends Application {
         NavbarModel navbarModel = new NavbarModel();
         NavbarView navbarView = new NavbarView();
         NavbarController navbarController = new NavbarController(navbarModel, navbarView);
+        navbarController.initializeListeners();
 
         SearchModel searchModel = new SearchModel();
         SearchView searchView = new SearchView();
         SearchController searchController = new SearchController(searchView, searchModel, databaseService);
 
+        AddView addView = new AddView();
+        AddController addController = new AddController(addView);
+
         AppView appView = new AppView();
-        AppController appController = new AppController(appView, navbarController, searchController, stage);
+        AppController appController = new AppController(stage, appView, navbarController, searchController, addController);
         appController.buildLayout(
                 navbarController.getNavbar(),
                 searchController.createSearchView()

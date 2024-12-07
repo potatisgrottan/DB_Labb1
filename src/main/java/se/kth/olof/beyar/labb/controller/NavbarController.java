@@ -18,7 +18,6 @@ public class NavbarController
     {
         this.model = model;
         this.view = view;
-        initializeListeners();
     }
 
     public void setViewHandler(Consumer<Views> updateViewCallback) {
@@ -32,7 +31,7 @@ public class NavbarController
         }
     }
 
-    private void initializeListeners()
+    public void initializeListeners()
     {
         view.getOptionsButton().setOnAction(_ -> {
             model.setChosenView(Views.OPTIONS);

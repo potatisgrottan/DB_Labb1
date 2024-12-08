@@ -20,6 +20,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         try
         {
             Statement request = connection.createStatement();
+            //TODO Fixa så den söker igenom fler kolumner (du har färdig prototyp i SQL mappen)
             ResultSet response = request.executeQuery("SELECT * FROM Book WHERE Title LIKE '%" + query + "%'");
             while (response.next())
             {
@@ -83,6 +84,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     @Override
     public void insertBookByAuthor(Author author, Book book) throws SQLException
     {
+        //TODO Fixa så det är en transaktion istället för flera mindre commits
         insertAuthor(author);
         insertBook(book);
         String insertStatement = "INSERT INTO WrittenBy VALUES (?, ?)";

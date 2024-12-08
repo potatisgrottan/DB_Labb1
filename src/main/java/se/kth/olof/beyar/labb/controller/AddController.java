@@ -32,9 +32,7 @@ public class AddController
                 view.getDialogPopup().close();
             });
 
-            view.getBookDialogCancelButton().setOnAction(_ -> {
-                view.getDialogPopup().close();
-            });
+            view.getBookDialogCancelButton().setOnAction(_ -> view.getDialogPopup().close());
         });
 
         view.getAddAuthorDialog().setOnAction(_ -> {
@@ -45,9 +43,7 @@ public class AddController
                 view.getDialogPopup().close();
             });
 
-            view.getAuthorDialogCancelButton().setOnAction(_ -> {
-                view.getDialogPopup().close();
-            });
+            view.getAuthorDialogCancelButton().setOnAction(_ -> view.getDialogPopup().close());
         });
     }
 

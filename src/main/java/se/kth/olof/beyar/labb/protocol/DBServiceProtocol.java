@@ -33,9 +33,9 @@ public interface DBServiceProtocol
 {
     ArrayList<Book> findByText(String query) throws SQLException;
 
-    public void insertBook(Book book) throws SQLException;
+    void insertBook(Book book) throws SQLException;
 
-    public void insertAuthor(Author author)  throws SQLException;
+    void insertAuthor(Author author)  throws SQLException;
 
-    public void insertBookByAuthor(Author author, Connection connection, Book book) throws SQLException;
+    void insertBookByAuthor(Author author, Connection connection, Book book) throws SQLException;
 }

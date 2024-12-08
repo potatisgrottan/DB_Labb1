@@ -81,7 +81,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     }
 
     @Override
-    public void insertBookByAuthor(Author author, Connection connection, Book book) throws SQLException
+    public void insertBookByAuthor(Author author, Connection connection, Book book)
     {
         insertBook(book);
         insertAuthor(author);

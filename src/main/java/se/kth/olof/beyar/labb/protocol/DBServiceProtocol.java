@@ -32,11 +32,11 @@ public interface DBServiceProtocol
 {
     ArrayList<Book> findByText(String query) throws SQLException;
 
-    public void insertBook(String isbn, String title,String genre, String grade) throws SQLException;
+    public void insertBook(Book book) throws SQLException;
 
     public void insertAuthor(String firstName, String lastName, String ssn, Connection connection)  throws SQLException;
 
     public void insertBookByAuthor(String firstName, String lastName, String ssn,
-                                   Connection connection, String isbn, String title, String genre, String grade) throws SQLException;
+                                   Connection connection, Book book) throws SQLException;
 
 }

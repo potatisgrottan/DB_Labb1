@@ -27,7 +27,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
                 String isbn = response.getString("ISBN");
                 String title = response.getString("Title");
                 String genre = response.getString("Genre");
-                int grade = response.getInt("Grade");
+                String grade = response.getString("Grade");
                 books.add(new Book(title, genre, isbn, grade));
             }
             request.close();
@@ -40,17 +40,17 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     }
 
     @Override
-    public void insertBook(String isbn, String title, String genre, String grade)
+    public void insertBook(Book book)
     {
         String insertStatement = "INSERT INTO Book VALUES (?, ?, ?, ?)";
         //Book book = new Book(title,genre,isbn,grade); behöver ej skapa ny?
 
         try (PreparedStatement pstm = connection.prepareStatement(insertStatement))
         {
-            pstm.setString(1, isbn);
-            pstm.setString(2, title);
-            pstm.setString(3, genre);
-            pstm.setString(4, grade);
+            pstm.setString(1, book.getTitle());
+            pstm.setString(2, book.getGenre());
+            pstm.setString(3, book.getIsbn());
+            pstm.setString(4, book.getGrade());
 
             pstm.executeUpdate();
         } catch (SQLException e)
@@ -80,16 +80,16 @@ public class MySQLServiceProtocol implements DBServiceProtocol
 
     @Override
     public void insertBookByAuthor(String firstName, String lastName, String ssn,
-                                   Connection connection, String isbn, String title, String genre, String grade) throws SQLException
+                                   Connection connection, Book book) throws SQLException
     {
-        insertBook(isbn, title, genre, grade);
+        insertBook(book);
         insertAuthor(firstName, lastName, ssn, connection);
 
         String insertStatement = "INSERT INTO WrittenBy VALUES (?, ?)";
 
         try (PreparedStatement pstm = connection.prepareStatement(insertStatement))
         {
-            pstm.setString(1, isbn);
+            pstm.setString(1, book.getIsbn());
             pstm.setString(2, ssn);
 
             pstm.executeUpdate();

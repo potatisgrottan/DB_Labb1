@@ -2,6 +2,7 @@ package se.kth.olof.beyar.labb.controller;
 
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import se.kth.olof.beyar.labb.model.Book;
 import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
 import se.kth.olof.beyar.labb.view.AddView;
 
@@ -45,8 +46,10 @@ public class AddController
         String genre = view.getGenreInput().getText();
         String grade = view.getGradeInput().getText();
 
+        Book book = new Book(isbn,title,genre,grade);
+
         try {
-            databaseService.insertBook(isbn,title,genre,grade);
+            databaseService.insertBook(book);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

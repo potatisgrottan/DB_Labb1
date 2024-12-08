@@ -7,10 +7,10 @@ public class Book
     private String isbn;
     private String title;
     private String genre;
-    private int grade;
+    private String grade;
     private final ArrayList<Author> authors;
 
-    public Book(String title, String genre, String isbn, int grade)
+    public Book(String title, String genre, String isbn, String grade)
     {
         this.title = title;
         this.grade = grade;
@@ -30,29 +30,22 @@ public class Book
         return genre;
     }
 
-    public void setGenre(String genre)
-    {
-        this.genre = genre;
-    }
-
     public String getTitle()
     {
         return title;
     }
 
-    public void setTitle(String title)
-    {
-        this.title = title;
-    }
-
-    public int getGrade()
+    public String getGrade()
     {
         return grade;
     }
 
-    public void setGrade(int grade)
-    {
-        this.grade = grade;
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public ArrayList<Author> getAuthors() {
+        return authors;
     }
 
     @Override

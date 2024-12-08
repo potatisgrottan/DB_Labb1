@@ -10,8 +10,8 @@ import javafx.stage.Stage;
 public class AddView
 {
     HBox dialogOption;
-    Stage dialogPopup;
     VBox bookDialog;
+    Stage bookDialogPopup;
     VBox authorDialog;
 
     public AddView()
@@ -47,17 +47,12 @@ public class AddView
 
     public void createAndShowDialog(Stage stage, VBox addBox)
     {
-        dialogPopup = new Stage();
-        dialogPopup.initModality(Modality.WINDOW_MODAL);
-        dialogPopup.initOwner(stage);
-        Scene dialogScene = new Scene(addBox, 300, 250);
-        dialogPopup.setScene(dialogScene);
-        dialogPopup.show();
-    }
-
-    public Stage getDialogPopup()
-    {
-        return dialogPopup;
+        bookDialogPopup = new Stage();
+        bookDialogPopup.initModality(Modality.WINDOW_MODAL);
+        bookDialogPopup.initOwner(stage);
+        Scene dialogScene = new Scene(addBox, 400, 350);
+        bookDialogPopup.setScene(dialogScene);
+        bookDialogPopup.show();
     }
 
     public VBox createAddBothBox()
@@ -67,7 +62,16 @@ public class AddView
         VBox bookBox = createAddBookBox();
         VBox authorBox = createAuthorBox();
 
-        authorBox.getChildren().remove(7);
+        for(int i = 0; i<3; i++)
+        {
+            authorBox.getChildren().removeLast();
+        }
+        for(int i = 0; i<2;i++)
+        {
+            bookBox.getChildren().remove(9);
+        }
+
+
 
         bothBox.getChildren().addAll(bookBox, authorBox);
 
@@ -83,6 +87,7 @@ public class AddView
         Label titleLabel = new Label("Title:");
         Label genreLabel = new Label("Genre:");
         Label gradeLabel = new Label("Grade:");
+        Label authorLabel = new Label("Author SSN:");
 
         TextField titleBar = new TextField();
         titleBar.setPromptText("Add title here!");
@@ -96,6 +101,9 @@ public class AddView
         TextField genreBar = new TextField();
         genreBar.setPromptText("Add genre here!");
 
+        TextField authorBar = new TextField();
+        authorBar.setPromptText("Add ssn here!");
+
         Button saveButton = new Button("Save");
         Button cancelButton = new Button("Cancel");
 
@@ -104,9 +112,14 @@ public class AddView
 
         bookDialog = new VBox();
         bookDialog.getChildren().addAll(addBookLabel, isbnLabel, isbnBar, titleLabel, titleBar,
-                genreLabel, genreBar, gradeLabel, gradeBar, bookDialogAction);
+                genreLabel, genreBar, gradeLabel, gradeBar, authorLabel, authorBar,bookDialogAction);
 
         return bookDialog;
+    }
+
+    public Stage getBookDialogPopup()
+    {
+        return bookDialogPopup;
     }
 
     public TextField getISBNInput()
@@ -131,12 +144,12 @@ public class AddView
 
     public Button getBookDialogSaveButton()
     {
-        return (Button) ((HBox) bookDialog.getChildren().get(9)).getChildren().getFirst();
+        return (Button) ((HBox) bookDialog.getChildren().getLast()).getChildren().getFirst();
     }
 
     public Button getBookDialogCancelButton()
     {
-        return (Button) ((HBox) bookDialog.getChildren().get(9)).getChildren().get(1);
+        return (Button) ((HBox) bookDialog.getChildren().getLast()).getChildren().get(1);
     }
 
     public VBox createAuthorBox()

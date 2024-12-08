@@ -37,5 +37,6 @@ public interface DBServiceProtocol
 
     void insertAuthor(Author author)  throws SQLException;
 
-    void insertBookByAuthor(Author author, Connection connection, Book book) throws SQLException;
+    public void insertBookByAuthor(Author author, Book book) throws SQLException;
+
 }

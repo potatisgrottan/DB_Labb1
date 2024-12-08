@@ -7,7 +7,7 @@ public class Author
     private String firstName;
     private String lastName;
     private String ssn;
-    private final String bookISBN;
+    private String bookISBN;
     private final ArrayList<Book> written;
 
     public Author(String firstName, String lastName, String ssn, String bookISBN)
@@ -16,6 +16,15 @@ public class Author
         this.lastName = lastName;
         this.ssn = ssn;
         this.bookISBN = bookISBN;
+        // Author that has written the most amount of books has written over 1000
+        written = new ArrayList<>();
+    }
+
+    public Author(String firstName, String lastName, String ssn)
+    {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.ssn = ssn;
         // Author that has written the most amount of books has written over 1000
         written = new ArrayList<>();
     }
@@ -29,6 +38,7 @@ public class Author
     {
         return firstName;
     }
+
 
     public String getLastName()
     {

@@ -10,8 +10,9 @@ import javafx.stage.Stage;
 public class AddView
 {
     HBox dialogOption;
+    Stage dialogPopup;
     VBox bookDialog;
-    Stage bookDialogPopup;
+    VBox authorDialog;
 
     public AddView()
     {
@@ -46,12 +47,17 @@ public class AddView
 
     public void createAndShowDialog(Stage stage, VBox addBox)
     {
-        bookDialogPopup = new Stage();
-        bookDialogPopup.initModality(Modality.WINDOW_MODAL);
-        bookDialogPopup.initOwner(stage);
+        dialogPopup = new Stage();
+        dialogPopup.initModality(Modality.WINDOW_MODAL);
+        dialogPopup.initOwner(stage);
         Scene dialogScene = new Scene(addBox, 300, 250);
-        bookDialogPopup.setScene(dialogScene);
-        bookDialogPopup.show();
+        dialogPopup.setScene(dialogScene);
+        dialogPopup.show();
+    }
+
+    public Stage getDialogPopup()
+    {
+        return dialogPopup;
     }
 
     public VBox createAddBothBox()
@@ -103,11 +109,6 @@ public class AddView
         return bookDialog;
     }
 
-    public Stage getBookDialogPopup()
-    {
-        return bookDialogPopup;
-    }
-
     public TextField getISBNInput()
     {
         return (TextField) bookDialog.getChildren().get(2);
@@ -144,6 +145,7 @@ public class AddView
         Label firstNameLabel = new Label("First Name:");
         Label lastNameLabel = new Label("Last Name:");
         Label ssnLabel = new Label("Social Security Number:");
+        Label bookISBNLabel = new Label("ISBN:");
 
         TextField firstNameBar = new TextField();
         firstNameBar.setPromptText("write the first name here!");
@@ -154,16 +156,49 @@ public class AddView
         TextField ssnBar = new TextField();
         ssnBar.setPromptText("write social security number here!");
 
+        TextField bookISBNBar = new TextField();
+        bookISBNBar.setPromptText("write book isbn here!");
+
         Button saveButton = new Button("Save");
         Button cancelButton = new Button("Cancel");
 
-        HBox hBookViewBox = new HBox();
-        hBookViewBox.getChildren().addAll(saveButton, cancelButton);
+        HBox authorDialogAction = new HBox();
+        authorDialogAction.getChildren().addAll(saveButton, cancelButton);
 
-        VBox vBVBox = new VBox();
-        vBVBox.getChildren().addAll(addBookLabel, firstNameLabel, firstNameBar, lastNameLabel, lastNameBar,
-                ssnLabel, ssnBar, hBookViewBox);
+        authorDialog = new VBox();
+        authorDialog.getChildren().addAll(addBookLabel, firstNameLabel, firstNameBar, lastNameLabel, lastNameBar,
+                ssnLabel, ssnBar, bookISBNLabel, bookISBNBar, authorDialogAction);
 
-        return vBVBox;
+        return authorDialog;
+    }
+
+    public TextField getAuthorFirstname()
+    {
+        return (TextField) authorDialog.getChildren().get(2);
+    }
+
+    public TextField getAuthorLastname()
+    {
+        return (TextField) authorDialog.getChildren().get(4);
+    }
+
+    public TextField getAuthorSSN()
+    {
+        return (TextField) authorDialog.getChildren().get(6);
+    }
+
+    public TextField getAuthorBookISBN()
+    {
+        return (TextField) authorDialog.getChildren().get(8);
+    }
+
+    public Button getAuthorDialogSaveButton()
+    {
+        return (Button) ((HBox) authorDialog.getChildren().get(9)).getChildren().getFirst();
+    }
+
+    public Button getAuthorDialogCancelButton()
+    {
+        return (Button) ((HBox) authorDialog.getChildren().get(9)).getChildren().get(1);
     }
 }

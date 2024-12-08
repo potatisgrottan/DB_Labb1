@@ -53,7 +53,8 @@ public class MySQLServiceProtocol implements DBServiceProtocol
             pstm.setString(4, book.getGrade());
 
             pstm.executeUpdate();
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.out.println(e);
         }
@@ -61,39 +62,39 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     }
 
     @Override
-    public void insertAuthor(String firstName, String lastName, String ssn, Connection connection)
+    public void insertAuthor(Author author)
     {
         String insertStatement = "INSERT INTO Author VALUES ( ?, ?, ?)";
 
         try (PreparedStatement pstm = connection.prepareStatement(insertStatement))
         {
-            pstm.setString(1, firstName);
-            pstm.setString(2, lastName);
-            pstm.setString(3, ssn);
+            pstm.setString(1, author.getFirstName());
+            pstm.setString(2, author.getLastName());
+            pstm.setString(3, author.getSSN());
 
             pstm.executeUpdate();
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.out.println(e);
         }
     }
 
     @Override
-    public void insertBookByAuthor(String firstName, String lastName, String ssn,
-                                   Connection connection, Book book) throws SQLException
+    public void insertBookByAuthor(Author author, Connection connection, Book book) throws SQLException
     {
         insertBook(book);
-        insertAuthor(firstName, lastName, ssn, connection);
-
+        insertAuthor(author);
         String insertStatement = "INSERT INTO WrittenBy VALUES (?, ?)";
 
         try (PreparedStatement pstm = connection.prepareStatement(insertStatement))
         {
             pstm.setString(1, book.getIsbn());
-            pstm.setString(2, ssn);
+            pstm.setString(2, author.getSSN());
 
             pstm.executeUpdate();
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.out.println(e);
         }

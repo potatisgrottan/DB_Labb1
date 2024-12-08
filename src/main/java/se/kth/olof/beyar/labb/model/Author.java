@@ -7,13 +7,15 @@ public class Author
     private String firstName;
     private String lastName;
     private String ssn;
+    private String bookISBN;
     private final ArrayList<Book> written;
 
-    public Author(String firstName, String lastName, String ssn)
+    public Author(String firstName, String lastName, String ssn, String bookISBN)
     {
         this.firstName = firstName;
         this.lastName = lastName;
         this.ssn = ssn;
+        this.bookISBN = bookISBN;
         // Author that has written the most amount of books has written over 1000
         written = new ArrayList<>();
     }
@@ -53,6 +55,11 @@ public class Author
         this.ssn = ssn;
     }
 
+    public String getBookISBN()
+    {
+        return bookISBN;
+    }
+
     @Override
     public String toString()
     {
@@ -61,10 +68,5 @@ public class Author
                 ", lastName='" + lastName + '\'' +
                 ", SSN=" + ssn +
                 '}';
-    }
-
-    public String findByText(String searchValue)
-    {
-        return "";
     }
 }

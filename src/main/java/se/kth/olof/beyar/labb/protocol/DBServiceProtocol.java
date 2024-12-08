@@ -22,6 +22,7 @@ package se.kth.olof.beyar.labb.protocol;
 //
 // return databaseProvider.findByText(searchValue);
 
+import se.kth.olof.beyar.labb.model.Author;
 import se.kth.olof.beyar.labb.model.Book;
 
 import java.sql.Connection;
@@ -34,9 +35,7 @@ public interface DBServiceProtocol
 
     public void insertBook(Book book) throws SQLException;
 
-    public void insertAuthor(String firstName, String lastName, String ssn, Connection connection)  throws SQLException;
+    public void insertAuthor(Author author)  throws SQLException;
 
-    public void insertBookByAuthor(String firstName, String lastName, String ssn,
-                                   Connection connection, Book book) throws SQLException;
-
+    public void insertBookByAuthor(Author author, Connection connection, Book book) throws SQLException;
 }

@@ -2,6 +2,7 @@ package se.kth.olof.beyar.labb.controller;
 
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import se.kth.olof.beyar.labb.model.Author;
 import se.kth.olof.beyar.labb.model.Book;
 import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
 import se.kth.olof.beyar.labb.view.AddView;
@@ -28,16 +29,26 @@ public class AddController
 
             view.getBookDialogSaveButton().setOnAction(_ -> {
                 readValuesFromBookDialog();
-
-                view.getBookDialogPopup().close();
+                view.getDialogPopup().close();
             });
 
             view.getBookDialogCancelButton().setOnAction(_ -> {
-                view.getBookDialogPopup().close();
+                view.getDialogPopup().close();
             });
         });
 
-        view.getAddAuthorDialog().setOnAction(_ -> view.createAndShowDialog(stage, view.createAuthorBox()));
+        view.getAddAuthorDialog().setOnAction(_ -> {
+            view.createAndShowDialog(stage, view.createAuthorBox());
+
+            view.getAuthorDialogSaveButton().setOnAction(_ -> {
+                readValuesFromAuthorDialog();
+                view.getDialogPopup().close();
+            });
+
+            view.getAuthorDialogCancelButton().setOnAction(_ -> {
+                view.getDialogPopup().close();
+            });
+        });
     }
 
     public void readValuesFromBookDialog() {
@@ -55,6 +66,24 @@ public class AddController
         }
 
         System.out.println(isbn + ", " + title  + ", " + genre  + ", " + grade);
+    }
+
+    public void readValuesFromAuthorDialog() {
+        String firstname = view.getAuthorFirstname().getText();
+        String lastname = view.getAuthorLastname().getText();
+        String ssn = view.getAuthorSSN().getText();
+        String bookISBN = view.getAuthorBookISBN().getText();
+
+        Author author = new Author(firstname, lastname, ssn, bookISBN);
+
+        try {
+            databaseService.insertAuthor(author);
+            //TODO Lägg också till i sambandstabellen?
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println(firstname + ", " + lastname  + ", " + ssn  + ", " + bookISBN);
     }
 
     public VBox createAddView()

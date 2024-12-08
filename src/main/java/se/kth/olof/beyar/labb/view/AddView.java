@@ -112,7 +112,7 @@ public class AddView
 
         bookDialog = new VBox();
         bookDialog.getChildren().addAll(addBookLabel, isbnLabel, isbnBar, titleLabel, titleBar,
-                genreLabel, genreBar, gradeLabel, gradeBar, authorLabel, authorBar,bookDialogAction);
+                genreLabel, genreBar, gradeLabel, gradeBar, authorLabel, authorBar, bookDialogAction);
 
         return bookDialog;
     }
@@ -140,6 +140,11 @@ public class AddView
     public TextField getGradeInput()
     {
         return (TextField) bookDialog.getChildren().get(8);
+    }
+
+    public TextField getBookAuthorSSNInput()
+    {
+        return (TextField) bookDialog.getChildren().get(10);
     }
 
     public Button getBookDialogSaveButton()

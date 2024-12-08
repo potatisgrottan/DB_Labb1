@@ -58,14 +58,15 @@ public class AddController
         });
     }
 
-    public Book readValuesFromBookDialog() {
-        String isbn = view.getISBNInput().getText();
+    public void readValuesFromBookDialog()
+    {
         String title = view.getTitleInput().getText();
         String genre = view.getGenreInput().getText();
+        String isbn = view.getISBNInput().getText();
         String grade = view.getGradeInput().getText();
+        String authorSSN = view.getBookAuthorSSNInput().getText();
 
-
-        Book book = new Book(isbn,title,genre,grade);
+        Book book = new Book(title, genre, isbn, grade, authorSSN);
 
         try {
             databaseService.insertBook(book);
@@ -73,11 +74,10 @@ public class AddController
             throw new RuntimeException(e);
         }
 
-        System.out.println(isbn + ", " + title  + ", " + genre  + ", " + grade);
-        return book;
+        System.out.println(isbn + ", " + title  + ", " + genre  + ", " + grade + ", " + authorSSN);
     }
 
-    public Author readValuesFromAuthorDialog(int authorORboth) {
+    public void readValuesFromAuthorDialog(int authorORboth) {
         Author author;
         String firstname = view.getAuthorFirstname().getText();
         String lastname = view.getAuthorLastname().getText();
@@ -89,7 +89,8 @@ public class AddController
             author = new Author(firstname, lastname, ssn, bookISBN);
             System.out.println(firstname + ", " + lastname  + ", " + ssn  + ", " + bookISBN);
         }
-        else{
+        else
+        {
             author = new Author(firstname,lastname,ssn);
         }
 
@@ -100,7 +101,6 @@ public class AddController
             throw new RuntimeException(e);
         }
 
-        return author;
     }
 
     private void readValuesFromBothDialog (){

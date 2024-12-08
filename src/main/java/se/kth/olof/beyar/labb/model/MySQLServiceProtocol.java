@@ -42,7 +42,8 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     public void insertBook(Book book)
     {
         String insertStatement = "INSERT INTO Book VALUES (?, ?, ?, ?, ?)";
-        //Book book = new Book(title,genre,isbn,grade); behöver ej skapa ny?
+        // Book book = new Book(title,genre,isbn,grade); behöver ej skapa ny?
+        // System.out.println(book);
 
         try (PreparedStatement pstm = connection.prepareStatement(insertStatement))
         {
@@ -50,7 +51,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
             pstm.setString(2, book.getTitle());
             pstm.setString(3, book.getGenre());
             pstm.setString(4, book.getGrade());
-            pstm.setString(5,book.getAuthors().get(0).getSSN());
+            pstm.setString(5, book.getAuthors().getFirst().getSSN());
 
             pstm.executeUpdate();
         }
@@ -64,7 +65,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     @Override
     public void insertAuthor(Author author)
     {
-        String insertStatement = "INSERT INTO Author VALUES ( ?, ?, ?)";
+        String insertStatement = "INSERT INTO Author VALUES (?, ?, ?)";
 
         try (PreparedStatement pstm = connection.prepareStatement(insertStatement))
         {

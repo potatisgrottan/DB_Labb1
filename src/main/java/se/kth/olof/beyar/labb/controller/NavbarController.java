@@ -33,11 +33,6 @@ public class NavbarController
 
     public void initializeListeners()
     {
-        view.getOptionsButton().setOnAction(_ -> {
-            model.setChosenView(Views.OPTIONS);
-            sendCallbackValue();
-        });
-
         view.getSearchButton().setOnAction(_ -> {
             model.setChosenView(Views.SEARCH);
             sendCallbackValue();

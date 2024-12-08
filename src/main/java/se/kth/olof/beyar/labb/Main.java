@@ -3,10 +3,7 @@ package se.kth.olof.beyar.labb;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import se.kth.olof.beyar.labb.controller.AddController;
-import se.kth.olof.beyar.labb.controller.AppController;
-import se.kth.olof.beyar.labb.controller.NavbarController;
-import se.kth.olof.beyar.labb.controller.SearchController;
+import se.kth.olof.beyar.labb.controller.*;
 import se.kth.olof.beyar.labb.model.*;
 import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
 import se.kth.olof.beyar.labb.view.*;
@@ -29,7 +26,17 @@ public class Main extends Application {
         {
             Connection connection = db.connect();
             databaseService = new MySQLServiceProtocol(connection);
-        } catch (ClassNotFoundException | SQLException e)
+        }
+        catch (SQLException e)
+        {
+            if (e.getErrorCode() == 0)
+            {
+                System.out.println("Error: You entered wrong credentials");
+            }
+            System.out.println("Error: " + e.getMessage());
+            throw new RuntimeException();
+        }
+        catch (ClassNotFoundException e)
         {
             throw new RuntimeException(e);
         }

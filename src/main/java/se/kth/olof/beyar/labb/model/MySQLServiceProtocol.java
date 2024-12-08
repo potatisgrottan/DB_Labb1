@@ -1,7 +1,6 @@
 package se.kth.olof.beyar.labb.model;
 
 import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
-
 import java.sql.*;
 import java.util.ArrayList;
 

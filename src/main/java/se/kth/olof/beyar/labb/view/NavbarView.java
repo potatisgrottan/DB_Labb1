@@ -14,11 +14,10 @@ public class NavbarView
 
     private void buildNavbar()
     {
-        Button optionButton = new Button("Options");
         Button searchButton = new Button("Search");
         Button addButton = new Button("Add");
 
-        navbar.getChildren().addAll(optionButton, searchButton, addButton);
+        navbar.getChildren().addAll(searchButton, addButton);
     }
 
     public FlowPane getNavbar()
@@ -26,18 +25,13 @@ public class NavbarView
         return navbar;
     }
 
-    public Button getOptionsButton()
+    public Button getSearchButton()
     {
         return (Button) navbar.getChildren().getFirst();
     }
 
-    public Button getSearchButton()
-    {
-        return (Button) navbar.getChildren().get(1);
-    }
-
     public Button getAddButton()
     {
-        return (Button) navbar.getChildren().get(2);
+        return (Button) navbar.getChildren().get(1);
     }
 }

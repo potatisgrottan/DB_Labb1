@@ -43,8 +43,6 @@ public class AppController
                 view.rerenderActionLayout(addController.createAddView());
                 addController.initializeListeners(stage);
                 break;
-            case OPTIONS:
-                break;
         }
     }
 

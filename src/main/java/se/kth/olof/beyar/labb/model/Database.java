@@ -39,7 +39,7 @@ public class Database
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
-            System.out.println("DB connected to: " + url);
+            System.out.println("DB user " + username + " connected to: " + url);
             return connection;
         } catch (SQLException e)
         {
@@ -57,7 +57,7 @@ public class Database
             if (connection != null)
             {
                 connection.close();
-                System.out.println("Connection closed.");
+                System.out.println("Connection closed on " + username);
             }
         } catch (SQLException e)
         {

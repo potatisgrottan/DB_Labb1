@@ -16,7 +16,8 @@ public class AppController
     SearchController searchController;
     AddController addController;
 
-    public AppController(Stage stage, AppView view, NavbarController navbarController, SearchController searchController, AddController addController)
+    public AppController(Stage stage, AppView view, NavbarController navbarController,
+                         SearchController searchController, AddController addController)
     {
         this.stage = stage;
         this.view = view;

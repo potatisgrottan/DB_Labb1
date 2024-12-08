@@ -40,7 +40,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     }
 
     @Override
-    public void insertBook(String isbn, String title, String genre, int grade, Connection connection)
+    public void insertBook(String isbn, String title, String genre, String grade)
     {
         String insertStatement = "INSERT INTO Book VALUES (?, ?, ?, ?)";
         //Book book = new Book(title,genre,isbn,grade); behöver ej skapa ny?
@@ -50,7 +50,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
             pstm.setString(1, isbn);
             pstm.setString(2, title);
             pstm.setString(3, genre);
-            pstm.setInt(4, grade);
+            pstm.setString(4, grade);
 
             pstm.executeUpdate();
         } catch (SQLException e)
@@ -80,9 +80,9 @@ public class MySQLServiceProtocol implements DBServiceProtocol
 
     @Override
     public void insertBookByAuthor(String firstName, String lastName, String ssn,
-                                   Connection connection, String isbn, String title, String genre, int grade) throws SQLException
+                                   Connection connection, String isbn, String title, String genre, String grade) throws SQLException
     {
-        insertBook(isbn, title, genre, grade, connection);
+        insertBook(isbn, title, genre, grade);
         insertAuthor(firstName, lastName, ssn, connection);
 
         String insertStatement = "INSERT INTO WrittenBy VALUES (?, ?)";

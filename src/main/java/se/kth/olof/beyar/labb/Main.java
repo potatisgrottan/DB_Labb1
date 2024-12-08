@@ -54,7 +54,7 @@ public class Main extends Application {
         SearchController searchController = new SearchController(searchView, searchModel, databaseService);
 
         AddView addView = new AddView();
-        AddController addController = new AddController(addView);
+        AddController addController = new AddController(addView,databaseService);
 
         AppView appView = new AppView();
         AppController appController = new AppController(stage, appView, navbarController, searchController, addController);

@@ -2,15 +2,20 @@ package se.kth.olof.beyar.labb.controller;
 
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
 import se.kth.olof.beyar.labb.view.AddView;
+
+import java.sql.SQLException;
 
 public class AddController
 {
     AddView view;
+    DBServiceProtocol databaseService;
 
-    public AddController(AddView view)
+    public AddController(AddView view, DBServiceProtocol databaseService)
     {
         this.view = view;
+        this.databaseService = databaseService;
     }
 
     public void initializeListeners(Stage stage)
@@ -22,6 +27,7 @@ public class AddController
 
             view.getBookDialogSaveButton().setOnAction(_ -> {
                 readValuesFromBookDialog();
+
                 view.getBookDialogPopup().close();
             });
 
@@ -33,12 +39,18 @@ public class AddController
         view.getAddAuthorDialog().setOnAction(_ -> view.createAndShowDialog(stage, view.createAuthorBox()));
     }
 
-    public void readValuesFromBookDialog()
-    {
+    public void readValuesFromBookDialog() {
         String isbn = view.getISBNInput().getText();
         String title = view.getTitleInput().getText();
         String genre = view.getGenreInput().getText();
         String grade = view.getGradeInput().getText();
+
+        try {
+            databaseService.insertBook(isbn,title,genre,grade);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
         System.out.println(isbn + ", " + title  + ", " + genre  + ", " + grade);
     }
 

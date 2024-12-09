@@ -86,8 +86,8 @@ public class AddController
         try {
             databaseService.insertBook(book);
             //TODO Lägg också till i sambandstabellen?
-            // För nu om vi skapar en författare separat, och sedan en bok separat
-            // så kommer den inte fynas i sökresultatet eftersom att den inte finns i sambandstabellen
+            // Det är lite knasigt hur vi gjort det
+            databaseService.insertWrittenBy(book.getIsbn(), book.getAuthors().getFirst().getSSN());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -100,10 +100,10 @@ public class AddController
         String firstname = view.getAuthorFirstname().getText();
         String lastname = view.getAuthorLastname().getText();
         String ssn = view.getAuthorSSN().getText();
+        String bookISBN = view.getAuthorBookISBN().getText();
 
         if(authorORboth == 0)
         {
-            String bookISBN = view.getAuthorBookISBN().getText();
             author = new Author(firstname, lastname, ssn, bookISBN);
             System.out.println(firstname + ", " + lastname  + ", " + ssn  + ", " + bookISBN);
         }
@@ -112,19 +112,19 @@ public class AddController
             author = new Author(firstname,lastname,ssn);
         }
 
-        if(author.getSSN().isEmpty()){
+        if(author.getSSN().isEmpty())
+        {
             author.setSsn(null);
         }
 
         try {
             databaseService.insertAuthor(author);
             //TODO Lägg också till i sambandstabellen?
-            // För nu om vi skapar en författare separat, och sedan en bok separat
-            // så kommer den inte fynas i sökresultatet eftersom att den inte finns i sambandstabellen
+            // Det är lite knasigt hur vi gjort det
+            databaseService.insertWrittenBy(bookISBN, author.getSSN());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private void readValuesFromBothDialog (){
@@ -139,6 +139,7 @@ public class AddController
 
         Author a = new Author(firstname,lastname,ssn);
         Book b = new Book(title,genre,isbn,grade);
+        b.addAuthor(a);
 
         if(b.getIsbn().isEmpty())
         {
@@ -153,7 +154,6 @@ public class AddController
         try
         {
             databaseService.insertBookByAuthor(a, b);
-            b.addAuthor(a);
         }
         catch (SQLException e)
         {

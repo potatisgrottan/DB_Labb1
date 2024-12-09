@@ -85,6 +85,20 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
     }
 
     @Override
+    public void insertWrittenBy(String bookISBN, String authorSSN) {
+        simulateDBDelay();
+
+        try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO WrittenBy VALUES (?, ?)")) {
+            pstm.setString(1, bookISBN);
+            pstm.setString(2, authorSSN);
+
+            pstm.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    @Override
     public void insertBookByAuthor(Author author, Book book) throws SQLException
     {
         simulateDBDelay();
@@ -92,16 +106,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
             connection.setAutoCommit(false);
             insertAuthor(author);
             insertBook(book);
-            try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO WrittenBy VALUES (?, ?)")) {
-                pstm.setString(1, book.getIsbn());
-                pstm.setString(2, author.getSSN());
-                pstm.executeUpdate();
-            } catch (SQLException e) {
-                System.out.println(e.getErrorCode());
-                System.out.println(e.getMessage());
-                System.out.println();
-                throw new SQLException(e);
-            }
+            insertWrittenBy(book.getIsbn(), author.getSSN());
             connection.commit();
         } catch (Exception e) {
             if (connection != null)
@@ -118,7 +123,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
         try
         {
             System.out.println("[DB] simulating delay");
-            Thread.sleep(5000);
+            Thread.sleep(0);
             System.out.println("[DB] done");
         } catch (InterruptedException e)
         {

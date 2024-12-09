@@ -6,7 +6,7 @@ public class Author
 {
     private final String firstName;
     private final String lastName;
-    private final String ssn;
+    private String ssn;
     private String bookISBN;
     private final ArrayList<Book> written;
 

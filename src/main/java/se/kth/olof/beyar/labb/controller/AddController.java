@@ -67,6 +67,10 @@ public class AddController
         String authorSSN = view.getBookAuthorSSNInput().getText();
 
         Book book = new Book(title, genre, isbn, grade, authorSSN);
+        if(book.getIsbn().isEmpty())
+        {
+            book.setIsbn(null);
+        }
 
         try {
             databaseService.insertBook(book);
@@ -94,6 +98,10 @@ public class AddController
             author = new Author(firstname,lastname,ssn);
         }
 
+        if(author.getSSN().isEmpty()){
+            author.setSsn(null);
+        }
+
         try {
             databaseService.insertAuthor(author);
             //TODO Lägg också till i sambandstabellen?
@@ -115,12 +123,24 @@ public class AddController
 
         Author a = new Author(firstname,lastname,ssn);
         Book b = new Book(title,genre,isbn,grade);
-        b.addAuthor(a);
 
-        try {
-            databaseService.insertBookByAuthor(a, b);
+        if(b.getIsbn().isEmpty())
+        {
+            b.setIsbn(null);
         }
-        catch (SQLException e) {
+
+        if(a.getSSN().isEmpty())
+        {
+            a.setSsn(null);
+        }
+
+        try
+        {
+            databaseService.insertBookByAuthor(a, b);
+            b.addAuthor(a);
+        }
+        catch (SQLException e)
+        {
             throw new RuntimeException(e);
         }
     }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Book
 {
-    private final String isbn;
+    private String isbn;
     private final String title;
     private final String genre;
     private final String grade;
@@ -53,6 +53,10 @@ public class Book
 
     public ArrayList<Author> getAuthors() {
         return authors;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     @Override

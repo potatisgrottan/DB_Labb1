@@ -50,6 +50,10 @@ public class Author
         return ssn;
     }
 
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
+    }
+
     @Override
     public String toString()
     {

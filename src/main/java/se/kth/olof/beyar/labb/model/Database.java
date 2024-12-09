@@ -11,26 +11,26 @@ public class Database
     private final String password;
     private Connection connection;
 
-    public Database(String schema, String host, int port, String username, String password)
+    public Database(String schema, String host, int port)
     {
         this.url = "jdbc:mysql://" + host + ":" + port + "/" + schema + "?UseClientEnc=UTF8";
-        this.username = username;
-        this.password = password;
+        this.username = System.getenv("username");
+        this.password = System.getenv("password");
     }
 
-    public Database(String schema, int port, String username, String password)
+    public Database(String schema, int port)
     {
-        this(schema, "localhost", port, username, password);
+        this(schema, "localhost", port);
     }
 
-    public Database(String schema, String host, String username, String password)
+    public Database(String schema, String host)
     {
-        this(schema, host, 3306, username, password);
+        this(schema, host, 3306);
     }
 
-    public Database(String schema, String username, String password)
+    public Database(String schema)
     {
-        this(schema, "localhost", 3306, username, password);
+        this(schema, "localhost", 3306);
     }
 
     public Connection connect() throws SQLException, ClassNotFoundException

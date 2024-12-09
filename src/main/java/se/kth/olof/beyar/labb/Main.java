@@ -18,9 +18,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException, SQLException, ClassNotFoundException
     {
-        String user = System.getenv("username");
-        String pass = System.getenv("password");
-        Database db = new Database("Library", "nahro.ddns.net", user, pass);
+        Database db = new Database("Library", "nahro.ddns.net");
         DBServiceProtocol databaseService;
         try
         {

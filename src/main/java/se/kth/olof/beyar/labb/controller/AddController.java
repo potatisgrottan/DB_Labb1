@@ -81,6 +81,9 @@ public class AddController
 
         try {
             databaseService.insertBook(book);
+            //TODO Lägg också till i sambandstabellen?
+            // För nu om vi skapar en författare separat, och sedan en bok separat
+            // så kommer den inte fynas i sökresultatet eftersom att den inte finns i sambandstabellen
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -108,6 +111,8 @@ public class AddController
         try {
             databaseService.insertAuthor(author);
             //TODO Lägg också till i sambandstabellen?
+            // För nu om vi skapar en författare separat, och sedan en bok separat
+            // så kommer den inte fynas i sökresultatet eftersom att den inte finns i sambandstabellen
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

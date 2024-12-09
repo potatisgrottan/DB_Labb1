@@ -8,15 +8,9 @@ import java.util.ArrayList;
 
 public class MySQLServiceProtocol implements DBServiceProtocol {
     Connection connection;
-    private String insertAuthorStatement;
-    private String insertBookStatement;
-    private String insertBothStatement;
 
     public MySQLServiceProtocol(Connection connection) {
         this.connection = connection;
-        insertAuthorStatement = "INSERT INTO Author VALUES (?, ?, ?)";
-        insertBookStatement = "INSERT INTO Book VALUES (?, ?, ?, ?, ?)";
-        insertBothStatement = "INSERT INTO WrittenBy VALUES (?, ?)";
     }
 
     @Override
@@ -62,7 +56,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
     @Override
     public void insertBook(Book book) {
         simulateDBDelay();
-        try (PreparedStatement pstm = connection.prepareStatement(insertBookStatement)) {
+        try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Book VALUES (?, ?, ?, ?, ?)")) {
             pstm.setString(1, book.getIsbn());
             pstm.setString(2, book.getTitle());
             pstm.setString(3, book.getGenre());
@@ -79,7 +73,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
     public void insertAuthor(Author author) {
         simulateDBDelay();
 
-        try (PreparedStatement pstm = connection.prepareStatement(insertAuthorStatement)) {
+        try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Author VALUES (?, ?, ?)")) {
             pstm.setString(1, author.getSSN());
             pstm.setString(2, author.getFirstName());
             pstm.setString(3, author.getLastName());
@@ -94,12 +88,11 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
     public void insertBookByAuthor(Author author, Book book) throws SQLException
     {
         simulateDBDelay();
-        //TODO Fixa så det är en transaktion istället för flera mindre commits
         try {
             connection.setAutoCommit(false);
             insertAuthor(author);
             insertBook(book);
-            try (PreparedStatement pstm = connection.prepareStatement(insertBothStatement)) {
+            try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO WrittenBy VALUES (?, ?)")) {
                 pstm.setString(1, book.getIsbn());
                 pstm.setString(2, author.getSSN());
                 pstm.executeUpdate();

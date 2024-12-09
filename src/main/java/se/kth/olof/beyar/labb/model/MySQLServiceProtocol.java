@@ -21,8 +21,6 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         try
         {
             Statement request = connection.createStatement();
-
-            //TODO Fixa så den söker igenom fler kolumner (du har färdig prototyp i SQL mappen)
             StringBuilder queryBuilder = new StringBuilder();
 
             queryBuilder
@@ -65,8 +63,6 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     public void insertBook(Book book)
     {
         String insertStatement = "INSERT INTO Book VALUES (?, ?, ?, ?, ?)";
-        // Book book = new Book(title,genre,isbn,grade); behöver ej skapa ny?
-        // System.out.println(book);
 
         try (PreparedStatement pstm = connection.prepareStatement(insertStatement))
         {

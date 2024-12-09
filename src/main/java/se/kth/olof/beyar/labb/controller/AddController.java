@@ -1,5 +1,6 @@
 package se.kth.olof.beyar.labb.controller;
 
+import javafx.application.Platform;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import se.kth.olof.beyar.labb.model.Author;
@@ -25,12 +26,14 @@ public class AddController
         view.getAddBothDialog().setOnAction(_ -> {
             view.createAndShowDialog(stage, view.createAddBothBox());
 
-            view.getBookDialogSaveButton().setOnAction(_->
-                    {
-                        readValuesFromBothDialog();
+            view.getBookDialogSaveButton().setOnAction(_-> {
+                new Thread(() -> {
+                    readValuesFromBothDialog();
+                    Platform.runLater(() -> {
                         view.getBookDialogPopup().close();
-                    }
-            );
+                    });
+                }).start();
+            });
 
             view.getBookDialogCancelButton().setOnAction(_->view.getBookDialogPopup().close());
         });
@@ -39,8 +42,12 @@ public class AddController
             view.createAndShowDialog(stage, view.createAddBookBox());
 
             view.getBookDialogSaveButton().setOnAction(_ -> {
-                readValuesFromBookDialog();
-                view.getBookDialogPopup().close();
+                new Thread(() -> {
+                    readValuesFromBookDialog();
+                    Platform.runLater(() -> {
+                        view.getBookDialogPopup().close();
+                    });
+                }).start();
             });
 
             view.getBookDialogCancelButton().setOnAction(_ -> view.getBookDialogPopup().close());
@@ -50,8 +57,12 @@ public class AddController
             view.createAndShowDialog(stage, view.createAuthorBox());
 
             view.getAuthorDialogSaveButton().setOnAction(_ -> {
-                readValuesFromAuthorDialog(0);
-                view.getBookDialogPopup().close();
+                new Thread(() -> {
+                    readValuesFromAuthorDialog(0);
+                    Platform.runLater(() -> {
+                        view.getBookDialogPopup().close();
+                    });
+                }).start();
             });
 
             view.getAuthorDialogCancelButton().setOnAction(_ -> view.getBookDialogPopup().close());

@@ -17,6 +17,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     @Override
     public ArrayList<Book> findByText(String query, int chosenGrade)
     {
+        simulateDBDelay();
         ArrayList<Book> books = new ArrayList<>();
         try
         {
@@ -62,6 +63,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     @Override
     public void insertBook(Book book)
     {
+        simulateDBDelay();
         String insertStatement = "INSERT INTO Book VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstm = connection.prepareStatement(insertStatement))
@@ -84,6 +86,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     @Override
     public void insertAuthor(Author author)
     {
+        simulateDBDelay();
         String insertStatement = "INSERT INTO Author VALUES (?, ?, ?)";
 
         try (PreparedStatement pstm = connection.prepareStatement(insertStatement))
@@ -102,6 +105,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     @Override
     public void insertBookByAuthor(Author author, Book book) throws SQLException
     {
+        simulateDBDelay();
         //TODO Fixa så det är en transaktion istället för flera mindre commits
         insertAuthor(author);
         insertBook(book);
@@ -120,6 +124,19 @@ public class MySQLServiceProtocol implements DBServiceProtocol
             System.out.println(e.getMessage());
             System.out.println();
             throw new SQLException(e);
+        }
+    }
+
+    private void simulateDBDelay()
+    {
+        try
+        {
+            System.out.println("[DB] simulating delay");
+            Thread.sleep(5000);
+            System.out.println("[DB] done");
+        } catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
         }
     }
 }

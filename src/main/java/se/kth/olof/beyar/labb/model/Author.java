@@ -4,21 +4,11 @@ import java.util.ArrayList;
 
 public class Author
 {
-    private String firstName;
-    private String lastName;
-    private String ssn;
+    private final String firstName;
+    private final String lastName;
+    private final String ssn;
     private String bookISBN;
     private final ArrayList<Book> written;
-
-    public Author(String firstName, String lastName, String ssn, String bookISBN)
-    {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.ssn = ssn;
-        this.bookISBN = bookISBN;
-        // Author that has written the most amount of books has written over 1000
-        written = new ArrayList<>();
-    }
 
     public Author(String firstName, String lastName, String ssn)
     {
@@ -27,6 +17,12 @@ public class Author
         this.ssn = ssn;
         // Author that has written the most amount of books has written over 1000
         written = new ArrayList<>();
+    }
+
+    public Author(String firstName, String lastName, String ssn, String bookISBN)
+    {
+        this(firstName, lastName, ssn);
+        this.bookISBN = bookISBN;
     }
 
     public void addBook(Book book)
@@ -38,7 +34,6 @@ public class Author
     {
         return firstName;
     }
-
 
     public String getLastName()
     {

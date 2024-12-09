@@ -25,7 +25,6 @@ package se.kth.olof.beyar.labb.protocol;
 import se.kth.olof.beyar.labb.model.Author;
 import se.kth.olof.beyar.labb.model.Book;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 

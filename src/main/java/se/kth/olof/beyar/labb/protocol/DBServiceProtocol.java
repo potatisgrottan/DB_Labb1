@@ -25,7 +25,6 @@ package se.kth.olof.beyar.labb.protocol;
 import se.kth.olof.beyar.labb.model.Author;
 import se.kth.olof.beyar.labb.model.Book;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -37,6 +36,6 @@ public interface DBServiceProtocol
 
     void insertAuthor(Author author)  throws SQLException;
 
-    public void insertBookByAuthor(Author author, Book book) throws SQLException;
+    void insertBookByAuthor(Author author, Book book) throws SQLException;
 
 }

@@ -21,11 +21,10 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
 
     @Override
     public ArrayList<Book> findByText(String query, int chosenGrade) {
+        simulateDBDelay();
         ArrayList<Book> books = new ArrayList<>();
         try {
             Statement request = connection.createStatement();
-
-            //TODO Fixa så den söker igenom fler kolumner (du har färdig prototyp i SQL mappen)
             StringBuilder queryBuilder = new StringBuilder();
             queryBuilder
                     .append("SELECT Book.*, Author.* ")
@@ -62,6 +61,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
 
     @Override
     public void insertBook(Book book) {
+        simulateDBDelay();
         try (PreparedStatement pstm = connection.prepareStatement(insertBookStatement)) {
             pstm.setString(1, book.getIsbn());
             pstm.setString(2, book.getTitle());
@@ -77,6 +77,8 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
 
     @Override
     public void insertAuthor(Author author) {
+        simulateDBDelay();
+
         try (PreparedStatement pstm = connection.prepareStatement(insertAuthorStatement)) {
             pstm.setString(1, author.getSSN());
             pstm.setString(2, author.getFirstName());
@@ -89,7 +91,9 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
     }
 
     @Override
-    public void insertBookByAuthor(Author author, Book book) throws SQLException {
+    public void insertBookByAuthor(Author author, Book book) throws SQLException
+    {
+        simulateDBDelay();
         //TODO Fixa så det är en transaktion istället för flera mindre commits
         try {
             connection.setAutoCommit(false);
@@ -113,6 +117,19 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
         } finally {
             if (connection != null)
                 connection.setAutoCommit(true);
+        }
+    }
+
+    private void simulateDBDelay()
+    {
+        try
+        {
+            System.out.println("[DB] simulating delay");
+            Thread.sleep(5000);
+            System.out.println("[DB] done");
+        } catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
         }
     }
 }

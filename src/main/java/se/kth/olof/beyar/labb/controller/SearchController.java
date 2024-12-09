@@ -1,5 +1,6 @@
 package se.kth.olof.beyar.labb.controller;
 
+import javafx.application.Platform;
 import javafx.scene.layout.VBox;
 import se.kth.olof.beyar.labb.model.Book;
 import se.kth.olof.beyar.labb.model.SearchModel;
@@ -27,24 +28,29 @@ public class SearchController
         {
             String query = view.getSearchBar().getText();
             int chosenGrade = view.getChosenGrade();
-            try
-            {
-                queryDBByText(query, chosenGrade);
-            }
-            catch (SQLException e)
-            {
-                throw new RuntimeException(e);
-            }
+            queryDBByText(query, chosenGrade);
         });
     }
 
-    public void queryDBByText(String find, int grade) throws SQLException
+    public void queryDBByText(String find, int grade)
     {
-        ArrayList<Book> books = databaseService.findByText(find, grade);
-        StringBuilder response = new StringBuilder();
+        new Thread(() -> {
+            ArrayList<Book> books;
+            try
+            {
+                books = databaseService.findByText(find, grade);
+            } catch (SQLException e)
+            {
+                throw new RuntimeException(e);
+            }
 
-        books.forEach((book -> response.append(book.getTitle()).append("\n")));
-        view.setResponseText(response.toString());
+            ArrayList<Book> finalBooks = books;
+            Platform.runLater(() -> {
+                StringBuilder response = new StringBuilder();
+                finalBooks.forEach((book -> response.append(book.getTitle()).append("\n")));
+                view.setResponseText(response.toString());
+            });
+        }).start();
     }
 
     public VBox createSearchView()

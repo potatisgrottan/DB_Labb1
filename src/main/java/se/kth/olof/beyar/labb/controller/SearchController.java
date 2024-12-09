@@ -26,9 +26,10 @@ public class SearchController
         view.getSearchButton().setOnAction(_ ->
         {
             String query = view.getSearchBar().getText();
+            int chosenGrade = view.getChosenGrade();
             try
             {
-                queryDBByText(query);
+                queryDBByText(query, chosenGrade);
             }
             catch (SQLException e)
             {
@@ -37,9 +38,9 @@ public class SearchController
         });
     }
 
-    public void queryDBByText(String find) throws SQLException
+    public void queryDBByText(String find, int grade) throws SQLException
     {
-        ArrayList<Book> books = databaseService.findByText(find);
+        ArrayList<Book> books = databaseService.findByText(find, grade);
         StringBuilder response = new StringBuilder();
 
         books.forEach((book -> response.append(book.getTitle()).append("\n")));

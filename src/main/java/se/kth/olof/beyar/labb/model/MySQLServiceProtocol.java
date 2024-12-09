@@ -1,5 +1,6 @@
 package se.kth.olof.beyar.labb.model;
 
+import se.kth.olof.beyar.labb.common.Grades;
 import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,14 +15,35 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     }
 
     @Override
-    public ArrayList<Book> findByText(String query)
+    public ArrayList<Book> findByText(String query, int chosenGrade)
     {
         ArrayList<Book> books = new ArrayList<>();
         try
         {
             Statement request = connection.createStatement();
+
             //TODO Fixa så den söker igenom fler kolumner (du har färdig prototyp i SQL mappen)
-            ResultSet response = request.executeQuery("SELECT * FROM Book WHERE Title LIKE '%" + query + "%'");
+            StringBuilder queryBuilder = new StringBuilder();
+
+            queryBuilder
+                    .append("SELECT Book.*, Author.*")
+                    .append("FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN ")
+                    .append("JOIN Author ON WrittenBy.Author_SSN = Author.SSN ")
+                    .append("WHERE (")
+                    .append("Book.Title LIKE '%").append(query).append("%' ")
+                    .append("OR Book.ISBN LIKE '%").append(query).append("%' ")
+                    .append("OR Author.FirstName LIKE '%").append(query).append("%' ")
+                    .append("OR Author.LastName LIKE '%").append(query).append("%' ")
+                    .append("OR Book.Genre LIKE '%").append(query).append("%' ")
+                    .append(")");
+
+            if (chosenGrade != Grades.NO_PREFERENCE.ordinal())
+            {
+                queryBuilder.append(" AND Book.Grade = ").append(chosenGrade);
+            }
+
+            ResultSet response = request.executeQuery(queryBuilder.toString());
+
             while (response.next())
             {
                 String isbn = response.getString("ISBN");

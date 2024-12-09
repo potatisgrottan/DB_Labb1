@@ -1,13 +1,17 @@
 package se.kth.olof.beyar.labb.view;
 
+import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
+import se.kth.olof.beyar.labb.common.Grades;
 
 public class SearchView
 {
-    HBox searchApp;
-    TextArea searchResultsArea;
+    private HBox searchApp;
+    private TextArea searchResultsArea;
+    private ComboBox<Grades> gradeOptions;
 
     public SearchView()
     {
@@ -17,6 +21,13 @@ public class SearchView
     {
         TextField searchBar = new TextField();
         searchBar.setPromptText("Search for books or authors here!");
+
+        Label gradeOptionLabel = new Label("Grades");
+        gradeOptions = new ComboBox<>(FXCollections.observableArrayList(Grades.values()));
+        gradeOptions.setConverter(convertEnumConstantsToNumbers());
+
+        gradeOptions.setPromptText("Grade");
+        gradeOptions.setValue(Grades.NO_PREFERENCE);
 
         Button searchButton = new Button("Search");
         Label searchLabel = new Label("Search");
@@ -34,7 +45,7 @@ public class SearchView
         searchResults.setContent(searchResultsArea);
 
         VBox verticalSearchBox = new VBox();
-        verticalSearchBox.getChildren().addAll(searchLabel, searchApp, searchResults);
+        verticalSearchBox.getChildren().addAll(searchLabel, searchApp, gradeOptionLabel, gradeOptions, searchResults);
 
         return verticalSearchBox;
     }
@@ -52,5 +63,30 @@ public class SearchView
     public void setResponseText(String text)
     {
         searchResultsArea.setText(text);
+    }
+
+    public int getChosenGrade(){
+        return gradeOptions.getValue().ordinal();
+    }
+
+    private StringConverter<Grades> convertEnumConstantsToNumbers() {
+        // This converts the combobox from presenting the options as
+        // NO_PREFERENCE, ONE, ..., FIVE
+        // To being
+        // No preference, 1, ..., 5
+        return new StringConverter<>() {
+            @Override
+            public String toString(Grades grade) {
+                if (grade.ordinal() == 0) {
+                    return "No preference";
+                }
+                return String.valueOf(grade.ordinal());
+            }
+
+            @Override
+            public Grades fromString(String string) {
+                return null;
+            }
+        };
     }
 }

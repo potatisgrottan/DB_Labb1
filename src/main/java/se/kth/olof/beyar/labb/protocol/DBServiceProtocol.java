@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public interface DBServiceProtocol
 {
-    ArrayList<Book> findByText(String query) throws SQLException;
+    ArrayList<Book> findByText(String query, int chosenGrade) throws SQLException;
 
     void insertBook(Book book) throws SQLException;
 

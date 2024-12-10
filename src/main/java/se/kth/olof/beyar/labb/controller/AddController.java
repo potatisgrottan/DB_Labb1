@@ -102,7 +102,7 @@ public class AddController
         try
         {
             databaseService.insertBook(book);
-            databaseService.insertWrittenBy(book.getIsbn(), book.getAuthors().getFirst().getSSN());
+            databaseService.insertWrittenBy(book.getIsbn(), book.getAuthors().getFirst());
         }
         catch (SQLException e)
         {
@@ -122,9 +122,11 @@ public class AddController
 
         if (authorORboth == 0)
         {
-            author = new Author(firstname, lastname, ssn, bookISBN);
+            author = new Author(firstname, lastname, ssn);
+            author.addBook(bookISBN);
             System.out.println(firstname + ", " + lastname + ", " + ssn + ", " + bookISBN);
-        } else
+        }
+        else
         {
             author = new Author(firstname, lastname, ssn);
         }
@@ -157,7 +159,7 @@ public class AddController
 
         Author a = new Author(firstname, lastname, ssn);
         Book b = new Book(title, genre, isbn, grade);
-        b.addAuthor(a);
+        b.addAuthor(ssn);
 
         if (b.getIsbn().isEmpty())
         {

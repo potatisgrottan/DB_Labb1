@@ -156,14 +156,12 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
      * @throws SQLException if a database access error occurs or the transaction fails
      * */
     @Override
-    public void insertBookTransaktion(Book book) throws SQLException {
+    public void insertBookTransaktion(Book book, String authorSSN) throws SQLException {
 
         try {
             connection.setAutoCommit(false);
-
             insertBook(book);
-            insertWrittenBy(book.getIsbn(), book.getAuthors().getLast().getSSN());
-
+            insertWrittenBy(book.getIsbn(), authorSSN);
             connection.commit();
         } catch (SQLException e) {
             if (connection != null)

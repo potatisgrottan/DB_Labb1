@@ -59,7 +59,7 @@ public class AddController
 
             view.getAuthorDialogSaveButton().setOnAction(_ -> {
                 new Thread(() -> {
-                    readValuesFromAuthorDialog(0);
+                    readValuesFromAuthorDialog();
                     Platform.runLater(() -> {
                         view.getDialogPopup().close();
                     });
@@ -93,8 +93,9 @@ public class AddController
         String grade = view.getGradeInput().getText();
         String authorSSN = view.getBookAuthorSSNInput().getText();
 
-        Book book = new Book(title, genre, isbn, grade, authorSSN);
+        Book book = new Book(title, genre, isbn, grade);
 
+        // We want to substitute the empty string value with null so the DBs constraints can detect it
         if (book.getIsbn().isEmpty())
         {
             book.setIsbn(null);
@@ -102,17 +103,17 @@ public class AddController
 
         try
         {
-            databaseService.insertBookTransaktion(book);
+            databaseService.insertBookTransaktion(book, authorSSN);
         }
         catch (SQLException e)
         {
             throw new BooksDBException(e);
         }
 
-        System.out.println(isbn + ", " + title + ", " + genre + ", " + grade + ", " + authorSSN);
+        System.out.println("[DEBUG]" + isbn + ", " + title + ", " + genre + ", " + grade + ", " + authorSSN);
     }
 
-    public void readValuesFromAuthorDialog(int authorORboth) throws BooksDBException
+    public void readValuesFromAuthorDialog() throws BooksDBException
     {
         Author author;
         String firstname = view.getAuthorFirstname().getText();

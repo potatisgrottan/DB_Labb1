@@ -12,7 +12,7 @@ public class Book
     private final String title;
     private ArrayList<String> listGenre;
     private final String grade;
-    private final ArrayList<String> authors;
+    private final ArrayList<Author> authors;
 
     /**
      * Constructs a Book with the specified title, genre, ISBN, and grade.
@@ -43,16 +43,16 @@ public class Book
     public Book(String title, String genre, String isbn, String grade, String authorSSN)
     {
         this(title, genre, isbn, grade);
-        authors.add(authorSSN);
+        //authors.add(authorSSN);
     }
 
     /**
      * Adds an author to the list of authors who have written the book.
-     * @param ssn the author to be added
+     * @param author the author to be added
      */
-    public void addAuthor(String ssn)
+    public void addAuthor(Author author)
     {
-        authors.add(ssn);
+        authors.add(author);
     }
 
     /**
@@ -85,7 +85,7 @@ public class Book
      * Returns the list of authors who have written the book.
      * @return the list of authors
      */
-    public ArrayList<String> getAuthors() {
+    public ArrayList<Author> getAuthors() {
         return authors;
     }
 

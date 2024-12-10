@@ -28,7 +28,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
      * @return a list of books that match the query and grade filter
      */
     @Override
-    public ArrayList<Book> findByText(String query, int chosenGrade) {
+    public ArrayList<Book> findByText(String query, int chosenGrade) throws BooksDBException {
 
         ArrayList<Book> books = new ArrayList<>();
         try {
@@ -57,7 +57,16 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
                 String title = response.getString("Title");
                 String genre = response.getString("Genre");
                 String grade = response.getString("Grade");
-                books.add(new Book(title, genre, isbn, grade));
+                String ssn = response.getString("SSN");
+                String firstName = response.getString("FirstName");
+                String lastName = response.getString("LastName");
+
+                Author author = new Author(firstName,lastName,ssn);
+                if( !(bookInArray(books,isbn,author)) ){
+                    Book book = new Book(title, genre, isbn, grade);
+                    book.addAuthor(author);
+                    books.add(book);
+                }
             }
             request.close();
         }
@@ -153,7 +162,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
             connection.setAutoCommit(false);
 
             insertBook(book);
-            insertWrittenBy(book.getIsbn(), book.getAuthors().getLast());
+            insertWrittenBy(book.getIsbn(), book.getAuthors().getLast().getSSN());
 
             connection.commit();
         } catch (SQLException e) {
@@ -189,5 +198,16 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
             if (connection != null)
                 connection.setAutoCommit(true);
         }
+    }
+
+    private boolean bookInArray(ArrayList<Book> arrayList, String isbn, Author author){
+
+        for(Book book : arrayList){
+            if(book.getIsbn().equals(isbn)){
+                book.addAuthor(author);
+                return true;
+            }
+        }
+        return false;
     }
 }

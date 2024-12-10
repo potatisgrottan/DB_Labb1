@@ -151,7 +151,7 @@ public class AddController
 
         Author a = new Author(firstname, lastname, ssn);
         Book b = new Book(title, genre, isbn, grade);
-        b.addAuthor(ssn);
+        b.addAuthor(a);
 
         if (b.getIsbn().isEmpty())
         {

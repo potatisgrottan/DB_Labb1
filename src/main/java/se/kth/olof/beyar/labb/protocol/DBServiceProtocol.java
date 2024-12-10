@@ -20,5 +20,4 @@ public interface DBServiceProtocol
     void insertBookTransaktion(Book book, String authorSSN) throws SQLException;
 
     void insertAuthorTransaktion(Author author) throws SQLException;
-
 }

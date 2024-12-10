@@ -1,6 +1,6 @@
 USE Library;
 
-SET @title_search = '%Prince%';
+SET @title_search = '%19%';
 SET @grade_search = '5';
 
 SELECT Book.*, Author.*
@@ -14,4 +14,4 @@ WHERE (
     OR Author.LastName LIKE @title_search
     OR Book.Genre LIKE @title_search
 )
-AND Book.Grade = @grade_search; -- This should be optional if no grade was given
+-- AND Book.Grade = @grade_search; -- This should be optional if no grade was given

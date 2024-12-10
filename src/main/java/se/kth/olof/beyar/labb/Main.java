@@ -66,7 +66,7 @@ public class Main extends Application {
                 searchController.createSearchView()
         );
 
-        Scene scene = new Scene(appController.getView(), 320, 240);
+        Scene scene = new Scene(appController.getView(), 500, 250);
         stage.setTitle("Library application");
         stage.setScene(scene);
         stage.show();

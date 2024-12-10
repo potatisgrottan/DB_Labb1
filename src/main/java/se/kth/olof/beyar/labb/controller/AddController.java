@@ -132,8 +132,6 @@ public class AddController
         try
         {
             databaseService.insertAuthorTransaktion(author);
-            //databaseService.insertAuthor(author);
-            //databaseService.insertWrittenBy(bookISBN, author.getSSN());
         } catch (SQLException e)
         {
             throw new BooksDBException(e);

@@ -52,7 +52,7 @@ public class AddView
         dialogPopup = new Stage();
         dialogPopup.initModality(Modality.WINDOW_MODAL);
         dialogPopup.initOwner(stage);
-        Scene dialogScene = new Scene(addBox, 400, 350);
+        Scene dialogScene = new Scene(addBox, 300, 250);
         dialogPopup.setScene(dialogScene);
         dialogPopup.show();
     }

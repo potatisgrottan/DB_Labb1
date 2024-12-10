@@ -1,5 +1,7 @@
 package se.kth.olof.beyar.labb.model;
 
+import se.kth.olof.beyar.labb.common.BooksDBException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -41,10 +43,12 @@ public class Database
             connection = DriverManager.getConnection(url, username, password);
             System.out.println("DB user " + username + " connected to: " + url);
             return connection;
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
-            throw new SQLException(e);
-        } catch (ClassNotFoundException e)
+            throw new BooksDBException(e);
+        }
+        catch (ClassNotFoundException e)
         {
             throw new ClassNotFoundException();
         }
@@ -59,9 +63,10 @@ public class Database
                 connection.close();
                 System.out.println("Connection closed on " + username);
             }
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
-            throw new SQLException(e);
+            throw new BooksDBException(e);
         }
     }
 }

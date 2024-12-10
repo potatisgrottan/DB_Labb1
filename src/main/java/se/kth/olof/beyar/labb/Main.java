@@ -3,6 +3,7 @@ package se.kth.olof.beyar.labb;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import se.kth.olof.beyar.labb.common.BooksDBException;
 import se.kth.olof.beyar.labb.controller.*;
 import se.kth.olof.beyar.labb.model.*;
 import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
@@ -27,12 +28,7 @@ public class Main extends Application {
         }
         catch (SQLException e)
         {
-            if (e.getErrorCode() == 0)
-            {
-                System.out.println("Error: You entered wrong credentials");
-            }
-            System.out.println("Error: " + e.getMessage());
-            throw new RuntimeException();
+            throw new BooksDBException(e);
         }
         catch (ClassNotFoundException e)
         {
@@ -43,9 +39,10 @@ public class Main extends Application {
             try
             {
                 db.disconnect();
-            } catch (SQLException e)
+            }
+            catch (SQLException e)
             {
-                throw new RuntimeException(e);
+                throw new BooksDBException(e);
             }
         });
 

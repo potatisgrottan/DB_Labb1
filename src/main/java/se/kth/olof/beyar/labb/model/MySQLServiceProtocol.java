@@ -1,5 +1,6 @@
 package se.kth.olof.beyar.labb.model;
 
+import se.kth.olof.beyar.labb.common.BooksDBException;
 import se.kth.olof.beyar.labb.common.Grades;
 import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
 
@@ -46,8 +47,9 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
                 books.add(new Book(title, genre, isbn, grade));
             }
             request.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        }
+        catch (SQLException e) {
+            throw new BooksDBException(e);
         }
 
         return books;
@@ -56,16 +58,16 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
     @Override
     public void insertBook(Book book) {
         simulateDBDelay();
-        try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Book VALUES (?, ?, ?, ?, ?)")) {
+        try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Book VALUES (?, ?, ?, ?)")) {
             pstm.setString(1, book.getIsbn());
             pstm.setString(2, book.getTitle());
             pstm.setString(3, book.getGenre());
             pstm.setString(4, book.getGrade());
-            pstm.setString(5, book.getAuthors().getFirst().getSSN());
 
             pstm.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e);
+        }
+        catch (SQLException e) {
+            throw new BooksDBException(e);
         }
     }
 
@@ -79,8 +81,10 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
             pstm.setString(3, author.getLastName());
 
             pstm.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e);
+        }
+        catch (SQLException e)
+        {
+            throw new BooksDBException(e);
         }
     }
 
@@ -108,10 +112,11 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
             insertBook(book);
             insertWrittenBy(book.getIsbn(), author.getSSN());
             connection.commit();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             if (connection != null)
                 connection.rollback();
-            throw e;
+
+            throw new BooksDBException(e);
         } finally {
             if (connection != null)
                 connection.setAutoCommit(true);
@@ -125,7 +130,8 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
             System.out.println("[DB] simulating delay");
             Thread.sleep(0);
             System.out.println("[DB] done");
-        } catch (InterruptedException e)
+        }
+        catch (InterruptedException e)
         {
             throw new RuntimeException(e);
         }

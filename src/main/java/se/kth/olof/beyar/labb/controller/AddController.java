@@ -3,6 +3,7 @@ package se.kth.olof.beyar.labb.controller;
 import javafx.application.Platform;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import se.kth.olof.beyar.labb.common.BooksDBException;
 import se.kth.olof.beyar.labb.model.Author;
 import se.kth.olof.beyar.labb.model.Book;
 import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
@@ -73,7 +74,7 @@ public class AddController
 
             view.getConnectAuthorToBookDialogSave().setOnAction(_ -> {
                 new Thread(() -> {
-                    readValuesFromConnectAuthorToBookDialog();
+                        readValuesFromConnectAuthorToBookDialog();
                     Platform.runLater(() -> {
                         view.getDialogPopup().close();
                     });
@@ -102,15 +103,16 @@ public class AddController
         {
             databaseService.insertBook(book);
             databaseService.insertWrittenBy(book.getIsbn(), book.getAuthors().getFirst().getSSN());
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
-            throw new RuntimeException(e);
+            throw new BooksDBException(e);
         }
 
         System.out.println(isbn + ", " + title + ", " + genre + ", " + grade + ", " + authorSSN);
     }
 
-    public void readValuesFromAuthorDialog(int authorORboth)
+    public void readValuesFromAuthorDialog(int authorORboth) throws BooksDBException
     {
         Author author;
         String firstname = view.getAuthorFirstname().getText();
@@ -138,11 +140,11 @@ public class AddController
             databaseService.insertWrittenBy(bookISBN, author.getSSN());
         } catch (SQLException e)
         {
-            throw new RuntimeException(e);
+            throw new BooksDBException(e);
         }
     }
 
-    private void readValuesFromBothDialog()
+    private void readValuesFromBothDialog() throws BooksDBException
     {
         String firstname = view.getAuthorFirstname().getText();
         String lastname = view.getAuthorLastname().getText();
@@ -170,13 +172,14 @@ public class AddController
         try
         {
             databaseService.insertBookByAuthor(a, b);
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
-            throw new RuntimeException(e);
+            throw new BooksDBException(e);
         }
     }
 
-    private void readValuesFromConnectAuthorToBookDialog()
+    private void readValuesFromConnectAuthorToBookDialog() throws BooksDBException
     {
         String isbn = view.getConnectAuthorToBookISBN().getText();
         String ssn = view.getConnectAuthorToBookSSN().getText();
@@ -184,9 +187,10 @@ public class AddController
         try
         {
             databaseService.insertWrittenBy(isbn, ssn);
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
-            throw new RuntimeException(e);
+            throw new BooksDBException(e);
         }
 
         System.out.println(isbn + ", " + ssn);

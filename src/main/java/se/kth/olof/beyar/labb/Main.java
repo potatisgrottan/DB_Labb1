@@ -21,6 +21,7 @@ public class Main extends Application {
     {
         Database db = new Database("Library", "nahro.ddns.net");
         DBServiceProtocol databaseService;
+
         try
         {
             Connection connection = db.connect();
@@ -66,8 +67,6 @@ public class Main extends Application {
         );
 
         Scene scene = new Scene(appController.getView(), 320, 240);
-        // Options button gets highlighted even though the default view is Search
-        navbarController.focusButtonOnStart(navbarView.getSearchButton());
         stage.setTitle("Library application");
         stage.setScene(scene);
         stage.show();

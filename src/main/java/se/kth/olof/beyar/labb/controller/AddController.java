@@ -26,16 +26,16 @@ public class AddController
         view.getAddBothDialog().setOnAction(_ -> {
             view.createAndShowDialog(stage, view.createAddBothBox());
 
-            view.getBookDialogSaveButton().setOnAction(_-> {
+            view.getBookDialogSaveButton().setOnAction(_ -> {
                 new Thread(() -> {
                     readValuesFromBothDialog();
                     Platform.runLater(() -> {
-                        view.getBookDialogPopup().close();
+                        view.getDialogPopup().close();
                     });
                 }).start();
             });
 
-            view.getBookDialogCancelButton().setOnAction(_->view.getBookDialogPopup().close());
+            view.getBookDialogCancelButton().setOnAction(_ -> view.getDialogPopup().close());
         });
 
         view.getAddBookDialog().setOnAction(_ -> {
@@ -45,12 +45,12 @@ public class AddController
                 new Thread(() -> {
                     readValuesFromBookDialog();
                     Platform.runLater(() -> {
-                        view.getBookDialogPopup().close();
+                        view.getDialogPopup().close();
                     });
                 }).start();
             });
 
-            view.getBookDialogCancelButton().setOnAction(_ -> view.getBookDialogPopup().close());
+            view.getBookDialogCancelButton().setOnAction(_ -> view.getDialogPopup().close());
         });
 
         view.getAddAuthorDialog().setOnAction(_ -> {
@@ -60,12 +60,27 @@ public class AddController
                 new Thread(() -> {
                     readValuesFromAuthorDialog(0);
                     Platform.runLater(() -> {
-                        view.getBookDialogPopup().close();
+                        view.getDialogPopup().close();
                     });
                 }).start();
             });
 
-            view.getAuthorDialogCancelButton().setOnAction(_ -> view.getBookDialogPopup().close());
+            view.getAuthorDialogCancelButton().setOnAction(_ -> view.getDialogPopup().close());
+        });
+
+        view.getConnectAuthorToBookDialog().setOnAction(_ -> {
+            view.createAndShowDialog(stage, view.createConnectAuthorToBookBox());
+
+            view.getConnectAuthorToBookDialogSave().setOnAction(_ -> {
+                new Thread(() -> {
+                    readValuesFromConnectAuthorToBookDialog();
+                    Platform.runLater(() -> {
+                        view.getDialogPopup().close();
+                    });
+                }).start();
+            });
+
+            view.getConnectAuthorToBookDialogCancel().setOnAction(_ -> view.getDialogPopup().close());
         });
     }
 
@@ -78,56 +93,57 @@ public class AddController
         String authorSSN = view.getBookAuthorSSNInput().getText();
 
         Book book = new Book(title, genre, isbn, grade, authorSSN);
-        if(book.getIsbn().isEmpty())
+        if (book.getIsbn().isEmpty())
         {
             book.setIsbn(null);
         }
 
-        try {
+        try
+        {
             databaseService.insertBook(book);
-            //TODO Lägg också till i sambandstabellen?
-            // Det är lite knasigt hur vi gjort det
             databaseService.insertWrittenBy(book.getIsbn(), book.getAuthors().getFirst().getSSN());
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new RuntimeException(e);
         }
 
-        System.out.println(isbn + ", " + title  + ", " + genre  + ", " + grade + ", " + authorSSN);
+        System.out.println(isbn + ", " + title + ", " + genre + ", " + grade + ", " + authorSSN);
     }
 
-    public void readValuesFromAuthorDialog(int authorORboth) {
+    public void readValuesFromAuthorDialog(int authorORboth)
+    {
         Author author;
         String firstname = view.getAuthorFirstname().getText();
         String lastname = view.getAuthorLastname().getText();
         String ssn = view.getAuthorSSN().getText();
         String bookISBN = view.getAuthorBookISBN().getText();
 
-        if(authorORboth == 0)
+        if (authorORboth == 0)
         {
             author = new Author(firstname, lastname, ssn, bookISBN);
-            System.out.println(firstname + ", " + lastname  + ", " + ssn  + ", " + bookISBN);
-        }
-        else
+            System.out.println(firstname + ", " + lastname + ", " + ssn + ", " + bookISBN);
+        } else
         {
-            author = new Author(firstname,lastname,ssn);
+            author = new Author(firstname, lastname, ssn);
         }
 
-        if(author.getSSN().isEmpty())
+        if (author.getSSN().isEmpty())
         {
             author.setSsn(null);
         }
 
-        try {
+        try
+        {
             databaseService.insertAuthor(author);
-            //TODO Lägg också till i sambandstabellen?
-            // Det är lite knasigt hur vi gjort det
             databaseService.insertWrittenBy(bookISBN, author.getSSN());
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new RuntimeException(e);
         }
     }
 
-    private void readValuesFromBothDialog (){
+    private void readValuesFromBothDialog()
+    {
         String firstname = view.getAuthorFirstname().getText();
         String lastname = view.getAuthorLastname().getText();
         String ssn = view.getAuthorSSN().getText();
@@ -137,16 +153,16 @@ public class AddController
         String genre = view.getGenreInput().getText();
         String grade = view.getGradeInput().getText();
 
-        Author a = new Author(firstname,lastname,ssn);
-        Book b = new Book(title,genre,isbn,grade);
+        Author a = new Author(firstname, lastname, ssn);
+        Book b = new Book(title, genre, isbn, grade);
         b.addAuthor(a);
 
-        if(b.getIsbn().isEmpty())
+        if (b.getIsbn().isEmpty())
         {
             b.setIsbn(null);
         }
 
-        if(a.getSSN().isEmpty())
+        if (a.getSSN().isEmpty())
         {
             a.setSsn(null);
         }
@@ -154,11 +170,26 @@ public class AddController
         try
         {
             databaseService.insertBookByAuthor(a, b);
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             throw new RuntimeException(e);
         }
+    }
+
+    private void readValuesFromConnectAuthorToBookDialog()
+    {
+        String isbn = view.getConnectAuthorToBookISBN().getText();
+        String ssn = view.getConnectAuthorToBookSSN().getText();
+
+        try
+        {
+            databaseService.insertWrittenBy(isbn, ssn);
+        } catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println(isbn + ", " + ssn);
     }
 
     public VBox createAddView()

@@ -9,10 +9,11 @@ import javafx.stage.Stage;
 
 public class AddView
 {
-    HBox dialogOption;
-    VBox bookDialog;
-    Stage bookDialogPopup;
-    VBox authorDialog;
+    private HBox dialogOption;
+    private VBox bookDialog;
+    private Stage dialogPopup;
+    private VBox authorDialog;
+    private VBox connectAuthorToBookDialog;
 
     public AddView()
     {
@@ -21,12 +22,13 @@ public class AddView
     public VBox createAddView()
     {
         Label addLabel = new Label("Add");
-        Button addBook = new Button("Book");
-        Button addAuthor = new Button("Author");
-        Button addBoth = new Button("Both");
+        Button addBoth = new Button("New book and author");
+        Button addBook = new Button("New Book");
+        Button addAuthor = new Button("New Author");
+        Button connectAuthor = new Button("Connect Author to book");
 
         dialogOption = new HBox();
-        dialogOption.getChildren().addAll(addBoth, addBook, addAuthor);
+        dialogOption.getChildren().addAll(addBoth, addBook, addAuthor, connectAuthor);
         return new VBox(addLabel, dialogOption);
     }
 
@@ -47,12 +49,12 @@ public class AddView
 
     public void createAndShowDialog(Stage stage, VBox addBox)
     {
-        bookDialogPopup = new Stage();
-        bookDialogPopup.initModality(Modality.WINDOW_MODAL);
-        bookDialogPopup.initOwner(stage);
+        dialogPopup = new Stage();
+        dialogPopup.initModality(Modality.WINDOW_MODAL);
+        dialogPopup.initOwner(stage);
         Scene dialogScene = new Scene(addBox, 400, 350);
-        bookDialogPopup.setScene(dialogScene);
-        bookDialogPopup.show();
+        dialogPopup.setScene(dialogScene);
+        dialogPopup.show();
     }
 
     public VBox createAddBothBox()
@@ -117,9 +119,31 @@ public class AddView
         return bookDialog;
     }
 
-    public Stage getBookDialogPopup()
+    public VBox createConnectAuthorToBookBox() {
+
+        Label connectLabel = new Label("Connect a existing author to a book");
+        Label isbnLabel = new Label("ISBN:");
+        Label addBookLabel = new Label("SSN:");
+
+        TextField isbnField = new TextField("Write existing ISBN");
+        TextField ssnField = new TextField("Write existing SSN");
+
+        Button saveButton = new Button("Save");
+        Button cancelButton = new Button("Cancel");
+
+        HBox connectAuthorToBookHBoxDialog = new HBox();
+        connectAuthorToBookHBoxDialog.getChildren().addAll(saveButton,cancelButton);
+
+        connectAuthorToBookDialog = new VBox();
+        connectAuthorToBookDialog.getChildren().addAll(connectLabel, isbnLabel, isbnField,
+                addBookLabel, ssnField, connectAuthorToBookHBoxDialog);
+
+        return connectAuthorToBookDialog;
+    }
+
+    public Stage getDialogPopup()
     {
-        return bookDialogPopup;
+        return dialogPopup;
     }
 
     public TextField getISBNInput()
@@ -218,5 +242,26 @@ public class AddView
     public Button getAuthorDialogCancelButton()
     {
         return (Button) ((HBox) authorDialog.getChildren().get(9)).getChildren().get(1);
+    }
+
+    public Button getConnectAuthorToBookDialogSave(){
+        return (Button) ((HBox) connectAuthorToBookDialog.getChildren().getLast()).getChildren().getFirst();
+    }
+
+    public Button getConnectAuthorToBookDialogCancel(){
+        return (Button) ((HBox) connectAuthorToBookDialog.getChildren().getLast()).getChildren().getLast();
+    }
+
+    public TextField getConnectAuthorToBookISBN(){
+        return (TextField) connectAuthorToBookDialog.getChildren().get(2);
+    }
+
+    public TextField getConnectAuthorToBookSSN(){
+        return (TextField) connectAuthorToBookDialog.getChildren().get(4);
+    }
+
+    public Button getConnectAuthorToBookDialog()
+    {
+        return (Button) dialogOption.getChildren().get(3);
     }
 }

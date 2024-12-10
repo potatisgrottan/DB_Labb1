@@ -7,16 +7,29 @@ import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Provides the implementation of the DBServiceProtocol for MySQL.
+ */
 public class MySQLServiceProtocol implements DBServiceProtocol {
     Connection connection;
 
+    /**
+     * Constructs a MySQLServiceProtocol with the specified database connection.
+     * @param connection the database connection
+     */
     public MySQLServiceProtocol(Connection connection) {
         this.connection = connection;
     }
 
+    /**
+     * Finds books by a text query and an optional grade filter.
+     * @param query the text query to search for
+     * @param chosenGrade the rating to filter by, 0 is for "no preference"
+     * @return a list of books that match the query and grade filter
+     */
     @Override
     public ArrayList<Book> findByText(String query, int chosenGrade) {
-        simulateDBDelay();
+
         ArrayList<Book> books = new ArrayList<>();
         try {
             Statement request = connection.createStatement();
@@ -55,9 +68,13 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
         return books;
     }
 
+
+    /**
+     * Inserts a new book into the database.
+     * @param book the book to insert
+     */
     @Override
     public void insertBook(Book book) {
-        simulateDBDelay();
         try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Book VALUES (?, ?, ?, ?)")) {
             pstm.setString(1, book.getIsbn());
             pstm.setString(2, book.getTitle());
@@ -66,14 +83,19 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
 
             pstm.executeUpdate();
         }
-        catch (SQLException e) {
+        catch (SQLException e)
+        {
             throw new BooksDBException(e);
         }
     }
 
+    /**
+     * Inserts a new author into the database.
+     * @param author the author to insert
+     */
     @Override
     public void insertAuthor(Author author) {
-        simulateDBDelay();
+
 
         try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Author VALUES (?, ?, ?)")) {
             pstm.setString(1, author.getSSN());
@@ -88,10 +110,13 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
         }
     }
 
+    /**
+     * Inserts a new entry into the WrittenBy table, linking a book and an author.
+     * @param bookISBN the ISBN of the book
+     * @param authorSSN the SSN of the author
+     */
     @Override
     public void insertWrittenBy(String bookISBN, String authorSSN) {
-        simulateDBDelay();
-
         try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO WrittenBy VALUES (?, ?)")) {
             pstm.setString(1, bookISBN);
             pstm.setString(2, authorSSN);
@@ -102,10 +127,16 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
         }
     }
 
+    /**
+     * Inserts a book and an author into the database and links them in the WrittenBy table.
+     * @param author the author to insert
+     * @param book the book to insert
+     * @throws SQLException if a database access error occurs
+     */
     @Override
     public void insertBookByAuthor(Author author, Book book) throws SQLException
     {
-        simulateDBDelay();
+
         try {
             connection.setAutoCommit(false);
             insertAuthor(author);
@@ -123,17 +154,5 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
         }
     }
 
-    private void simulateDBDelay()
-    {
-        try
-        {
-            System.out.println("[DB] simulating delay");
-            Thread.sleep(0);
-            System.out.println("[DB] done");
-        }
-        catch (InterruptedException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
+
 }

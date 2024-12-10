@@ -7,15 +7,13 @@ public class Author
     private final String firstName;
     private final String lastName;
     private String ssn;
-    private String bookISBN;
-    private final ArrayList<Book> written;
+    private final ArrayList<String> written;
 
     public Author(String firstName, String lastName, String ssn)
     {
         this.firstName = firstName;
         this.lastName = lastName;
         this.ssn = ssn;
-        // Author that has written the most amount of books has written over 1000
         written = new ArrayList<>();
     }
 
@@ -45,7 +43,12 @@ public class Author
         return ssn;
     }
 
-    public void setSsn(String ssn) {
+    /**
+     * Method used to replace authors with empty string as ssn to null instead
+     * @param ssn sets the new ssn of the author
+     */
+    public void setSsn(String ssn)
+    {
         this.ssn = ssn;
     }
 

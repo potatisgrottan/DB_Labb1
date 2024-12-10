@@ -16,7 +16,6 @@ public class Book
         this.grade = grade;
         this.genre = genre;
         this.isbn = isbn;
-        // the bok with most amout of authors of all time has 26
         authors = new ArrayList<>();
     }
 

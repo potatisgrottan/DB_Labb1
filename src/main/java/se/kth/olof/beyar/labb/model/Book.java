@@ -68,14 +68,6 @@ public class Book
         return isbn;
     }
 
-    /**
-     * Returns the list of authors who have written the book.
-     * @return the list of authors
-     */
-    public ArrayList<Author> getAuthors() {
-        return authors;
-    }
-
     public String getAuthorsJoined()
     {
         StringBuilder authorsJoined = new StringBuilder();

@@ -10,7 +10,7 @@ public class Book
 {
     private String isbn;
     private final String title;
-    private final String genre;
+    private ArrayList<String> listGenre;
     private final String grade;
     private final ArrayList<String> authors;
 
@@ -25,8 +25,11 @@ public class Book
     {
         this.title = title;
         this.grade = grade;
-        this.genre = genre;
         this.isbn = isbn;
+
+        listGenre = new ArrayList<>();
+        listGenre.add(genre);
+
         authors = new ArrayList<>();
     }
 
@@ -50,15 +53,6 @@ public class Book
     public void addAuthor(String ssn)
     {
         authors.add(ssn);
-    }
-
-    /**
-     * Returns the genre of the book.
-     * @return the genre of the book
-     */
-    public String getGenre()
-    {
-        return genre;
     }
 
     /**
@@ -103,12 +97,62 @@ public class Book
         this.isbn = isbn;
     }
 
+    public void addGenre(String genre)
+    {
+        listGenre.add(genre);
+    }
+
+    /*
+     * Serializes the array of genres into a string, delimeted by a space
+     * It walks through every element in the genre array and if there is a string
+     * containing multiple genres in one string like a csv, then it splits it up further
+     * @return String of genres delimited by space
+     */
+    public String getGenres()
+    {
+        StringBuilder genreString = new StringBuilder();
+        for (String genre : listGenre)
+        {
+            if (genre.contains(";"))
+            {
+                for (String subGenre : genre.split(";"))
+                {
+                    genreString.append(subGenre).append(" ");
+                }
+            }
+            else
+            {
+                genreString.append(genre).append(" ");
+            }
+        }
+
+        return genreString.toString();
+    }
+
+    /*
+     * Serializes the array into a csv format
+     * where every genre in the array is joined into one string
+     * but separated by comma.
+     * @return String genre string of format csv
+     */
+    public String serializeGenres()
+    {
+        if (listGenre.size() == 1) return listGenre.getFirst();
+
+        StringBuilder genreString = new StringBuilder();
+        for (String genre : listGenre)
+        {
+            genreString.append(genre).append(";");
+        }
+        return genreString.toString();
+    }
+
     @Override
     public String toString()
     {
         return "Book{" +
                 "title='" + title + '\'' +
-                ", genre='" + genre + '\'' +
+                ", genre='" + listGenre + '\'' +
                 ", grade=" + grade +
                 ", authorSSN='" + authors + '\'' +
                 '}';

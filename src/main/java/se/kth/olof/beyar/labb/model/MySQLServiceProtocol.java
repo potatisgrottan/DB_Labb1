@@ -43,7 +43,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
                     .append("OR Book.ISBN LIKE '%").append(query).append("%' ")
                     .append("OR Author.FirstName LIKE '%").append(query).append("%' ")
                     .append("OR Author.LastName LIKE '%").append(query).append("%' ")
-                    .append("OR Book.Genre LIKE '%").append(query).append("%' ")
+                    .append("OR Book.Genre LIKE '%").append(query).append("%'")
                     .append(")");
 
             if (chosenGrade != Grades.NO_PREFERENCE.ordinal()) {
@@ -68,7 +68,6 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
         return books;
     }
 
-
     /**
      * Inserts a new book into the database.
      * @param book the book to insert
@@ -78,15 +77,10 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
         try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Book VALUES (?, ?, ?, ?)")) {
             pstm.setString(1, book.getIsbn());
             pstm.setString(2, book.getTitle());
-            pstm.setString(3, book.getGenre());
+            pstm.setString(3, book.serializeGenres());
             pstm.setString(4, book.getGrade());
-
             pstm.executeUpdate();
         }
-       /* catch (SQLException e)
-        {
-            throw new BooksDBException(e);
-        }*/
     }
 
     /**
@@ -95,19 +89,12 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
      */
     @Override
     public void insertAuthor(Author author) throws SQLException {
-
-
         try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Author VALUES (?, ?, ?)")) {
             pstm.setString(1, author.getSSN());
             pstm.setString(2, author.getFirstName());
             pstm.setString(3, author.getLastName());
-
             pstm.executeUpdate();
         }
-        /*catch (SQLException e)
-        {
-            throw new BooksDBException(e);
-        }*/
     }
 
     /**
@@ -123,9 +110,6 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
 
             pstm.executeUpdate();
         }
-        /*catch (SQLException e) {
-            System.out.println(e);
-        }*/
     }
 
     /**
@@ -199,6 +183,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
         } catch (SQLException e) {
             if (connection != null)
                 connection.rollback();
+
             throw new BooksDBException(e);
         } finally {
             if (connection != null)

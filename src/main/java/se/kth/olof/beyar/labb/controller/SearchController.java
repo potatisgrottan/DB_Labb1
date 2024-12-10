@@ -2,6 +2,8 @@ package se.kth.olof.beyar.labb.controller;
 
 import javafx.application.Platform;
 import javafx.scene.layout.VBox;
+import se.kth.olof.beyar.labb.common.BooksDBException;
+import se.kth.olof.beyar.labb.common.Grades;
 import se.kth.olof.beyar.labb.model.Book;
 import se.kth.olof.beyar.labb.model.SearchModel;
 import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
@@ -30,6 +32,11 @@ public class SearchController
             int chosenGrade = view.getChosenGrade();
             queryDBByText(query, chosenGrade);
         });
+
+        view.getGradeOptions().setOnAction(_ -> {
+            Grades setGrade = view.getGradeOptions().getValue();
+            model.setPreferredGrade(setGrade);
+        });
     }
 
     public void queryDBByText(String find, int grade)
@@ -39,9 +46,10 @@ public class SearchController
             try
             {
                 books = databaseService.findByText(find, grade);
-            } catch (SQLException e)
+            }
+            catch (SQLException e)
             {
-                throw new RuntimeException(e);
+                throw new BooksDBException(e);
             }
 
             ArrayList<Book> finalBooks = books;
@@ -57,7 +65,8 @@ public class SearchController
     {
         // The listener has to be attached before returning the view (and therefore creating it)
         // this is because otherwise, the event listener won't react when pressing the button
-        VBox createdSearchView = view.createSearchView();
+        Grades userPreferredGrade = model.getPreferredGrade();
+        VBox createdSearchView = view.createSearchView(userPreferredGrade);
         addEventListener();
         return createdSearchView;
     }

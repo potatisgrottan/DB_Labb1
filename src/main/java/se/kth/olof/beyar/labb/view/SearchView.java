@@ -17,17 +17,17 @@ public class SearchView
     {
     }
 
-    public VBox createSearchView()
+    public VBox createSearchView(Grades preferredGrade)
     {
         TextField searchBar = new TextField();
         searchBar.setPromptText("Search for books or authors here!");
 
-        Label gradeOptionLabel = new Label("Grades");
+        Label gradeOptionLabel = new Label("Filter rating");
         gradeOptions = new ComboBox<>(FXCollections.observableArrayList(Grades.values()));
         gradeOptions.setConverter(convertEnumConstantsToNumbers());
 
         gradeOptions.setPromptText("Grade");
-        gradeOptions.setValue(Grades.NO_PREFERENCE);
+        gradeOptions.setValue(preferredGrade);
 
         Button searchButton = new Button("Search");
         Label searchLabel = new Label("Search");
@@ -48,6 +48,11 @@ public class SearchView
         verticalSearchBox.getChildren().addAll(searchLabel, searchApp, gradeOptionLabel, gradeOptions, searchResults);
 
         return verticalSearchBox;
+    }
+
+    public ComboBox<Grades> getGradeOptions()
+    {
+        return gradeOptions;
     }
 
     public Button getSearchButton()

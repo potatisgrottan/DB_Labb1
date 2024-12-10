@@ -92,19 +92,19 @@ public class AddView
         Label authorLabel = new Label("Author SSN:");
 
         TextField titleBar = new TextField();
-        titleBar.setPromptText("Add title here!");
+        titleBar.setPromptText("Title...");
 
         TextField isbnBar = new TextField();
-        isbnBar.setPromptText("Add isbn here!");
+        isbnBar.setPromptText("123-456789...");
 
         TextField gradeBar = new TextField();
-        gradeBar.setPromptText("Add grade here!");
+        gradeBar.setPromptText("1 - 5");
 
         TextField genreBar = new TextField();
-        genreBar.setPromptText("Add genre here!");
+        genreBar.setPromptText("Sci-fi or Action;Thriller;Comedy");
 
         TextField authorBar = new TextField();
-        authorBar.setPromptText("Add ssn here!");
+        authorBar.setPromptText("SSN...");
 
         Button saveButton = new Button("Save");
         Button cancelButton = new Button("Cancel");

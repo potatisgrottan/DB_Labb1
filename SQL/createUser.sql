@@ -1,13 +1,9 @@
-CREATE USER 'beyar'@'%' IDENTIFIED BY '...';
-CREATE USER 'olof'@'%' IDENTIFIED BY '...';
+CREATE USER 'dummy'@'%' IDENTIFIED BY 'dummy_password';
 
-REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'beyar'@'%';
-REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'olof'@'%';
+-- REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'dummy'@'%';
 
-GRANT SELECT, INSERT ON Library.* TO 'beyar'@'%';
-GRANT SELECT, INSERT ON Library.* TO 'olof'@'%';
+GRANT SELECT, INSERT ON Library.* TO 'dummy'@'%';
 
 FLUSH PRIVILEGES;
 
-SHOW GRANTS FOR 'beyar'@'%';
-SHOW GRANTS FOR 'olof'@'%';
+SHOW GRANTS FOR 'dummy'@'%';

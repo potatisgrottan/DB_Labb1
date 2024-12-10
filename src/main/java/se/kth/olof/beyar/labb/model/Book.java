@@ -68,6 +68,10 @@ public class Book
         return isbn;
     }
 
+    /*
+     * Joins multiple authors in array into one single string,
+     * joined by a comma. This method is used for presentation purposes
+     */
     public String getAuthorsJoined()
     {
         StringBuilder authorsJoined = new StringBuilder();
@@ -141,6 +145,6 @@ public class Book
     @Override
     public String toString()
     {
-        return "Book{" + "title: '" + title + '\'' + ", genre: '" + listGenre + '\'' + ", grade: " + grade + ", authorSSN:'" + authors + '\'' + '}';
+        return "Book{" + "title: '" + title + ", genre: '" + listGenre + ", grade: " + grade + ", authorSSN:'" + authors + '}';
     }
 }

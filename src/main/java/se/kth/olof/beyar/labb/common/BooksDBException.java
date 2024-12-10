@@ -12,8 +12,4 @@ public class BooksDBException extends RuntimeException
             System.out.println("Error: You entered wrong credentials");
         }
     }
-
-    public BooksDBException() {
-        super();
-    }
 }

@@ -67,7 +67,7 @@ public class SearchController
                     .append("Title: ").append(book.getTitle()).append("\n")
                     .append("Genre: ").append(book.getGenres()).append("\n")
                     .append("Rating: ").append(book.getGrade()).append("\n")
-                    .append("Author: ").append(book.getAuthors().toString()).append("\n\n");
+                    .append("Author: ").append(book.getAuthorsJoined()).append("\n\n");
         });
         view.setResponseText(response.toString());
     }

@@ -10,7 +10,7 @@ public class Book
 {
     private String isbn;
     private final String title;
-    private ArrayList<String> listGenre;
+    private final ArrayList<String> listGenre;
     private final String grade;
     private final ArrayList<Author> authors;
 
@@ -43,7 +43,6 @@ public class Book
     public Book(String title, String genre, String isbn, String grade, String authorSSN)
     {
         this(title, genre, isbn, grade);
-        //authors.add(authorSSN);
     }
 
     /**
@@ -89,6 +88,21 @@ public class Book
         return authors;
     }
 
+    public String getAuthorsJoined()
+    {
+        StringBuilder authorsJoined = new StringBuilder();
+        for (Author author : authors)
+        {
+            authorsJoined
+                    .append(author.getFirstName())
+                    .append(" ")
+                    .append(author.getLastName())
+                    .append(", ");
+        }
+
+        return authorsJoined.toString();
+    }
+
      /**
      * Used to replace books with empty string as isbn to null
      * @param isbn the new ISBN of the book
@@ -97,15 +111,11 @@ public class Book
         this.isbn = isbn;
     }
 
-    public void addGenre(String genre)
-    {
-        listGenre.add(genre);
-    }
-
     /*
-     * Serializes the array of genres into a string, delimeted by a space
+     * Transforms the array of genres into a string, delimited by a space
      * It walks through every element in the genre array and if there is a string
      * containing multiple genres in one string like a csv, then it splits it up further
+     * and joins it into a string again. This is used for when presenting each book and it's genres
      * @return String of genres delimited by space
      */
     public String getGenres()
@@ -117,7 +127,7 @@ public class Book
             {
                 for (String subGenre : genre.split(";"))
                 {
-                    genreString.append(subGenre).append(" ");
+                    genreString.append(subGenre).append(", ");
                 }
             }
             else
@@ -132,7 +142,7 @@ public class Book
     /*
      * Serializes the array into a csv format
      * where every genre in the array is joined into one string
-     * but separated by comma.
+     * but separated by comma. This is used for storing the genres in database
      * @return String genre string of format csv
      */
     public String serializeGenres()
@@ -144,17 +154,13 @@ public class Book
         {
             genreString.append(genre).append(";");
         }
+
         return genreString.toString();
     }
 
     @Override
     public String toString()
     {
-        return "Book{" +
-                "title='" + title + '\'' +
-                ", genre='" + listGenre + '\'' +
-                ", grade=" + grade +
-                ", authorSSN='" + authors + '\'' +
-                '}';
+        return "Book{" + "title: '" + title + '\'' + ", genre: '" + listGenre + '\'' + ", grade: " + grade + ", authorSSN:'" + authors + '\'' + '}';
     }
 }

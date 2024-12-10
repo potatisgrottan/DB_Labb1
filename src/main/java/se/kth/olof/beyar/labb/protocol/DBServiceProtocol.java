@@ -16,4 +16,9 @@ public interface DBServiceProtocol
     void insertWrittenBy(String bookISBN, String authorSSN) throws SQLException;
 
     void insertBookByAuthor(Author author, Book book) throws SQLException;
+
+    void insertBookTransaktion(Book book) throws SQLException;
+
+    void insertAuthorTransaktion(Author author) throws SQLException;
+
 }

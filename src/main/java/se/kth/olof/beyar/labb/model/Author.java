@@ -59,6 +59,10 @@ public class Author
         return ssn;
     }
 
+    public ArrayList<String> getBooks() {
+        return written;
+    }
+
     /**
      * Method used to replace authors with empty string as ssn to null instead
      * @param ssn sets the new ssn of the author

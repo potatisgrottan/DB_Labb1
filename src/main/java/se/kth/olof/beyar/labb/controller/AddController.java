@@ -94,6 +94,7 @@ public class AddController
         String authorSSN = view.getBookAuthorSSNInput().getText();
 
         Book book = new Book(title, genre, isbn, grade, authorSSN);
+
         if (book.getIsbn().isEmpty())
         {
             book.setIsbn(null);
@@ -101,8 +102,7 @@ public class AddController
 
         try
         {
-            databaseService.insertBook(book);
-            databaseService.insertWrittenBy(book.getIsbn(), book.getAuthors().getFirst());
+            databaseService.insertBookTransaktion(book);
         }
         catch (SQLException e)
         {
@@ -120,16 +120,9 @@ public class AddController
         String ssn = view.getAuthorSSN().getText();
         String bookISBN = view.getAuthorBookISBN().getText();
 
-        if (authorORboth == 0)
-        {
-            author = new Author(firstname, lastname, ssn);
-            author.addBook(bookISBN);
-            System.out.println(firstname + ", " + lastname + ", " + ssn + ", " + bookISBN);
-        }
-        else
-        {
-            author = new Author(firstname, lastname, ssn);
-        }
+        author = new Author(firstname, lastname, ssn);
+        author.addBook(bookISBN);
+        System.out.println(firstname + ", " + lastname + ", " + ssn + ", " + bookISBN);
 
         if (author.getSSN().isEmpty())
         {
@@ -138,8 +131,9 @@ public class AddController
 
         try
         {
-            databaseService.insertAuthor(author);
-            databaseService.insertWrittenBy(bookISBN, author.getSSN());
+            databaseService.insertAuthorTransaktion(author);
+            //databaseService.insertAuthor(author);
+            //databaseService.insertWrittenBy(bookISBN, author.getSSN());
         } catch (SQLException e)
         {
             throw new BooksDBException(e);

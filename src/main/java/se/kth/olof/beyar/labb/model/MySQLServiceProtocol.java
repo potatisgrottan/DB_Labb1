@@ -74,7 +74,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
      * @param book the book to insert
      */
     @Override
-    public void insertBook(Book book) {
+    public void insertBook(Book book) throws SQLException {
         try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Book VALUES (?, ?, ?, ?)")) {
             pstm.setString(1, book.getIsbn());
             pstm.setString(2, book.getTitle());
@@ -83,10 +83,10 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
 
             pstm.executeUpdate();
         }
-        catch (SQLException e)
+       /* catch (SQLException e)
         {
             throw new BooksDBException(e);
-        }
+        }*/
     }
 
     /**
@@ -94,7 +94,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
      * @param author the author to insert
      */
     @Override
-    public void insertAuthor(Author author) {
+    public void insertAuthor(Author author) throws SQLException {
 
 
         try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Author VALUES (?, ?, ?)")) {
@@ -104,10 +104,10 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
 
             pstm.executeUpdate();
         }
-        catch (SQLException e)
+        /*catch (SQLException e)
         {
             throw new BooksDBException(e);
-        }
+        }*/
     }
 
     /**
@@ -116,15 +116,16 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
      * @param authorSSN the SSN of the author
      */
     @Override
-    public void insertWrittenBy(String bookISBN, String authorSSN) {
+    public void insertWrittenBy(String bookISBN, String authorSSN) throws SQLException{
         try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO WrittenBy VALUES (?, ?)")) {
             pstm.setString(1, bookISBN);
             pstm.setString(2, authorSSN);
 
             pstm.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e);
         }
+        /*catch (SQLException e) {
+            System.out.println(e);
+        }*/
     }
 
     /**
@@ -136,18 +137,19 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
     @Override
     public void insertBookByAuthor(Author author, Book book) throws SQLException
     {
-
         try {
             connection.setAutoCommit(false);
             insertAuthor(author);
             insertBook(book);
             insertWrittenBy(book.getIsbn(), author.getSSN());
             connection.commit();
+
         } catch (SQLException e) {
             if (connection != null)
                 connection.rollback();
 
             throw new BooksDBException(e);
+
         } finally {
             if (connection != null)
                 connection.setAutoCommit(true);
@@ -155,4 +157,43 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
     }
 
 
+    @Override
+    public void insertBookTransaktion(Book book) throws SQLException {
+
+        try {
+            connection.setAutoCommit(false);
+
+            insertBook(book);
+            insertWrittenBy(book.getIsbn(), book.getAuthors().getLast());
+
+            connection.commit();
+        } catch (SQLException e) {
+            if (connection != null)
+                connection.rollback();
+            throw new BooksDBException(e);
+        } finally {
+            if (connection != null)
+                connection.setAutoCommit(true);
+        }
+    }
+
+    @Override
+    public void insertAuthorTransaktion(Author author) throws SQLException {
+
+        try {
+            connection.setAutoCommit(false);
+
+            insertAuthor(author);
+            insertWrittenBy(author.getBooks().getLast(), author.getSSN());
+
+            connection.commit();
+        } catch (SQLException e) {
+            if (connection != null)
+                connection.rollback();
+            throw new BooksDBException(e);
+        } finally {
+            if (connection != null)
+                connection.setAutoCommit(true);
+        }
+    }
 }

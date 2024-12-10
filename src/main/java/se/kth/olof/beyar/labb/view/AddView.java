@@ -52,7 +52,7 @@ public class AddView
         dialogPopup = new Stage();
         dialogPopup.initModality(Modality.WINDOW_MODAL);
         dialogPopup.initOwner(stage);
-        Scene dialogScene = new Scene(addBox, 300, 250);
+        Scene dialogScene = new Scene(addBox, 300, 280);
         dialogPopup.setScene(dialogScene);
         dialogPopup.show();
     }
@@ -104,7 +104,7 @@ public class AddView
         genreBar.setPromptText("Sci-fi or Action;Thriller;Comedy");
 
         TextField authorBar = new TextField();
-        authorBar.setPromptText("SSN...");
+        authorBar.setPromptText("Existing author SSN...");
 
         Button saveButton = new Button("Save");
         Button cancelButton = new Button("Cancel");
@@ -125,8 +125,11 @@ public class AddView
         Label isbnLabel = new Label("ISBN:");
         Label addBookLabel = new Label("SSN:");
 
-        TextField isbnField = new TextField("Write existing ISBN");
-        TextField ssnField = new TextField("Write existing SSN");
+        TextField isbnField = new TextField();
+        isbnField.setPromptText("Write existing ISBN");
+
+        TextField ssnField = new TextField();
+        ssnField.setPromptText("Write existing SSN");
 
         Button saveButton = new Button("Save");
         Button cancelButton = new Button("Cancel");

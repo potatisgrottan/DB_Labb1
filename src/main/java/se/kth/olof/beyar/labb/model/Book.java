@@ -33,18 +33,6 @@ public class Book
         authors = new ArrayList<>();
     }
 
-    /** * Constructs a Book with the specified title, genre, ISBN, grade, and author SSN.
-     * @param title the title of the book
-     * @param genre the genre of the book
-     * @param isbn the ISBN of the book
-     * @param grade the grade of the book
-     * @param authorSSN the social security number of the author who wrote the book
-     * */
-    public Book(String title, String genre, String isbn, String grade, String authorSSN)
-    {
-        this(title, genre, isbn, grade);
-    }
-
     /**
      * Adds an author to the list of authors who have written the book.
      * @param author the author to be added

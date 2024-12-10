@@ -10,49 +10,68 @@ import java.util.ArrayList;
 /**
  * Provides the implementation of the DBServiceProtocol for MySQL.
  */
-public class MySQLServiceProtocol implements DBServiceProtocol {
+public class MySQLServiceProtocol implements DBServiceProtocol
+{
     Connection connection;
 
     /**
      * Constructs a MySQLServiceProtocol with the specified database connection.
+     *
      * @param connection the database connection
      */
-    public MySQLServiceProtocol(Connection connection) {
+    public MySQLServiceProtocol(Connection connection)
+    {
         this.connection = connection;
     }
 
     /**
      * Finds books by a text query and an optional grade filter.
-     * @param query the text query to search for
+     *
+     * @param query       the text query to search for
      * @param chosenGrade the rating to filter by, 0 is for "no preference"
      * @return a list of books that match the query and grade filter
      */
     @Override
-    public ArrayList<Book> findByText(String query, int chosenGrade) throws BooksDBException {
+    public ArrayList<Book> findByText(String query, int chosenGrade) throws BooksDBException
+    {
 
         ArrayList<Book> books = new ArrayList<>();
-        try {
-            Statement request = connection.createStatement();
-            StringBuilder queryBuilder = new StringBuilder();
-            queryBuilder
-                    .append("SELECT Book.*, Author.* ")
-                    .append("FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN ")
-                    .append("JOIN Author ON WrittenBy.Author_SSN = Author.SSN ")
-                    .append("WHERE (")
-                    .append("Book.Title LIKE '%").append(query).append("%' ")
-                    .append("OR Book.ISBN LIKE '%").append(query).append("%' ")
-                    .append("OR Author.FirstName LIKE '%").append(query).append("%' ")
-                    .append("OR Author.LastName LIKE '%").append(query).append("%' ")
-                    .append("OR Book.Genre LIKE '%").append(query).append("%'")
-                    .append(")");
+        try
+        {
+            String searchQuery = "SELECT Book.*, Author.* " +
+                    "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
+                    "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
+                    "WHERE (" +
+                    "Book.Title LIKE ? " +
+                    "OR Book.ISBN LIKE ? " +
+                    "OR Author.FirstName LIKE ? " +
+                    "OR Author.LastName LIKE ? " +
+                    "OR Book.Genre LIKE ?" +
+                    ")";
 
-            if (chosenGrade != Grades.NO_PREFERENCE.ordinal()) {
-                queryBuilder.append(" AND Book.Grade = ").append(chosenGrade);
+            if (chosenGrade != Grades.NO_PREFERENCE.ordinal())
+            {
+                searchQuery += " AND Book.Grade = ?";
             }
 
-            ResultSet response = request.executeQuery(queryBuilder.toString());
+            PreparedStatement request = connection.prepareStatement(searchQuery);
 
-            while (response.next()) {
+            String wildcardQuery = "%" + query + "%";
+            request.setString(1, wildcardQuery);
+            request.setString(2, wildcardQuery);
+            request.setString(3, wildcardQuery);
+            request.setString(4, wildcardQuery);
+            request.setString(5, wildcardQuery);
+
+            if (chosenGrade != Grades.NO_PREFERENCE.ordinal())
+            {
+                request.setInt(6, chosenGrade);
+            }
+
+            ResultSet response = request.executeQuery();
+
+            while (response.next())
+            {
                 String isbn = response.getString("ISBN");
                 String title = response.getString("Title");
                 String genre = response.getString("Genre");
@@ -61,16 +80,17 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
                 String firstName = response.getString("FirstName");
                 String lastName = response.getString("LastName");
 
-                Author author = new Author(firstName,lastName,ssn);
-                if( !(bookInArray(books,isbn,author)) ){
+                Author author = new Author(firstName, lastName, ssn);
+                if (!(bookInArray(books, isbn, author)))
+                {
                     Book book = new Book(title, genre, isbn, grade);
                     book.addAuthor(author);
                     books.add(book);
                 }
             }
             request.close();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new BooksDBException(e);
         }
 
@@ -79,11 +99,14 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
 
     /**
      * Inserts a new book into the database.
+     *
      * @param book the book to insert
      */
     @Override
-    public void insertBook(Book book) throws SQLException {
-        try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Book VALUES (?, ?, ?, ?)")) {
+    public void insertBook(Book book) throws SQLException
+    {
+        try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Book VALUES (?, ?, ?, ?)"))
+        {
             pstm.setString(1, book.getIsbn());
             pstm.setString(2, book.getTitle());
             pstm.setString(3, book.serializeGenres());
@@ -94,11 +117,14 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
 
     /**
      * Inserts a new author into the database.
+     *
      * @param author the author to insert
      */
     @Override
-    public void insertAuthor(Author author) throws SQLException {
-        try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Author VALUES (?, ?, ?)")) {
+    public void insertAuthor(Author author) throws SQLException
+    {
+        try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Author VALUES (?, ?, ?)"))
+        {
             pstm.setString(1, author.getSSN());
             pstm.setString(2, author.getFirstName());
             pstm.setString(3, author.getLastName());
@@ -108,12 +134,15 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
 
     /**
      * Inserts a new entry into the WrittenBy table, linking a book and an author.
-     * @param bookISBN the ISBN of the book
+     *
+     * @param bookISBN  the ISBN of the book
      * @param authorSSN the SSN of the author
      */
     @Override
-    public void insertWrittenBy(String bookISBN, String authorSSN) throws SQLException{
-        try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO WrittenBy VALUES (?, ?)")) {
+    public void insertWrittenBy(String bookISBN, String authorSSN) throws SQLException
+    {
+        try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO WrittenBy VALUES (?, ?)"))
+        {
             pstm.setString(1, bookISBN);
             pstm.setString(2, authorSSN);
 
@@ -123,27 +152,31 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
 
     /**
      * Inserts a book and an author into the database and links them in the WrittenBy table.
+     *
      * @param author the author to insert
-     * @param book the book to insert
+     * @param book   the book to insert
      * @throws SQLException if a database access error occurs
      */
     @Override
     public void insertBookByAuthor(Author author, Book book) throws SQLException
     {
-        try {
+        try
+        {
             connection.setAutoCommit(false);
             insertAuthor(author);
             insertBook(book);
             insertWrittenBy(book.getIsbn(), author.getSSN());
             connection.commit();
 
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             if (connection != null)
                 connection.rollback();
 
             throw new BooksDBException(e);
 
-        } finally {
+        } finally
+        {
             if (connection != null)
                 connection.setAutoCommit(true);
         }
@@ -152,56 +185,70 @@ public class MySQLServiceProtocol implements DBServiceProtocol {
 
     /**
      * Inserts a book and creates a written-by relationship within a single transaction.
+     *
      * @param book the book to be inserted
      * @throws SQLException if a database access error occurs or the transaction fails
-     * */
+     */
     @Override
-    public void insertBookTransaktion(Book book, String authorSSN) throws SQLException {
+    public void insertBookTransaktion(Book book, String authorSSN) throws SQLException
+    {
 
-        try {
+        try
+        {
             connection.setAutoCommit(false);
             insertBook(book);
             insertWrittenBy(book.getIsbn(), authorSSN);
             connection.commit();
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             if (connection != null)
                 connection.rollback();
             throw new BooksDBException(e);
-        } finally {
+        } finally
+        {
             if (connection != null)
                 connection.setAutoCommit(true);
         }
     }
 
-    /** * Inserts an author and creates a written-by relationship within a single transaction.
+    /**
+     * Inserts an author and creates a written-by relationship within a single transaction.
+     *
      * @param author the author to be inserted
      * @throws SQLException if a database access error occurs or the transaction fails
-     * */
+     */
     @Override
-    public void insertAuthorTransaktion(Author author) throws SQLException {
+    public void insertAuthorTransaktion(Author author) throws SQLException
+    {
 
-        try {
+        try
+        {
             connection.setAutoCommit(false);
 
             insertAuthor(author);
             insertWrittenBy(author.getBooks().getLast(), author.getSSN());
 
             connection.commit();
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             if (connection != null)
                 connection.rollback();
 
             throw new BooksDBException(e);
-        } finally {
+        } finally
+        {
             if (connection != null)
                 connection.setAutoCommit(true);
         }
     }
 
-    private boolean bookInArray(ArrayList<Book> arrayList, String isbn, Author author){
+    private boolean bookInArray(ArrayList<Book> arrayList, String isbn, Author author)
+    {
 
-        for(Book book : arrayList){
-            if(book.getIsbn().equals(isbn)){
+        for (Book book : arrayList)
+        {
+            if (book.getIsbn().equals(isbn))
+            {
                 book.addAuthor(author);
                 return true;
             }

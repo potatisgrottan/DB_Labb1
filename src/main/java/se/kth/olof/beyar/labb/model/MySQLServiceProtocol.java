@@ -12,18 +12,6 @@ import java.util.ArrayList;
  */
 public class MySQLServiceProtocol implements DBServiceProtocol
 {
-    Connection connection;
-
-    /**
-     * Constructs a MySQLServiceProtocol with the specified database connection.
-     *
-     * @param connection the database connection
-     */
-    public MySQLServiceProtocol(Connection connection)
-    {
-        this.connection = connection;
-    }
-
     /**
      * Finds books by a text query and an optional grade filter.
      *
@@ -31,10 +19,11 @@ public class MySQLServiceProtocol implements DBServiceProtocol
      * @param chosenGrade the rating to filter by, 0 is for "no preference"
      * @return a list of books that match the query and grade filter
      */
+    // TODO
+    // Break down findByText to the implementations below before Labb 2
     @Override
     public ArrayList<Book> findByText(String query, int chosenGrade) throws BooksDBException
     {
-
         ArrayList<Book> books = new ArrayList<>();
         try
         {
@@ -96,6 +85,28 @@ public class MySQLServiceProtocol implements DBServiceProtocol
 
         return books;
     }
+
+    Connection connection;
+
+    /**
+     * Constructs a MySQLServiceProtocol with the specified database connection.
+     *
+     * @param connection the database connection
+     */
+    public MySQLServiceProtocol(Connection connection)
+    {
+        this.connection = connection;
+    }
+
+    Author findByAuthor(String query) throws SQLException {}
+
+    Book findByISBN(String query) throws SQLException {}
+
+    Book findByTitle(String query) throws SQLException {}
+
+    Book findByGenre(String query) throws SQLException {}
+
+    Book findByRating(String query) throws SQLException {}
 
     /**
      * Inserts a new book into the database.

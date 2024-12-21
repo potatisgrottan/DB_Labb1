@@ -161,7 +161,6 @@ public class MySQLServiceProtocol implements DBServiceProtocol
             String wildcardQuery = "%" + query + "%";
             request.setString(1, wildcardQuery);
 
-
             ResultSet response = request.executeQuery();
 
             while (response.next())
@@ -251,7 +250,6 @@ public class MySQLServiceProtocol implements DBServiceProtocol
             String wildcardQuery = "%" + query + "%";
             request.setString(1, wildcardQuery);
 
-
             ResultSet response = request.executeQuery();
 
             while (response.next())
@@ -280,7 +278,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
        return books;
     }
 
-   public ArrayList<Book>  findByRating(String query) throws SQLException {
+   public ArrayList<Book>  findByRating(String query, int chosenGrade) throws SQLException {
         ArrayList<Book> books = new ArrayList<>();
         try
         {
@@ -289,15 +287,10 @@ public class MySQLServiceProtocol implements DBServiceProtocol
                     "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
                     "WHERE (" +
                     "Book.Grade = ?" +
-
                     ")";
 
             PreparedStatement request = connection.prepareStatement(searchQuery);
-
-            String wildcardQuery = "%" + query + "%";
             request.setInt(1, chosenGrade);
-
-
             ResultSet response = request.executeQuery();
 
             while (response.next())
@@ -374,7 +367,6 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         {
             pstm.setString(1, bookISBN);
             pstm.setString(2, authorSSN);
-
             pstm.executeUpdate();
         }
     }
@@ -411,7 +403,6 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         }
     }
 
-
     /**
      * Inserts a book and creates a written-by relationship within a single transaction.
      *
@@ -421,7 +412,6 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     @Override
     public void insertBookTransaktion(Book book, String authorSSN) throws SQLException
     {
-
         try
         {
             connection.setAutoCommit(false);
@@ -449,7 +439,6 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     @Override
     public void insertAuthorTransaktion(Author author) throws SQLException
     {
-
         try
         {
             connection.setAutoCommit(false);
@@ -473,7 +462,6 @@ public class MySQLServiceProtocol implements DBServiceProtocol
 
     private boolean bookInArray(ArrayList<Book> arrayList, String isbn, Author author)
     {
-
         for (Book book : arrayList)
         {
             if (book.getIsbn().equals(isbn))
@@ -484,6 +472,4 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         }
         return false;
     }
-
-
 }

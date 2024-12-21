@@ -45,7 +45,7 @@ public class SearchController
             ArrayList<Book> books;
             try
             {
-                books = databaseService.findByText(find, grade);
+                books = databaseService.findByText(find,grade);
             }
             catch (SQLException e)
             {
@@ -81,4 +81,6 @@ public class SearchController
         addEventListener();
         return createdSearchView;
     }
+
+
 }

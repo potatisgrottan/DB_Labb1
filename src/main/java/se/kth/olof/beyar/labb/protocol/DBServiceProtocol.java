@@ -19,7 +19,7 @@ public interface DBServiceProtocol
 
     ArrayList<Book>  findByGenre(String query) throws SQLException;
 
-    ArrayList<Book>  findByRating(String query) throws SQLException;
+    ArrayList<Book>  findByRating(String query, int chosenGrade) throws SQLException;
 
     void insertBook(Book book) throws SQLException;
 

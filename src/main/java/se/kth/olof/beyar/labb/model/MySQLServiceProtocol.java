@@ -98,7 +98,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         this.connection = connection;
     }
 
-    Author findByAuthor(String query) throws SQLException {
+   public ArrayList<Book>  findByAuthor(String query) throws SQLException {
         ArrayList<Book> books = new ArrayList<>();
         try
         {
@@ -142,10 +142,10 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         {
             throw new BooksDBException(e);
         }
-
+        return books;
     }
 
-    Book findByISBN(String query) throws SQLException {
+   public ArrayList<Book>  findByISBN(String query) throws SQLException {
         ArrayList<Book> books = new ArrayList<>();
         try
         {
@@ -187,9 +187,10 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         {
             throw new BooksDBException(e);
         }
+       return books;
     }
 
-    Book findByTitle(String query) throws SQLException {
+   public ArrayList<Book>  findByTitle(String query) throws SQLException {
         ArrayList<Book> books = new ArrayList<>();
         try
         {
@@ -231,9 +232,10 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         {
             throw new BooksDBException(e);
         }
+       return books;
     }
 
-    Book findByGenre(String query) throws SQLException {
+   public ArrayList<Book>  findByGenre(String query) throws SQLException {
         ArrayList<Book> books = new ArrayList<>();
         try
         {
@@ -275,9 +277,10 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         {
             throw new BooksDBException(e);
         }
+       return books;
     }
 
-    Book findByRating(String query) throws SQLException {
+   public ArrayList<Book>  findByRating(String query) throws SQLException {
         ArrayList<Book> books = new ArrayList<>();
         try
         {
@@ -320,7 +323,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         {
             throw new BooksDBException(e);
         }
-
+       return books;
     }
 
     /**

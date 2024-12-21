@@ -5,7 +5,6 @@ import javafx.scene.layout.VBox;
 import se.kth.olof.beyar.labb.common.BooksDBException;
 import se.kth.olof.beyar.labb.common.Grades;
 import se.kth.olof.beyar.labb.common.SearchOptions;
-import se.kth.olof.beyar.labb.common.Views;
 import se.kth.olof.beyar.labb.model.Book;
 import se.kth.olof.beyar.labb.model.SearchModel;
 import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;

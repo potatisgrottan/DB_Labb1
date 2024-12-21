@@ -17,39 +17,17 @@ public class Database
     private Connection connection;
 
     /**
-     * Constructs a Database object with the specified schema, host, and port.
+     * Constructs a Database object with the specified schema.
+     * The credentials, host and port is provided by the environment variable, if not given, default will be used
      * @param schema the name of the database schema
-     * @param host the database host
-     * @param port the port number
      */
-    public Database(String schema, String host, int port)
+    public Database(String schema)
     {
+        String host = System.getenv("host").isEmpty() ? "localhost" : System.getenv("host");
+        String port = System.getenv("port").isEmpty() ? "3306" : System.getenv("port");
         this.url = "jdbc:mysql://" + host + ":" + port + "/" + schema + "?UseClientEnc=UTF8";
         this.username = System.getenv("username");
         this.password = System.getenv("password");
-    }
-
-    /**
-     * Constructs a Database object with the specified schema and port, using localhost as the host.
-     * @param schema the name of the database schema
-     * @param port the port number */
-    public Database(String schema, int port)
-    {
-        this(schema, "localhost", port);
-    }
-
-    public Database(String schema, String host)
-    {
-        this(schema, host, 3306);
-    }
-
-    /**
-     * Constructs a Database object with the specified schema,
-     * using localhost as the host and the default port 3306.
-     * @param schema the name of the database schema */
-    public Database(String schema)
-    {
-        this(schema, "localhost", 3306);
     }
 
     /**

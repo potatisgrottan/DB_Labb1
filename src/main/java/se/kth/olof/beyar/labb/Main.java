@@ -19,7 +19,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException, SQLException, ClassNotFoundException
     {
-        Database db = new Database("Library", "nahro.ddns.net");
+        Database db = new Database("Library");
         DBServiceProtocol databaseService;
 
         try

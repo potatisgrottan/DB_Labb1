@@ -7,19 +7,15 @@ import java.util.ArrayList;
 
 public interface DBServiceProtocol
 {
-    // TODO
-    // Break down findByText to the implementations below before Labb 2
-    ArrayList<Book> findByText(String query, int chosenGrade) throws SQLException;
+    ArrayList<Book> findByAuthor(String query) throws SQLException;
 
-    ArrayList<Book>  findByAuthor(String query) throws SQLException;
+    ArrayList<Book> findByISBN(String query) throws SQLException;
 
-    ArrayList<Book>  findByISBN(String query) throws SQLException;
+    ArrayList<Book> findByTitle(String query) throws SQLException;
 
-    ArrayList<Book>  findByTitle(String query) throws SQLException;
+    ArrayList<Book> findByGenre(String query) throws SQLException;
 
-    ArrayList<Book>  findByGenre(String query) throws SQLException;
-
-    ArrayList<Book>  findByRating(String query, int chosenGrade) throws SQLException;
+    ArrayList<Book> findByRating(String query) throws SQLException;
 
     void insertBook(Book book) throws SQLException;
 

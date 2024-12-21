@@ -4,10 +4,13 @@ import javafx.application.Platform;
 import javafx.scene.layout.VBox;
 import se.kth.olof.beyar.labb.common.BooksDBException;
 import se.kth.olof.beyar.labb.common.Grades;
+import se.kth.olof.beyar.labb.common.SearchOptions;
+import se.kth.olof.beyar.labb.common.Views;
 import se.kth.olof.beyar.labb.model.Book;
 import se.kth.olof.beyar.labb.model.SearchModel;
 import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
 import se.kth.olof.beyar.labb.view.SearchView;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -45,14 +48,45 @@ public class SearchController
             ArrayList<Book> books;
             try
             {
-                books = databaseService.findByText(find,grade);
-            }
-            catch (SQLException e)
+                if (view.getSearchOptions().getValue() == SearchOptions.ISBN)
+                {
+                    books = databaseService.findByISBN(find);
+                } else if (view.getSearchOptions().getValue() == SearchOptions.Title)
+                {
+                    books = databaseService.findByTitle(find);
+                } else if (view.getSearchOptions().getValue() == SearchOptions.Genre)
+                {
+                    books = databaseService.findByGenre(find);
+                } else if (view.getSearchOptions().getValue() == SearchOptions.Rating)
+                {
+                    books = databaseService.findByRating(find);
+                } else
+                {
+                    books = databaseService.findByAuthor(find);
+                }
+            } catch (SQLException e)
             {
                 throw new BooksDBException(e);
             }
 
-            Platform.runLater(() -> setResult(books));
+            Platform.runLater(() -> {
+                if (grade == Grades.NO_PREFERENCE.ordinal())
+                {
+                    setResult(books);
+                } else
+                {
+                    ArrayList<Book> filteredBooksByGrade = new ArrayList<>();
+                    for (Book book : books)
+                    {
+                        int currentBookGrade = Integer.parseInt(book.getGrade());
+                        if (currentBookGrade == grade)
+                        {
+                            filteredBooksByGrade.add(book);
+                        }
+                    }
+                    setResult(filteredBooksByGrade);
+                }
+            });
         }).start();
     }
 
@@ -60,8 +94,7 @@ public class SearchController
     {
         StringBuilder response = new StringBuilder();
         books.forEach(book -> {
-            System.out.println(book);
-
+            // System.out.println(book);
             response
                     .append("ISBN: ").append(book.getIsbn()).append("\n")
                     .append("Title: ").append(book.getTitle()).append("\n")
@@ -81,6 +114,4 @@ public class SearchController
         addEventListener();
         return createdSearchView;
     }
-
-
 }

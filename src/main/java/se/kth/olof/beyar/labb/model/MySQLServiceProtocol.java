@@ -1,7 +1,6 @@
 package se.kth.olof.beyar.labb.model;
 
 import se.kth.olof.beyar.labb.common.BooksDBException;
-import se.kth.olof.beyar.labb.common.Grades;
 import se.kth.olof.beyar.labb.protocol.DBServiceProtocol;
 
 import java.sql.*;
@@ -12,80 +11,6 @@ import java.util.ArrayList;
  */
 public class MySQLServiceProtocol implements DBServiceProtocol
 {
-    /**
-     * Finds books by a text query and an optional grade filter.
-     *
-     * @param query       the text query to search for
-     * @param chosenGrade the rating to filter by, 0 is for "no preference"
-     * @return a list of books that match the query and grade filter
-     */
-    // TODO
-    // Break down findByText to the implementations below before Labb 2
-    @Override
-    public ArrayList<Book> findByText(String query, int chosenGrade) throws BooksDBException
-    {
-        ArrayList<Book> books = new ArrayList<>();
-        try
-        {
-            String searchQuery = "SELECT Book.*, Author.* " +
-                    "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
-                    "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
-                    "WHERE (" +
-                    "Book.Title LIKE ? " +
-                    "OR Book.ISBN LIKE ? " +
-                    "OR Author.FirstName LIKE ? " +
-                    "OR Author.LastName LIKE ? " +
-                    "OR Book.Genre LIKE ?" +
-                    ")";
-
-            if (chosenGrade != Grades.NO_PREFERENCE.ordinal())
-            {
-                searchQuery += " AND Book.Grade = ?";
-            }
-
-            PreparedStatement request = connection.prepareStatement(searchQuery);
-
-            String wildcardQuery = "%" + query + "%";
-            request.setString(1, wildcardQuery);
-            request.setString(2, wildcardQuery);
-            request.setString(3, wildcardQuery);
-            request.setString(4, wildcardQuery);
-            request.setString(5, wildcardQuery);
-
-            if (chosenGrade != Grades.NO_PREFERENCE.ordinal())
-            {
-                request.setInt(6, chosenGrade);
-            }
-
-            ResultSet response = request.executeQuery();
-
-            while (response.next())
-            {
-                String isbn = response.getString("ISBN");
-                String title = response.getString("Title");
-                String genre = response.getString("Genre");
-                String grade = response.getString("Grade");
-                String ssn = response.getString("SSN");
-                String firstName = response.getString("FirstName");
-                String lastName = response.getString("LastName");
-
-                Author author = new Author(firstName, lastName, ssn);
-                if (!(bookInArray(books, isbn, author)))
-                {
-                    Book book = new Book(title, genre, isbn, grade);
-                    book.addAuthor(author);
-                    books.add(book);
-                }
-            }
-            request.close();
-        } catch (SQLException e)
-        {
-            throw new BooksDBException(e);
-        }
-
-        return books;
-    }
-
     Connection connection;
 
     /**
@@ -98,24 +23,36 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         this.connection = connection;
     }
 
-   public ArrayList<Book>  findByAuthor(String query) throws SQLException {
+    public ArrayList<Book> findByAuthor(String query) {
         ArrayList<Book> books = new ArrayList<>();
         try
         {
+
             String searchQuery = "SELECT Book.*, Author.* " +
                     "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
                     "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
-                    "WHERE (" +
-                    "Author.FirstName LIKE ? " +
-                    "OR Author.LastName LIKE ? " +
-                    ")";
+                    "WHERE " +
+                    "Author.FirstName LIKE ? ";
+
+            String firstname;
+            String lastname;
+            if (query.split(" ").length > 1)
+            {
+                searchQuery += "OR Author.LastName LIKE ? ";
+                firstname = query.split(" ")[0];
+                lastname = query.split(" ")[1];
+            }
+            else
+            {
+                firstname = query;
+                lastname = "";
+            }
 
             PreparedStatement request = connection.prepareStatement(searchQuery);
+            request.setString(1, "%" + firstname + "%");
 
-            String wildcardQuery = "%" + query + "%";
-            request.setString(1, wildcardQuery);
-            request.setString(2, wildcardQuery);
-
+            if (query.split(" ").length > 1)
+                request.setString(2, "%" + lastname + "%");
 
             ResultSet response = request.executeQuery();
 
@@ -145,7 +82,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         return books;
     }
 
-   public ArrayList<Book>  findByISBN(String query) throws SQLException {
+    public ArrayList<Book> findByISBN(String query) {
         ArrayList<Book> books = new ArrayList<>();
         try
         {
@@ -189,7 +126,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
        return books;
     }
 
-   public ArrayList<Book>  findByTitle(String query) throws SQLException {
+    public ArrayList<Book> findByTitle(String query) {
         ArrayList<Book> books = new ArrayList<>();
         try
         {
@@ -234,7 +171,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
        return books;
     }
 
-   public ArrayList<Book>  findByGenre(String query) throws SQLException {
+    public ArrayList<Book> findByGenre(String query) {
         ArrayList<Book> books = new ArrayList<>();
         try
         {
@@ -278,7 +215,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
        return books;
     }
 
-   public ArrayList<Book>  findByRating(String query, int chosenGrade) throws SQLException {
+    public ArrayList<Book> findByRating(String query) {
         ArrayList<Book> books = new ArrayList<>();
         try
         {
@@ -290,7 +227,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
                     ")";
 
             PreparedStatement request = connection.prepareStatement(searchQuery);
-            request.setInt(1, chosenGrade);
+            request.setString(1, query);
             ResultSet response = request.executeQuery();
 
             while (response.next())

@@ -1,17 +1,20 @@
 package se.kth.olof.beyar.labb.view;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import se.kth.olof.beyar.labb.common.Grades;
+import se.kth.olof.beyar.labb.common.SearchOptions;
 
 public class SearchView
 {
     private HBox searchApp;
     private TextArea searchResultsArea;
     private ComboBox<Grades> gradeOptions;
+    private ComboBox<SearchOptions> searchOptions;
 
     public SearchView()
     {
@@ -22,19 +25,21 @@ public class SearchView
         TextField searchBar = new TextField();
         searchBar.setPromptText("Search for books or authors here!");
 
-        Label gradeOptionLabel = new Label("Filter rating");
-        gradeOptions = new ComboBox<>(FXCollections.observableArrayList(Grades.values()));
-        gradeOptions.setConverter(convertEnumConstantsToNumbers());
+        Label searchForLabel = new Label("Search for");
+        ObservableList<SearchOptions> optionsValues = FXCollections.observableArrayList(SearchOptions.values());
+        searchOptions = new ComboBox<>(optionsValues);
+        searchOptions.setPromptText("Title");
+        searchOptions.setValue(SearchOptions.Title);
 
+        Label gradeOptionLabel = new Label("Filter rating");
+        ObservableList<Grades> grades = FXCollections.observableArrayList(Grades.values());
+        gradeOptions = new ComboBox<>(grades);
+        gradeOptions.setConverter(convertEnumConstantsToNumbers());
         gradeOptions.setPromptText("Grade");
         gradeOptions.setValue(preferredGrade);
 
         Button searchButton = new Button("Search");
         Label searchLabel = new Label("Search");
-
-        ScrollPane searchResults = new ScrollPane();
-        searchResults.fitToWidthProperty();
-        searchResults.setPrefHeight(150);
 
         searchResultsArea = new TextArea();
         searchResultsArea.setEditable(false);
@@ -42,12 +47,20 @@ public class SearchView
 
         searchApp = new HBox();
         searchApp.getChildren().addAll(searchBar, searchButton);
-        searchResults.setContent(searchResultsArea);
 
         VBox verticalSearchBox = new VBox();
-        verticalSearchBox.getChildren().addAll(searchLabel, searchApp, gradeOptionLabel, gradeOptions, searchResults);
+        verticalSearchBox.getChildren().addAll(
+                searchLabel, searchApp,
+                searchForLabel, searchOptions,
+                gradeOptionLabel, gradeOptions,
+                searchResultsArea
+        );
 
         return verticalSearchBox;
+    }
+
+    public ComboBox<SearchOptions> getSearchOptions(){
+        return searchOptions;
     }
 
     public ComboBox<Grades> getGradeOptions()

@@ -98,15 +98,230 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         this.connection = connection;
     }
 
-    Author findByAuthor(String query) throws SQLException {}
+    Author findByAuthor(String query) throws SQLException {
+        ArrayList<Book> books = new ArrayList<>();
+        try
+        {
+            String searchQuery = "SELECT Book.*, Author.* " +
+                    "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
+                    "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
+                    "WHERE (" +
+                    "Author.FirstName LIKE ? " +
+                    "OR Author.LastName LIKE ? " +
+                    ")";
 
-    Book findByISBN(String query) throws SQLException {}
+            PreparedStatement request = connection.prepareStatement(searchQuery);
 
-    Book findByTitle(String query) throws SQLException {}
+            String wildcardQuery = "%" + query + "%";
+            request.setString(1, wildcardQuery);
+            request.setString(2, wildcardQuery);
 
-    Book findByGenre(String query) throws SQLException {}
 
-    Book findByRating(String query) throws SQLException {}
+            ResultSet response = request.executeQuery();
+
+            while (response.next())
+            {
+                String isbn = response.getString("ISBN");
+                String title = response.getString("Title");
+                String genre = response.getString("Genre");
+                String grade = response.getString("Grade");
+                String ssn = response.getString("SSN");
+                String firstName = response.getString("FirstName");
+                String lastName = response.getString("LastName");
+
+                Author author = new Author(firstName, lastName, ssn);
+                if (!(bookInArray(books, isbn, author)))
+                {
+                    Book book = new Book(title, genre, isbn, grade);
+                    book.addAuthor(author);
+                    books.add(book);
+                }
+            }
+            request.close();
+        } catch (SQLException e)
+        {
+            throw new BooksDBException(e);
+        }
+
+    }
+
+    Book findByISBN(String query) throws SQLException {
+        ArrayList<Book> books = new ArrayList<>();
+        try
+        {
+            String searchQuery = "SELECT Book.*, Author.* " +
+                    "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
+                    "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
+                    "WHERE (" +
+                    " Book.ISBN LIKE ? " +
+                    ")";
+
+            PreparedStatement request = connection.prepareStatement(searchQuery);
+
+            String wildcardQuery = "%" + query + "%";
+            request.setString(1, wildcardQuery);
+
+
+            ResultSet response = request.executeQuery();
+
+            while (response.next())
+            {
+                String isbn = response.getString("ISBN");
+                String title = response.getString("Title");
+                String genre = response.getString("Genre");
+                String grade = response.getString("Grade");
+                String ssn = response.getString("SSN");
+                String firstName = response.getString("FirstName");
+                String lastName = response.getString("LastName");
+
+                Author author = new Author(firstName, lastName, ssn);
+                if (!(bookInArray(books, isbn, author)))
+                {
+                    Book book = new Book(title, genre, isbn, grade);
+                    book.addAuthor(author);
+                    books.add(book);
+                }
+            }
+            request.close();
+        } catch (SQLException e)
+        {
+            throw new BooksDBException(e);
+        }
+    }
+
+    Book findByTitle(String query) throws SQLException {
+        ArrayList<Book> books = new ArrayList<>();
+        try
+        {
+            String searchQuery = "SELECT Book.*, Author.* " +
+                    "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
+                    "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
+                    "WHERE (" +
+                    "Book.Title LIKE ? " +
+                    ")";
+
+            PreparedStatement request = connection.prepareStatement(searchQuery);
+
+            String wildcardQuery = "%" + query + "%";
+            request.setString(1, wildcardQuery);
+
+
+            ResultSet response = request.executeQuery();
+
+            while (response.next())
+            {
+                String isbn = response.getString("ISBN");
+                String title = response.getString("Title");
+                String genre = response.getString("Genre");
+                String grade = response.getString("Grade");
+                String ssn = response.getString("SSN");
+                String firstName = response.getString("FirstName");
+                String lastName = response.getString("LastName");
+
+                Author author = new Author(firstName, lastName, ssn);
+                if (!(bookInArray(books, isbn, author)))
+                {
+                    Book book = new Book(title, genre, isbn, grade);
+                    book.addAuthor(author);
+                    books.add(book);
+                }
+            }
+            request.close();
+        } catch (SQLException e)
+        {
+            throw new BooksDBException(e);
+        }
+    }
+
+    Book findByGenre(String query) throws SQLException {
+        ArrayList<Book> books = new ArrayList<>();
+        try
+        {
+            String searchQuery = "SELECT Book.*, Author.* " +
+                    "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
+                    "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
+                    "WHERE (" +
+                    "Book.Genre LIKE ?" +
+                    ")";
+
+            PreparedStatement request = connection.prepareStatement(searchQuery);
+
+            String wildcardQuery = "%" + query + "%";
+            request.setString(1, wildcardQuery);
+
+
+            ResultSet response = request.executeQuery();
+
+            while (response.next())
+            {
+                String isbn = response.getString("ISBN");
+                String title = response.getString("Title");
+                String genre = response.getString("Genre");
+                String grade = response.getString("Grade");
+                String ssn = response.getString("SSN");
+                String firstName = response.getString("FirstName");
+                String lastName = response.getString("LastName");
+
+                Author author = new Author(firstName, lastName, ssn);
+                if (!(bookInArray(books, isbn, author)))
+                {
+                    Book book = new Book(title, genre, isbn, grade);
+                    book.addAuthor(author);
+                    books.add(book);
+                }
+            }
+            request.close();
+        } catch (SQLException e)
+        {
+            throw new BooksDBException(e);
+        }
+    }
+
+    Book findByRating(String query) throws SQLException {
+        ArrayList<Book> books = new ArrayList<>();
+        try
+        {
+            String searchQuery = "SELECT Book.*, Author.* " +
+                    "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
+                    "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
+                    "WHERE (" +
+                    "Book.Grade = ?" +
+
+                    ")";
+
+            PreparedStatement request = connection.prepareStatement(searchQuery);
+
+            String wildcardQuery = "%" + query + "%";
+            request.setInt(1, chosenGrade);
+
+
+            ResultSet response = request.executeQuery();
+
+            while (response.next())
+            {
+                String isbn = response.getString("ISBN");
+                String title = response.getString("Title");
+                String genre = response.getString("Genre");
+                String grade = response.getString("Grade");
+                String ssn = response.getString("SSN");
+                String firstName = response.getString("FirstName");
+                String lastName = response.getString("LastName");
+
+                Author author = new Author(firstName, lastName, ssn);
+                if (!(bookInArray(books, isbn, author)))
+                {
+                    Book book = new Book(title, genre, isbn, grade);
+                    book.addAuthor(author);
+                    books.add(book);
+                }
+            }
+            request.close();
+        } catch (SQLException e)
+        {
+            throw new BooksDBException(e);
+        }
+
+    }
 
     /**
      * Inserts a new book into the database.
@@ -266,4 +481,6 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         }
         return false;
     }
+
+
 }

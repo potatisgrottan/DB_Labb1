@@ -8,20 +8,17 @@ import java.util.ArrayList;
  * */
 public class Author
 {
-    private final String firstName;
-    private final String lastName;
+    private final String name;
     private String ssn;
     private final ArrayList<String> written;
 
     /** * Constructs an Author with the specified first name, last name,and SSN.
-     * @param firstName the first name of the author
-     * @param lastName the last name of the author
+     * @param name the full name of the author
      * @param ssn the social security number of the author
      * */
-    public Author(String firstName, String lastName, String ssn)
+    public Author(String name, String ssn)
     {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
         this.ssn = ssn;
         written = new ArrayList<>();
     }
@@ -36,19 +33,11 @@ public class Author
     }
 
     /**
-     * @return the first name of the author
+     * @return the full name of the author
      * */
-    public String getFirstName()
+    public String getName()
     {
-        return firstName;
-    }
-
-    /**
-     * @return the last name of the author
-     * */
-    public String getLastName()
-    {
-        return lastName;
+        return name;
     }
 
     /**
@@ -75,6 +64,6 @@ public class Author
     @Override
     public String toString()
     {
-        return firstName + " " + lastName;
+        return name;
     }
 }

@@ -23,7 +23,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         this.connection = connection;
     }
 
-    public ArrayList<Book> findByAuthor(String query) {
+    public ArrayList<Book> findByAuthor(String authorNameQuery) {
         ArrayList<Book> books = new ArrayList<>();
         try
         {
@@ -32,28 +32,10 @@ public class MySQLServiceProtocol implements DBServiceProtocol
                     "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
                     "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
                     "WHERE " +
-                    "Author.FirstName LIKE ? ";
-
-            String firstname;
-            String lastname;
-            if (query.split(" ").length > 1)
-            {
-                searchQuery += "OR Author.LastName LIKE ? ";
-                firstname = query.split(" ")[0];
-                lastname = query.split(" ")[1];
-            }
-            else
-            {
-                firstname = query;
-                lastname = "";
-            }
+                    "Author.Name LIKE ? ";
 
             PreparedStatement request = connection.prepareStatement(searchQuery);
-            request.setString(1, "%" + firstname + "%");
-
-            if (query.split(" ").length > 1)
-                request.setString(2, "%" + lastname + "%");
-
+            request.setString(1, "%" + authorNameQuery + "%");
             ResultSet response = request.executeQuery();
 
             while (response.next())
@@ -63,10 +45,9 @@ public class MySQLServiceProtocol implements DBServiceProtocol
                 String genre = response.getString("Genre");
                 String grade = response.getString("Grade");
                 String ssn = response.getString("SSN");
-                String firstName = response.getString("FirstName");
-                String lastName = response.getString("LastName");
+                String name = response.getString("Name");
 
-                Author author = new Author(firstName, lastName, ssn);
+                Author author = new Author(name, ssn);
                 if (!(bookInArray(books, isbn, author)))
                 {
                     Book book = new Book(title, genre, isbn, grade);
@@ -107,10 +88,9 @@ public class MySQLServiceProtocol implements DBServiceProtocol
                 String genre = response.getString("Genre");
                 String grade = response.getString("Grade");
                 String ssn = response.getString("SSN");
-                String firstName = response.getString("FirstName");
-                String lastName = response.getString("LastName");
+                String name = response.getString("Name");
 
-                Author author = new Author(firstName, lastName, ssn);
+                Author author = new Author(name, ssn);
                 if (!(bookInArray(books, isbn, author)))
                 {
                     Book book = new Book(title, genre, isbn, grade);
@@ -141,8 +121,6 @@ public class MySQLServiceProtocol implements DBServiceProtocol
 
             String wildcardQuery = "%" + query + "%";
             request.setString(1, wildcardQuery);
-
-
             ResultSet response = request.executeQuery();
 
             while (response.next())
@@ -152,10 +130,9 @@ public class MySQLServiceProtocol implements DBServiceProtocol
                 String genre = response.getString("Genre");
                 String grade = response.getString("Grade");
                 String ssn = response.getString("SSN");
-                String firstName = response.getString("FirstName");
-                String lastName = response.getString("LastName");
+                String name = response.getString("Name");
 
-                Author author = new Author(firstName, lastName, ssn);
+                Author author = new Author(name, ssn);
                 if (!(bookInArray(books, isbn, author)))
                 {
                     Book book = new Book(title, genre, isbn, grade);
@@ -178,15 +155,11 @@ public class MySQLServiceProtocol implements DBServiceProtocol
             String searchQuery = "SELECT Book.*, Author.* " +
                     "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
                     "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
-                    "WHERE (" +
-                    "Book.Genre LIKE ?" +
-                    ")";
+                    "WHERE Book.Genre LIKE ?";
 
             PreparedStatement request = connection.prepareStatement(searchQuery);
-
             String wildcardQuery = "%" + query + "%";
             request.setString(1, wildcardQuery);
-
             ResultSet response = request.executeQuery();
 
             while (response.next())
@@ -196,10 +169,9 @@ public class MySQLServiceProtocol implements DBServiceProtocol
                 String genre = response.getString("Genre");
                 String grade = response.getString("Grade");
                 String ssn = response.getString("SSN");
-                String firstName = response.getString("FirstName");
-                String lastName = response.getString("LastName");
+                String name = response.getString("Name");
 
-                Author author = new Author(firstName, lastName, ssn);
+                Author author = new Author(name, ssn);
                 if (!(bookInArray(books, isbn, author)))
                 {
                     Book book = new Book(title, genre, isbn, grade);
@@ -237,10 +209,9 @@ public class MySQLServiceProtocol implements DBServiceProtocol
                 String genre = response.getString("Genre");
                 String grade = response.getString("Grade");
                 String ssn = response.getString("SSN");
-                String firstName = response.getString("FirstName");
-                String lastName = response.getString("LastName");
+                String name = response.getString("Name");
 
-                Author author = new Author(firstName, lastName, ssn);
+                Author author = new Author(name, ssn);
                 if (!(bookInArray(books, isbn, author)))
                 {
                     Book book = new Book(title, genre, isbn, grade);
@@ -282,11 +253,10 @@ public class MySQLServiceProtocol implements DBServiceProtocol
     @Override
     public void insertAuthor(Author author) throws SQLException
     {
-        try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Author VALUES (?, ?, ?)"))
+        try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO Author VALUES (?, ?)"))
         {
             pstm.setString(1, author.getSSN());
-            pstm.setString(2, author.getFirstName());
-            pstm.setString(3, author.getLastName());
+            pstm.setString(2, author.getName());
             pstm.executeUpdate();
         }
     }

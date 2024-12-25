@@ -8,10 +8,12 @@ Databasteknik
 - JDBC
 - Maven
 - Git
+- MySQL
 
 ## Miljö
 - macOS / Windows
 - IntelliJ Community Edition
+- MySQL Workbench
 
 ### Miljövariabler
 

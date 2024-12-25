@@ -78,9 +78,7 @@ public class Book
         for (Author author : authors)
         {
             authorsJoined
-                    .append(author.getFirstName())
-                    .append(" ")
-                    .append(author.getLastName())
+                    .append(author.getName())
                     .append(", ");
         }
 

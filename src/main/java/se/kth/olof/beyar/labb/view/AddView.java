@@ -68,12 +68,11 @@ public class AddView
         {
             authorBox.getChildren().removeLast();
         }
+
         for(int i = 0; i<2;i++)
         {
             bookBox.getChildren().remove(9);
         }
-
-
 
         bothBox.getChildren().addAll(bookBox, authorBox);
 
@@ -187,16 +186,12 @@ public class AddView
     public VBox createAuthorBox()
     {
         Label addBookLabel = new Label("Add author");
-        Label firstNameLabel = new Label("First Name:");
-        Label lastNameLabel = new Label("Last Name:");
+        Label firstNameLabel = new Label("Full Name:");
         Label ssnLabel = new Label("Social Security Number:");
         Label bookISBNLabel = new Label("ISBN:");
 
         TextField firstNameBar = new TextField();
-        firstNameBar.setPromptText("write the first name here!");
-
-        TextField lastNameBar = new TextField();
-        lastNameBar.setPromptText("write the last name here!");
+        firstNameBar.setPromptText("write the name here!");
 
         TextField ssnBar = new TextField();
         ssnBar.setPromptText("write social security number here!");
@@ -211,30 +206,30 @@ public class AddView
         authorDialogAction.getChildren().addAll(saveButton, cancelButton);
 
         authorDialog = new VBox();
-        authorDialog.getChildren().addAll(addBookLabel, firstNameLabel, firstNameBar, lastNameLabel, lastNameBar,
-                ssnLabel, ssnBar, bookISBNLabel, bookISBNBar, authorDialogAction);
+        authorDialog.getChildren().addAll(
+            addBookLabel,
+            firstNameLabel, firstNameBar,
+            ssnLabel, ssnBar,
+            bookISBNLabel, bookISBNBar,
+            authorDialogAction
+        );
 
         return authorDialog;
     }
 
-    public TextField getAuthorFirstname()
+    public TextField getAuthorName()
     {
         return (TextField) authorDialog.getChildren().get(2);
     }
 
-    public TextField getAuthorLastname()
+    public TextField getAuthorSSN()
     {
         return (TextField) authorDialog.getChildren().get(4);
     }
 
-    public TextField getAuthorSSN()
-    {
-        return (TextField) authorDialog.getChildren().get(6);
-    }
-
     public TextField getAuthorBookISBN()
     {
-        return (TextField) authorDialog.getChildren().get(8);
+        return (TextField) authorDialog.getChildren().get(6);
     }
 
     public Button getAuthorDialogSaveButton()

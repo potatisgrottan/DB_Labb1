@@ -116,14 +116,13 @@ public class AddController
     public void readValuesFromAuthorDialog() throws BooksDBException
     {
         Author author;
-        String firstname = view.getAuthorFirstname().getText();
-        String lastname = view.getAuthorLastname().getText();
+        String name = view.getAuthorName().getText();
         String ssn = view.getAuthorSSN().getText();
         String bookISBN = view.getAuthorBookISBN().getText();
 
-        author = new Author(firstname, lastname, ssn);
+        author = new Author(name, ssn);
         author.addBook(bookISBN);
-        System.out.println(firstname + ", " + lastname + ", " + ssn + ", " + bookISBN);
+        System.out.println(name + ", " + ssn + ", " + bookISBN);
 
         if (author.getSSN().isEmpty())
         {
@@ -141,8 +140,7 @@ public class AddController
 
     private void readValuesFromBothDialog() throws BooksDBException
     {
-        String firstname = view.getAuthorFirstname().getText();
-        String lastname = view.getAuthorLastname().getText();
+        String name = view.getAuthorName().getText();
         String ssn = view.getAuthorSSN().getText();
 
         String isbn = view.getISBNInput().getText();
@@ -150,7 +148,7 @@ public class AddController
         String genre = view.getGenreInput().getText();
         String grade = view.getGradeInput().getText();
 
-        Author a = new Author(firstname, lastname, ssn);
+        Author a = new Author(name, ssn);
         Book b = new Book(title, genre, isbn, grade);
         b.addAuthor(a);
 

@@ -3,7 +3,6 @@ package se.kth.olof.beyar.labb.controller;
 import javafx.application.Platform;
 import javafx.scene.layout.VBox;
 import se.kth.olof.beyar.labb.common.BooksDBException;
-import se.kth.olof.beyar.labb.common.Grades;
 import se.kth.olof.beyar.labb.common.SearchOptions;
 import se.kth.olof.beyar.labb.model.Book;
 import se.kth.olof.beyar.labb.model.SearchModel;
@@ -31,17 +30,11 @@ public class SearchController
         view.getSearchButton().setOnAction(_ ->
         {
             String query = view.getSearchBar().getText();
-            int chosenGrade = view.getChosenGrade();
-            queryDBByText(query, chosenGrade);
-        });
-
-        view.getGradeOptions().setOnAction(_ -> {
-            Grades setGrade = view.getGradeOptions().getValue();
-            model.setPreferredGrade(setGrade);
+            queryDBByText(query);
         });
     }
 
-    public void queryDBByText(String find, int grade)
+    public void queryDBByText(String find)
     {
         new Thread(() -> {
             ArrayList<Book> books;
@@ -68,24 +61,7 @@ public class SearchController
                 throw new BooksDBException(e);
             }
 
-            Platform.runLater(() -> {
-                if (grade == Grades.NO_PREFERENCE.ordinal())
-                {
-                    setResult(books);
-                } else
-                {
-                    ArrayList<Book> filteredBooksByGrade = new ArrayList<>();
-                    for (Book book : books)
-                    {
-                        int currentBookGrade = Integer.parseInt(book.getGrade());
-                        if (currentBookGrade == grade)
-                        {
-                            filteredBooksByGrade.add(book);
-                        }
-                    }
-                    setResult(filteredBooksByGrade);
-                }
-            });
+            Platform.runLater(() -> setResult(books));
         }).start();
     }
 
@@ -108,8 +84,7 @@ public class SearchController
     {
         // The listener has to be attached before returning the view (and therefore creating it)
         // this is because otherwise, the event listener won't react when pressing the button
-        Grades userPreferredGrade = model.getPreferredGrade();
-        VBox createdSearchView = view.createSearchView(userPreferredGrade);
+        VBox createdSearchView = view.createSearchView();
         addEventListener();
         return createdSearchView;
     }

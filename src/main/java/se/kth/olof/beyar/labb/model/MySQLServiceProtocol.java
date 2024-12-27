@@ -314,10 +314,11 @@ public class MySQLServiceProtocol implements DBServiceProtocol
      * Inserts a book and creates a written-by relationship within a single transaction.
      *
      * @param book the book to be inserted
+     * @param authorSSN the ssn of the author who wrote the book
      * @throws SQLException if a database access error occurs or the transaction fails
      */
     @Override
-    public void insertBookTransaktion(Book book, String authorSSN) throws SQLException
+    public void insertBookUpdateAuthor(Book book, String authorSSN) throws SQLException
     {
         try
         {
@@ -341,10 +342,11 @@ public class MySQLServiceProtocol implements DBServiceProtocol
      * Inserts an author and creates a written-by relationship within a single transaction.
      *
      * @param author the author to be inserted
+     * @param bookISBN the book isbn to be inserted written by the author
      * @throws SQLException if a database access error occurs or the transaction fails
      */
     @Override
-    public void insertAuthorTransaktion(Author author) throws SQLException
+    public void insertAuthorUpdateBook(Author author, String bookISBN) throws SQLException
     {
         try
         {

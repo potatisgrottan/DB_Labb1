@@ -32,7 +32,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
      * @throws BooksDBException if there's an error executing the database query
      */
     public ArrayList<Book> findByAuthor(String authorNameQuery) {
-        return generalSearchFunction(authorNameQuery,"Author.Name LIKE ?");
+        return generalSearchFunction("%" + authorNameQuery + "%","Author.Name LIKE ?");
     }
 
     /**
@@ -44,7 +44,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
      * @throws BooksDBException if there's an error executing the database query
      */
     public ArrayList<Book> findByISBN(String query) {
-        return generalSearchFunction(query, "Book.ISBN LIKE ?");
+        return generalSearchFunction("%" + query + "%", "Book.ISBN LIKE ?");
     }
 
     /**
@@ -56,7 +56,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
      * @throws BooksDBException if there's an error executing the database query
      */
     public ArrayList<Book> findByTitle(String query) {
-        return generalSearchFunction(query,"Book.Title LIKE ?");
+        return generalSearchFunction("%" + query + "%","Book.Title LIKE ?");
     }
 
     /**
@@ -68,7 +68,7 @@ public class MySQLServiceProtocol implements DBServiceProtocol
      * @throws BooksDBException if there's an error executing the database query
      */
     public ArrayList<Book> findByGenre(String query) {
-        return generalSearchFunction(query, "Book.Genre LIKE ?");
+        return generalSearchFunction("%" + query + "%", "Book.Genre LIKE ?");
     }
 
     /**

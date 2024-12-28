@@ -23,208 +23,64 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         this.connection = connection;
     }
 
+    /**
+     * Searches for books by author name using partial matching.
+     * The search is case-insensitive and matches any part of the author's name.
+     *
+     * @param authorNameQuery The author name or partial name to search for
+     * @return ArrayList of Book objects written by authors matching the query
+     * @throws BooksDBException if there's an error executing the database query
+     */
     public ArrayList<Book> findByAuthor(String authorNameQuery) {
-        ArrayList<Book> books = new ArrayList<>();
-        try
-        {
-
-            String searchQuery = "SELECT Book.*, Author.* " +
-                    "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
-                    "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
-                    "WHERE " +
-                    "Author.Name LIKE ? ";
-
-            PreparedStatement request = connection.prepareStatement(searchQuery);
-            request.setString(1, "%" + authorNameQuery + "%");
-            ResultSet response = request.executeQuery();
-
-            while (response.next())
-            {
-                String isbn = response.getString("ISBN");
-                String title = response.getString("Title");
-                String genre = response.getString("Genre");
-                String grade = response.getString("Grade");
-                String ssn = response.getString("SSN");
-                String name = response.getString("Name");
-
-                Author author = new Author(name, ssn);
-                if (!(bookInArray(books, isbn, author)))
-                {
-                    Book book = new Book(title, genre, isbn, grade);
-                    book.addAuthor(author);
-                    books.add(book);
-                }
-            }
-            request.close();
-        } catch (SQLException e)
-        {
-            throw new BooksDBException(e);
-        }
-        return books;
+        return generalSearchFunction(authorNameQuery,"Author.Name LIKE ?");
     }
 
+    /**
+     * Searches for books by ISBN using partial matching.
+     * Finds books whose ISBN contains the query string.
+     *
+     * @param query The ISBN or partial ISBN to search for
+     * @return ArrayList of Book objects matching the ISBN query
+     * @throws BooksDBException if there's an error executing the database query
+     */
     public ArrayList<Book> findByISBN(String query) {
-        ArrayList<Book> books = new ArrayList<>();
-        try
-        {
-            String searchQuery = "SELECT Book.*, Author.* " +
-                    "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
-                    "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
-                    "WHERE (" +
-                    " Book.ISBN LIKE ? " +
-                    ")";
-
-            PreparedStatement request = connection.prepareStatement(searchQuery);
-
-            String wildcardQuery = "%" + query + "%";
-            request.setString(1, wildcardQuery);
-
-            ResultSet response = request.executeQuery();
-
-            while (response.next())
-            {
-                String isbn = response.getString("ISBN");
-                String title = response.getString("Title");
-                String genre = response.getString("Genre");
-                String grade = response.getString("Grade");
-                String ssn = response.getString("SSN");
-                String name = response.getString("Name");
-
-                Author author = new Author(name, ssn);
-                if (!(bookInArray(books, isbn, author)))
-                {
-                    Book book = new Book(title, genre, isbn, grade);
-                    book.addAuthor(author);
-                    books.add(book);
-                }
-            }
-            request.close();
-        } catch (SQLException e)
-        {
-            throw new BooksDBException(e);
-        }
-       return books;
+        return generalSearchFunction(query, "Book.ISBN LIKE ?");
     }
 
+    /**
+     * Searches for books by title using partial matching.
+     * The search is case-insensitive and matches any part of the book title.
+     *
+     * @param query The title or partial title to search for
+     * @return ArrayList of Book objects with titles matching the query
+     * @throws BooksDBException if there's an error executing the database query
+     */
     public ArrayList<Book> findByTitle(String query) {
-        ArrayList<Book> books = new ArrayList<>();
-        try
-        {
-            String searchQuery = "SELECT Book.*, Author.* " +
-                    "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
-                    "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
-                    "WHERE (" +
-                    "Book.Title LIKE ? " +
-                    ")";
-
-            PreparedStatement request = connection.prepareStatement(searchQuery);
-
-            String wildcardQuery = "%" + query + "%";
-            request.setString(1, wildcardQuery);
-            ResultSet response = request.executeQuery();
-
-            while (response.next())
-            {
-                String isbn = response.getString("ISBN");
-                String title = response.getString("Title");
-                String genre = response.getString("Genre");
-                String grade = response.getString("Grade");
-                String ssn = response.getString("SSN");
-                String name = response.getString("Name");
-
-                Author author = new Author(name, ssn);
-                if (!(bookInArray(books, isbn, author)))
-                {
-                    Book book = new Book(title, genre, isbn, grade);
-                    book.addAuthor(author);
-                    books.add(book);
-                }
-            }
-            request.close();
-        } catch (SQLException e)
-        {
-            throw new BooksDBException(e);
-        }
-       return books;
+        return generalSearchFunction(query,"Book.Title LIKE ?");
     }
 
+    /**
+     * Searches for books by genre using partial matching.
+     * The search is case-insensitive and matches any part of the genre name.
+     *
+     * @param query The genre or partial genre to search for
+     * @return ArrayList of Book objects in genres matching the query
+     * @throws BooksDBException if there's an error executing the database query
+     */
     public ArrayList<Book> findByGenre(String query) {
-        ArrayList<Book> books = new ArrayList<>();
-        try
-        {
-            String searchQuery = "SELECT Book.*, Author.* " +
-                    "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
-                    "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
-                    "WHERE Book.Genre LIKE ?";
-
-            PreparedStatement request = connection.prepareStatement(searchQuery);
-            String wildcardQuery = "%" + query + "%";
-            request.setString(1, wildcardQuery);
-            ResultSet response = request.executeQuery();
-
-            while (response.next())
-            {
-                String isbn = response.getString("ISBN");
-                String title = response.getString("Title");
-                String genre = response.getString("Genre");
-                String grade = response.getString("Grade");
-                String ssn = response.getString("SSN");
-                String name = response.getString("Name");
-
-                Author author = new Author(name, ssn);
-                if (!(bookInArray(books, isbn, author)))
-                {
-                    Book book = new Book(title, genre, isbn, grade);
-                    book.addAuthor(author);
-                    books.add(book);
-                }
-            }
-            request.close();
-        } catch (SQLException e)
-        {
-            throw new BooksDBException(e);
-        }
-       return books;
+        return generalSearchFunction(query, "Book.Genre LIKE ?");
     }
 
+    /**
+     * Searches for books by their exact rating/grade.
+     * This requires an exact match.
+     *
+     * @param query The exact grade/rating to search for
+     * @return ArrayList of Book objects with the specified grade
+     * @throws BooksDBException if there's an error executing the database query
+     */
     public ArrayList<Book> findByRating(String query) {
-        ArrayList<Book> books = new ArrayList<>();
-        try
-        {
-            String searchQuery = "SELECT Book.*, Author.* " +
-                    "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
-                    "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
-                    "WHERE (" +
-                    "Book.Grade = ?" +
-                    ")";
-
-            PreparedStatement request = connection.prepareStatement(searchQuery);
-            request.setString(1, query);
-            ResultSet response = request.executeQuery();
-
-            while (response.next())
-            {
-                String isbn = response.getString("ISBN");
-                String title = response.getString("Title");
-                String genre = response.getString("Genre");
-                String grade = response.getString("Grade");
-                String ssn = response.getString("SSN");
-                String name = response.getString("Name");
-
-                Author author = new Author(name, ssn);
-                if (!(bookInArray(books, isbn, author)))
-                {
-                    Book book = new Book(title, genre, isbn, grade);
-                    book.addAuthor(author);
-                    books.add(book);
-                }
-            }
-            request.close();
-        } catch (SQLException e)
-        {
-            throw new BooksDBException(e);
-        }
-       return books;
+       return generalSearchFunction(query, "Book.Grade = ?");
     }
 
     /**
@@ -369,6 +225,15 @@ public class MySQLServiceProtocol implements DBServiceProtocol
         }
     }
 
+    /**
+     * Checks if a book with the given ISBN exists in the array list and adds the author to it if found.
+     * This helper method is used to prevent duplicate book entries when the same book has multiple authors.
+     *
+     * @param arrayList The list of books to search through
+     * @param isbn The ISBN to look for
+     * @param author The author to add to the book if found
+     * @return true if the book was found and author added, false if the book was not found
+     */
     private boolean bookInArray(ArrayList<Book> arrayList, String isbn, Author author)
     {
         for (Book book : arrayList)
@@ -380,5 +245,53 @@ public class MySQLServiceProtocol implements DBServiceProtocol
             }
         }
         return false;
+    }
+
+    /**
+     * Performs a general database search using the provided query and search condition.
+     * This method executes a SQL query that joins the Book, WrittenBy, and Author tables.
+     *
+     * @param query The search value to look for
+     * @param addToSearchQuery The WHERE clause condition to add to the SQL query
+     * @return ArrayList of Book objects matching the search criteria, with their associated authors
+     * @throws BooksDBException if there's an error executing the SQL query
+     */
+    private ArrayList<Book> generalSearchFunction(String query, String addToSearchQuery){
+        ArrayList<Book> books = new ArrayList<>();
+        try
+        {
+            String searchQuery = "SELECT Book.*, Author.* " +
+                    "FROM Book JOIN WrittenBy ON WrittenBy.Book_ISBN = Book.ISBN " +
+                    "JOIN Author ON WrittenBy.Author_SSN = Author.SSN " +
+                    "WHERE " + addToSearchQuery;
+
+            PreparedStatement request = connection.prepareStatement(searchQuery);
+            request.setString(1, query);
+            ResultSet response = request.executeQuery();
+
+            while (response.next())
+            {
+                String isbn = response.getString("ISBN");
+                String title = response.getString("Title");
+                String genre = response.getString("Genre");
+                String grade = response.getString("Grade");
+                String ssn = response.getString("SSN");
+                String name = response.getString("Name");
+
+                Author author = new Author(name, ssn);
+                if (!(bookInArray(books, isbn, author)))
+                {
+                    Book book = new Book(title, genre, isbn, grade);
+                    book.addAuthor(author);
+                    books.add(book);
+                }
+            }
+            request.close();
+        } catch (SQLException e)
+        {
+            throw new BooksDBException(e);
+        }
+
+        return books;
     }
 }

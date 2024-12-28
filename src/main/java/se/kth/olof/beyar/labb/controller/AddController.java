@@ -103,6 +103,9 @@ public class AddController
 
         try
         {
+            if (title.isEmpty() || genre.isEmpty() || isbn.isEmpty() || grade.isEmpty() || authorSSN.isEmpty())
+                return;
+
             databaseService.insertBookUpdateAuthor(book, authorSSN);
         }
         catch (SQLException e)
@@ -131,6 +134,9 @@ public class AddController
 
         try
         {
+            if (name.isEmpty() || ssn.isEmpty() || bookISBN.isEmpty())
+                return;
+
             databaseService.insertAuthorUpdateBook(author, bookISBN);
         } catch (SQLException e)
         {
@@ -164,6 +170,10 @@ public class AddController
 
         try
         {
+            if (name.isEmpty() || ssn.isEmpty() || isbn.isEmpty() || title.isEmpty() || genre.isEmpty() || grade.isEmpty())
+                return;
+
+            System.out.println("[DEBUG]" + isbn + ", " + title + ", " + genre + ", " + grade);
             databaseService.insertBookByAuthor(a, b);
         }
         catch (SQLException e)
@@ -179,6 +189,9 @@ public class AddController
 
         try
         {
+            if (isbn.isEmpty() || ssn.isEmpty())
+                return;
+
             databaseService.insertWrittenBy(isbn, ssn);
         }
         catch (SQLException e)
